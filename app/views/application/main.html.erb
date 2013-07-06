@@ -1,0 +1,8 @@
+<%= link_to "Sign in with GitHub", user_omniauth_authorize_path(:github) %>
+<BR/>
+<% if user_signed_in? %>
+Logged in<BR/>
+<%= current_user.full_name %>
+<% else %>
+Logged out
+<% end %>

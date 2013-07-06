@@ -1,0 +1,5 @@
+# Insert the client id and secret key for your GitHub application.
+# The URL should be: http://0.0.0.0:3000/
+# The callback URL should be: http://0.0.0.0:3000/auth/github/callback
+GITHUB_KEY: PleaseInsert
+GITHUB_SECRET: PleaseInsert

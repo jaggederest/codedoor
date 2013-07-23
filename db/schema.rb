@@ -11,7 +11,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130720005952) do
+ActiveRecord::Schema.define(version: 20130723075545) do
+
+  create_table "contractors", force: true do |t|
+    t.integer  "user_id"
+    t.string   "title"
+    t.text     "description"
+    t.integer  "rate"
+    t.string   "time_status"
+    t.boolean  "client_can_visit"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "user_accounts", force: true do |t|
     t.string   "account_id"

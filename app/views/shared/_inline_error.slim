@@ -1,0 +1,3 @@
+- if model.errors.has_key?(attribute)
+  span
+    = "#{attribute.to_s.titleize} #{model.errors[attribute].join(', ')}"

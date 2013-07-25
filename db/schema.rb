@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130723075545) do
+ActiveRecord::Schema.define(version: 20130724211403) do
 
   create_table "contractors", force: true do |t|
     t.integer  "user_id"
@@ -22,6 +22,8 @@ ActiveRecord::Schema.define(version: 20130723075545) do
     t.boolean  "client_can_visit"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "onsite_status"
+    t.boolean  "contract_to_hire"
   end
 
   create_table "user_accounts", force: true do |t|

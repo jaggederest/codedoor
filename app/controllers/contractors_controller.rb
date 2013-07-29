@@ -18,18 +18,20 @@ class ContractorsController < ApplicationController
     @contractor = Contractor.new(contractor_params)
     if @contractor.save
       flash[:success] = 'Your profile has been created.'
+      redirect_to action: :show
     else
       render :new
     end
   end
 
   def edit
-    @contractor = Contractor.find(params[:id])
+    @contractor = Contractor.find_by_user_id(current_user.id)
   end
 
   def update
     if Contractor.update(contractor_params)
       flash[:success] = 'Your profile has been updated.'
+      redirect_to action: :show
     else
       flash[:error] = @contractor.errors.full_messages
       redirect_to action: :edit

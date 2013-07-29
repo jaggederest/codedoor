@@ -1,9 +1,6 @@
 class User < ActiveRecord::Base
-  # Include default devise modules. Others available are:
-  # :token_authenticatable, :encryptable, :confirmable, :lockable, :timeoutable and :omniauthable
-  devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable
-
+  # For now, GitHub is the only way to log in
+  devise :registerable, :rememberable, :trackable, :validatable
   devise :omniauthable, omniauth_providers: [:github]
 
   has_many :user_accounts
@@ -22,7 +19,7 @@ class User < ActiveRecord::Base
         user.email = auth.info.email
         user.password = Devise.friendly_token[0, 20]
         user.save!
-        
+
         user_account = UserAccount.new
         user_account.user = user
         user_account.account_id = auth.uid

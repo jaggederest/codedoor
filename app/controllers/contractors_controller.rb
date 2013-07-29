@@ -1,6 +1,6 @@
 class ContractorsController < ApplicationController
   # NOTE: A contractor model must belong to a user, and a user model has at most one contractor model.
-  load_and_authorize_resource
+  load_and_authorize_resource except: :edit
 
   def index
     @contractors = Contractor.all

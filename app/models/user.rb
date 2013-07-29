@@ -1,6 +1,6 @@
 class User < ActiveRecord::Base
-  # For now, GitHub is the only way to log in
-  devise :registerable, :rememberable, :trackable, :validatable
+  # For now, GitHub is the only way to log in (but it does require :database_authenticatable)
+  devise :database_authenticatable, :registerable, :rememberable, :trackable, :validatable
   devise :omniauthable, omniauth_providers: [:github]
 
   has_many :user_accounts

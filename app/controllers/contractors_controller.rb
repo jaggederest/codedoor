@@ -1,6 +1,6 @@
 class ContractorsController < ApplicationController
   # NOTE: A contractor model must belong to a user, and a user model has at most one contractor model.
-  load_and_authorize_resource except: :edit
+  load_and_authorize_resource
 
   def index
     @contractors = Contractor.all
@@ -20,7 +20,8 @@ class ContractorsController < ApplicationController
       flash[:success] = 'Your profile has been created.'
       redirect_to action: :show
     else
-      render :new
+      flash[:error] = @contractor.errors.full_messages
+      redirect_to action: :new
     end
   end
 

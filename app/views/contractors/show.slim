@@ -1,1 +1,13 @@
-= @contractor.user.full_name
+h1
+  = @contractor.user.full_name
+p
+  | Description:
+  = @contractor.title
+p
+  | Rate:
+  = "$#{@contractor.daily_rate_to_client} per day"
+p
+  = @contractor.time_status.titleize
+p
+  = Contractor.onsite_status_description(@contractor.onsite_status)
+- # client_can_visit, onsite_status, contract_to_hire

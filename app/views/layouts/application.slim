@@ -6,4 +6,6 @@ html
     = javascript_include_tag 'application', 'data-turbolinks-track' => true
     = csrf_meta_tags
 body
+  - # TODO: we probably don't want to put the flash message all the way at the top
+  = render partial: 'shared/flash_messages'
   = yield

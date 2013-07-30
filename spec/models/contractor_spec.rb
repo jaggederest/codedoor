@@ -17,9 +17,9 @@ describe Contractor do
       FactoryGirl.build(:contractor, rate: nil).should_not be_valid
     end
 
-    it 'should only allow time_status to be "parttime" or "fulltime"' do
-      FactoryGirl.build(:contractor, time_status: 'parttime').should be_valid
-      FactoryGirl.build(:contractor, time_status: 'fulltime').should be_valid
+    it 'should only allow time_status to be "part-time" or "full-time"' do
+      FactoryGirl.build(:contractor, time_status: 'part-time').should be_valid
+      FactoryGirl.build(:contractor, time_status: 'full-time').should be_valid
 
       FactoryGirl.build(:contractor, time_status: nil).should_not be_valid
       FactoryGirl.build(:contractor, time_status: 'full time').should_not be_valid

@@ -10,4 +10,9 @@ p
   = @contractor.time_status.titleize
 p
   = Contractor.onsite_status_description(@contractor.onsite_status)
-- # client_can_visit, onsite_status, contract_to_hire
+- if @contractor.client_can_visit?
+  p
+    | Clients can visit the contractor's office.
+- if @contractor.contract_to_hire?
+  p
+    | Clients may offer contract to hire positions.

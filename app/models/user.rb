@@ -4,6 +4,7 @@ class User < ActiveRecord::Base
   devise :omniauthable, omniauth_providers: [:github]
 
   has_many :user_accounts
+  has_one  :contractor
 
   validates :full_name, presence: true
   validates :email, presence: true, uniqueness: true

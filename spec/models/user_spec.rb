@@ -9,6 +9,7 @@ describe User do
 
   context 'associations' do
     it { should have_many(:user_accounts) }
+    it { should have_one(:contractor) }
   end
 
   context 'find_for_github_oauth' do

@@ -11,7 +11,7 @@ class ContractorsController < ApplicationController
   end
 
   def new
-    if Contractor.find_by_user_id(current_user.id).present?
+    if current_user.contractor.present?
       flash[:alert] = 'You are already a contractor.'
       redirect_to root_path
     end
@@ -29,7 +29,7 @@ class ContractorsController < ApplicationController
   end
 
   def edit
-    @contractor = Contractor.find_by_user_id(current_user.id)
+    @contractor = current_user.contractor
   end
 
   def update

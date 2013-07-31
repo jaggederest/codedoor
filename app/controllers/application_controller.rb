@@ -18,7 +18,11 @@ class ApplicationController < ActionController::Base
 
   # TODO: change what happens when someone tries to do something where permission is denied
   rescue_from CanCan::AccessDenied do |exception|
-    redirect_to root_url, alert: 'Permission Denied'
+    redirect_to root_url, alert: 'Permission Denied.'
+  end
+
+  rescue_from ActiveRecord::RecordNotFound do |exception|
+    redirect_to root_url, alert: 'Information cannot be found.'
   end
 
 end

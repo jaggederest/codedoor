@@ -19,18 +19,18 @@ describe User do
                                      info: {email: 'email@example.com'},
                                      extra: {raw_info: {name: 'Test User'}}})
       user = User.find_for_github_oauth(auth)
-      assert_equal(user.full_name, 'Test User')
-      assert_equal(user.email, 'email@example.com')
+      expect(user.full_name).to eq('Test User')
+      expect(user.email).to eq('email@example.com')
 
       user_account = UserAccount.where(provider: 'github', account_id: 'new account id').first
-      assert_equal(user_account.user, user)
-      assert_equal(user_account.oauth_token, 'oauth token')
+      expect(user_account.user).to eq(user)
+      expect(user_account.oauth_token).to eq('oauth token')
     end
 
     it 'should return user if the there is a UserAccount that matches' do
       user_account = FactoryGirl.create(:user_account, provider: 'github', account_id: 'existing account id')
       auth = OmniAuth::AuthHash.new({provider: 'github', uid: 'existing account id'})
-      assert_equal(user_account.user, User.find_for_github_oauth(auth))
+      expect(user_account.user).to eq(User.find_for_github_oauth(auth))
     end
   end
 end

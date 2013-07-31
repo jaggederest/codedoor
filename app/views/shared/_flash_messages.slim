@@ -1,8 +1,8 @@
 - if !@flash_messages_rendered
-  - if flash[:error]
-    p class='error'
-      = flash[:error].join(', ')
+  - if flash[:alert]
+    p class='alert'
+      = flash[:alert]
   - if flash[:notice]
     p class='notice'
-      = flash[:notice].join(', ')
+      = flash[:notice]
   - @flash_messages_rendered = true

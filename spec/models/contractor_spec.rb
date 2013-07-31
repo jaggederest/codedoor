@@ -69,4 +69,36 @@ describe Contractor do
     end
   end
 
+  context 'rates' do
+    before :each do
+      @contractor = FactoryGirl.create(:contractor, rate: 50)
+    end
+
+    it 'should return the correct daily rate for the contractor' do
+      expect(@contractor.daily_rate_to_contractor).to eq(@contractor.rate * 8)
+    end
+    it 'should return the correct daily rate for the client' do
+      expect(@contractor.daily_rate_to_client).to eq(@contractor.rate * 9)
+    end
+  end
+
+  context 'onsite status description' do
+    it 'should return correct status descriptions for each status type' do
+      expect(Contractor.onsite_status_description(:onsite)).to eq('Work can be done at a client\'s office if it is nearby.')
+      expect(Contractor.onsite_status_description(:occasional)).to eq('Work can occasionally be done at a client\'s office if it is nearby.')
+      expect(Contractor.onsite_status_description(:offsite)).to eq('All work is to be done remotely.')
+    end
+
+    it 'should work for strings as well as symbols' do
+      expect(Contractor.onsite_status_description('onsite')).to eq('Work can be done at a client\'s office if it is nearby.')
+      expect(Contractor.onsite_status_description('occasional')).to eq('Work can occasionally be done at a client\'s office if it is nearby.')
+      expect(Contractor.onsite_status_description('offsite')).to eq('All work is to be done remotely.')
+    end
+
+    it 'should throw an error for any other parameter' do
+      expect { Contractor.onsite_status_description(nil) }.to raise_error
+      expect { Contractor.onsite_status_description(:other) }.to raise_error
+    end
+  end
+
 end

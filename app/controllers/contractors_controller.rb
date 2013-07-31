@@ -11,17 +11,20 @@ class ContractorsController < ApplicationController
   end
 
   def new
+    if Contractor.find_by_user_id(current_user.id).present?
+      flash[:alert] = 'You are already a contractor.'
+      redirect_to root_path
+    end
     @contractor = Contractor.new(user_id: current_user.id)
   end
 
   def create
     @contractor = Contractor.new(contractor_params)
     if @contractor.save
-      flash[:success] = 'Your profile has been created.'
-      redirect_to action: :show
+      flash[:notice] = 'Your profile has been created.'
+      redirect_to contractor_path(@contractor)
     else
-      flash[:error] = @contractor.errors.full_messages
-      redirect_to action: :new
+      render :new
     end
   end
 
@@ -30,12 +33,12 @@ class ContractorsController < ApplicationController
   end
 
   def update
-    if Contractor.update(contractor_params)
-      flash[:success] = 'Your profile has been updated.'
-      redirect_to action: :show
+    @contractor = Contractor.find(params[:id])
+    if @contractor.update(update_contractor_params)
+      flash[:notice] = 'Your profile has been updated.'
+      redirect_to contractor_path(params[:id])
     else
-      flash[:error] = @contractor.errors.full_messages
-      redirect_to action: :edit
+      render :edit
     end
   end
 
@@ -43,6 +46,11 @@ class ContractorsController < ApplicationController
 
   def contractor_params
     params.require(:contractor).permit(:user_id, :title, :description, :rate, :time_status, :client_can_visit, :onsite_status, :contract_to_hire)
+  end
+
+  # NOTE: user_id is immutable
+  def update_contractor_params
+    params.require(:contractor).permit(:title, :description, :rate, :time_status, :client_can_visit, :onsite_status, :contract_to_hire)
   end
 
 end

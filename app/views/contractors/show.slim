@@ -1,8 +1,11 @@
 h1
   = @contractor.user.full_name
 p
-  | Description:
+  | Title:
   = @contractor.title
+p
+  | Description:
+  = @contractor.description
 p
   | Rate:
   = "$#{@contractor.daily_rate_to_client} per day"
@@ -16,3 +19,7 @@ p
 - if @contractor.contract_to_hire?
   p
     | Clients may offer contract to hire positions.
+
+- if @contractor.user == current_user
+  p
+    = link_to('Edit Info', edit_contractor_path(@contractor))

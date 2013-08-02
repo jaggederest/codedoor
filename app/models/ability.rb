@@ -5,7 +5,7 @@ class Ability
     if !user
       can :read, Contractor
     else
-      can :manage, User, user_id: user.id
+      can :manage, User, id: user.id
       can :read, Contractor
       can [:create, :update, :destroy], Contractor, user_id: user.id
     end

@@ -12,6 +12,34 @@ describe User do
     it { should have_one(:contractor) }
   end
 
+  context 'abilities' do
+    let(:user) { FactoryGirl.create(:user) }
+    let(:ability) { Ability.new(user) }
+
+    it 'show allow a user to manage him or herself' do
+      ability.should be_able_to(:read,    user)
+      ability.should be_able_to(:create,  user)
+      ability.should be_able_to(:update,  user)
+      ability.should be_able_to(:destroy, user)
+    end
+
+    it 'should not allow a user to do anything about other users' do
+      other_user = FactoryGirl.create(:user)
+      ability.should_not be_able_to(:read,    other_user)
+      ability.should_not be_able_to(:create,  other_user)
+      ability.should_not be_able_to(:update,  other_user)
+      ability.should_not be_able_to(:destroy, other_user)
+    end
+
+    it 'should not allow logged out users to see users' do
+      ability = Ability.new(nil)
+      ability.should_not be_able_to(:read,    user)
+      ability.should_not be_able_to(:create,  user)
+      ability.should_not be_able_to(:update,  user)
+      ability.should_not be_able_to(:destroy, user)
+    end
+  end
+
   context 'find_for_github_oauth' do
     it 'should create a new user if the there is no UserAccount with that account id' do
       auth = OmniAuth::AuthHash.new({uid: 'new account id',

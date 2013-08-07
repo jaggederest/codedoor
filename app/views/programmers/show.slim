@@ -12,7 +12,7 @@ p
 p
   = @programmer.time_status.titleize
 p
-  = programmer.onsite_status_description(@programmer.onsite_status)
+  = Programmer.onsite_status_description(@programmer.onsite_status)
 - if @programmer.client_can_visit?
   p
     | Clients can visit the programmer's office.

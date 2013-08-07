@@ -11,6 +11,9 @@ gem 'cancan'
 
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 4.0.0'
+# TODO: Use a specific release when there is a release cut with Rails 4 support.
+gem "compass-rails", "~> 2.0.alpha.0"
+gem 'bootstrap-sass', '~> 2.3.2.1'
 
 # Use slim for templating
 gem 'slim-rails'

@@ -1,0 +1,25 @@
+h1
+  = @programmer.user.full_name
+p
+  | Title:
+  = @programmer.title
+p
+  | Description:
+  = @programmer.description
+p
+  | Rate:
+  = "$#{@programmer.daily_rate_to_client} per day"
+p
+  = @programmer.time_status.titleize
+p
+  = programmer.onsite_status_description(@programmer.onsite_status)
+- if @programmer.client_can_visit?
+  p
+    | Clients can visit the programmer's office.
+- if @programmer.contract_to_hire?
+  p
+    | Clients may offer contract to hire positions.
+
+- if @programmer.user == current_user
+  p
+    = link_to('Edit Info', edit_programmer_path(@programmer))

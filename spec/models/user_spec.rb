@@ -9,7 +9,7 @@ describe User do
 
   context 'associations' do
     it { should have_many(:user_accounts) }
-    it { should have_one(:contractor) }
+    it { should have_one(:programmer) }
   end
 
   context 'abilities' do

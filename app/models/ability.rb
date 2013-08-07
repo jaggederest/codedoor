@@ -3,11 +3,11 @@ class Ability
 
   def initialize(user)
     if !user
-      can :read, Contractor
+      can :read, Programmer
     else
       can :manage, User, id: user.id
-      can :read, Contractor
-      can [:create, :update, :destroy], Contractor, user_id: user.id
+      can :read, Programmer
+      can [:create, :update, :destroy], Programmer, user_id: user.id
     end
   end
 end

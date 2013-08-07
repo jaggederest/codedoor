@@ -1,0 +1,3 @@
+- @programmers.each do |programmer|
+  p
+    = link_to(programmer.user.full_name, programmer_path(programmer))

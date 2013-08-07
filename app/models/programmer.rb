@@ -1,4 +1,4 @@
-class Contractor < ActiveRecord::Base
+class Programmer < ActiveRecord::Base
 
   belongs_to :user
 
@@ -8,7 +8,7 @@ class Contractor < ActiveRecord::Base
   validates :time_status, inclusion: { in: ['part-time', 'full-time'], message: 'must be selected' }
   validates :onsite_status, inclusion: { in: ['offsite', 'occasional', 'onsite'], message: 'must be selected' }
 
-  def daily_rate_to_contractor
+  def daily_rate_to_programmer
     rate * 8
   end
 

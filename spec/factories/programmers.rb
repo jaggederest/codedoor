@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  factory :contractor do
+  factory :programmer do
     title 'Test Title'
     rate 20
     time_status 'full-time'

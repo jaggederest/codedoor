@@ -3,5 +3,5 @@ Codedoor::Application.routes.draw do
 
   root to: 'application#main'
 
-  resources :contractors, only: [:index, :show, :new, :create, :edit, :update]
+  resources :programmers, only: [:index, :show, :new, :create, :edit, :update]
 end

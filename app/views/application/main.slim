@@ -6,13 +6,13 @@ p
   p
     = current_user.full_name
   p
-  = link_to('View contractors', contractors_path)
-  - if current_user.contractor.present?
+  = link_to('View programmers', programmers_path)
+  - if current_user.programmer.present?
      p
-       = link_to('View your information', contractor_path(current_user.contractor))
+       = link_to('View your information', programmer_path(current_user.programmer))
   - else
      p
-       = link_to('Create contractor account', new_contractor_path)
+       = link_to('Create programmer account', new_programmer_path)
 - else
   p
     | Logged out

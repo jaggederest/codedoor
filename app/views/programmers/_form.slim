@@ -1,44 +1,44 @@
-= form_for contractor, url: {action: action} do |f|
+= form_for Programmer, url: {action: action} do |f|
   = f.hidden_field :user_id
   p
-    = render partial: 'shared/inline_error', locals: {model: contractor, attribute: :title}
+    = render partial: 'shared/inline_error', locals: {model: Programmer, attribute: :title}
     = f.label :title
     = f.text_field :title
   p
-    = render partial: 'shared/inline_error', locals: {model: contractor, attribute: :description}
+    = render partial: 'shared/inline_error', locals: {model: Programmer, attribute: :description}
     = f.label :description
     = f.text_area :description
   p
-    = render partial: 'shared/inline_error', locals: {model: contractor, attribute: :rate}
+    = render partial: 'shared/inline_error', locals: {model: Programmer, attribute: :rate}
     - # TODO: add javascript to calculate per day for full-timers
     = f.label :rate
     = f.text_field :rate
   p
-    = render partial: 'shared/inline_error', locals: {model: contractor, attribute: :time_status}
+    = render partial: 'shared/inline_error', locals: {model: Programmer, attribute: :time_status}
     | I can work
     = f.radio_button :time_status, :'full-time'
     = f.label :'time_status_full-time', 'full-time'
     = f.radio_button :time_status, :'part-time'
     = f.label :'time_status_part-time', 'part-time'
   p
-    = render partial: 'shared/inline_error', locals: {model: contractor, attribute: :onsite_status}
+    = render partial: 'shared/inline_error', locals: {model: Programmer, attribute: :onsite_status}
     | What is your policy about working at a client's office?
     br
       = f.radio_button :onsite_status, :onsite
-      = f.label :onsite_status_onsite, Contractor.onsite_status_description(:onsite)
+      = f.label :onsite_status_onsite, programmer.onsite_status_description(:onsite)
     br
       = f.radio_button :onsite_status, :occasional
-      = f.label :onsite_status_occasional, Contractor.onsite_status_description(:occasional)
+      = f.label :onsite_status_occasional, programmer.onsite_status_description(:occasional)
     br
       = f.radio_button :onsite_status, :offsite
-      = f.label :onsite_status_offsite, Contractor.onsite_status_description(:offsite)
+      = f.label :onsite_status_offsite, programmer.onsite_status_description(:offsite)
 
   p
-    = render partial: 'shared/inline_error', locals: {model: contractor, attribute: :client_can_visit}
+    = render partial: 'shared/inline_error', locals: {model: Programmer, attribute: :client_can_visit}
     = f.check_box :client_can_visit
     = f.label :client_can_visit, 'Clients can visit my office if they wish.'
   p
-    = render partial: 'shared/inline_error', locals: {model: contractor, attribute: :contract_to_hire}
+    = render partial: 'shared/inline_error', locals: {model: Programmer, attribute: :contract_to_hire}
     = f.check_box :contract_to_hire
     = f.label :contract_to_hire, 'I will consider contract to hire positions.'
 

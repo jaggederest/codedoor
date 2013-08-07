@@ -37,8 +37,7 @@ gem 'turbolinks'
 gem 'jbuilder', '~> 1.2'
 
 # GitHub oAuth is used for login, and omniauth is used with devise
-# TODO: use release version of devise when it supports rails 4
-gem 'devise', github: 'plataformatec/devise', branch: 'rails4'
+gem 'devise', '~> 3.0.1'
 gem 'omniauth-github'
 
 # Manage environment variables related to this application

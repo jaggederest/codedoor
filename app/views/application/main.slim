@@ -1,5 +1,6 @@
 p
-  = link_to 'Sign in with GitHub', user_omniauth_authorize_path(:github)
+  a class="btn-auth btn-github" href="#{user_omniauth_authorize_path(:github)}"
+    | Log in with GitHub
 - if user_signed_in?
   p
     | Logged in

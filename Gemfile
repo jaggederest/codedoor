@@ -7,7 +7,7 @@ gem 'rails', '4.0.0'
 gem 'sqlite3'
 
 # Use CanCan for authorization
-gem 'cancan'
+gem 'cancan', '~> 1.6.10'
 
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 4.0.0'
@@ -16,7 +16,7 @@ gem 'compass-rails', '~> 2.0.alpha.0'
 gem 'bootstrap-sass', '~> 2.3.2.1'
 
 # Use slim for templating
-gem 'slim-rails'
+gem 'slim', '~> 2.0.1'
 
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'

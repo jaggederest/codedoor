@@ -104,7 +104,7 @@ describe ProgrammersController do
       invalid_programmer[:rate] = 10000000
       post :create, programmer: invalid_programmer
       expect(response).to render_template('new')
-      expect(assigns(:programmer).errors[:rate]).to eq(['must be less than or equal to 500'])
+      expect(assigns(:programmer).errors[:rate]).to eq(['must be less than or equal to 1000'])
     end
 
     it 'should redirect to show and create the programmer' do
@@ -183,7 +183,7 @@ describe ProgrammersController do
       invalid_programmer[:rate] = 1000000
       post :update, id: @programmer.id, programmer: invalid_programmer
       expect(response).to render_template('edit')
-      expect(assigns(:programmer).errors[:rate]).to eq(['must be less than or equal to 500'])
+      expect(assigns(:programmer).errors[:rate]).to eq(['must be less than or equal to 1000'])
       # The rate in @programmer should be 1000000, because the user will see the input they typed in.
       expect(assigns(:programmer).rate).to eq(1000000)
       expect(@programmer.reload.rate).to eq(20)

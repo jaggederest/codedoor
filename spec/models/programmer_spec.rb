@@ -7,12 +7,12 @@ describe Programmer do
 
     it { should ensure_length_of(:title).is_at_least(5).is_at_most(80) }
 
-    it 'should allow integer rates between 20 and 500' do
+    it 'should allow integer rates between 20 and 1000' do
       FactoryGirl.build(:programmer, rate: 20).should be_valid
-      FactoryGirl.build(:programmer, rate: 500).should be_valid
+      FactoryGirl.build(:programmer, rate: 1000).should be_valid
 
       FactoryGirl.build(:programmer, rate: 19).should_not be_valid
-      FactoryGirl.build(:programmer, rate: 501).should_not be_valid
+      FactoryGirl.build(:programmer, rate: 1001).should_not be_valid
       FactoryGirl.build(:programmer, rate: 20.5).should_not be_valid
       FactoryGirl.build(:programmer, rate: nil).should_not be_valid
     end

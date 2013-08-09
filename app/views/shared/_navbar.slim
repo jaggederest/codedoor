@@ -1,4 +1,5 @@
 div class="navbar"
   div class="navbar-inner"
-    a class="btn-auth btn-github pull-right" href="#{user_omniauth_authorize_path(:github)}"
-      | Log in with GitHub
+    - unless user_signed_in?
+      a class="btn-auth btn-github pull-right" href="#{user_omniauth_authorize_path(:github)}"
+        | Log in with GitHub

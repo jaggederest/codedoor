@@ -6,6 +6,6 @@ html
     = javascript_include_tag 'application', 'data-turbolinks-track' => true
     = csrf_meta_tags
   body
-    - # TODO: At a minimum, flash messages should be below the navbar.
+    = render partial: 'shared/navbar'
     = render partial: 'shared/flash_messages'
     = yield

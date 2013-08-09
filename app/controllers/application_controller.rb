@@ -14,11 +14,11 @@ class ApplicationController < ActionController::Base
   end
 
   def main
+    render('loggedout') unless current_user.present?
   end
 
-  # TODO: change what happens when someone tries to do something where permission is denied
   rescue_from CanCan::AccessDenied do |exception|
-    redirect_to root_url, alert: 'Permission Denied.'
+    redirect_to root_url, alert: 'Information cannot be found.'
   end
 
   rescue_from ActiveRecord::RecordNotFound do |exception|

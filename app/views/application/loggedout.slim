@@ -1,0 +1,17 @@
+= render partial: 'shared/navbar'
+.splashlogo
+  h1
+    | CodeDoor
+  | Hire Coders that Contribute
+
+.introbox_container
+  span class="introbox pull-right"
+    h2
+      | Programmers
+    | Work for clients that appreciate top developers that contribute to open source.  Daily billing.
+    a class="btn-auth btn-github" href="#{user_omniauth_authorize_path(:github)}"
+      | Sign up with GitHub
+  span class="introbox pull-left"
+    h2
+      | Clients
+    | Find programmers that have contributed to meaningful open source projects, and see their code samples.

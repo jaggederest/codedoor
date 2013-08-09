@@ -64,7 +64,7 @@ describe ProgrammersController do
       sign_out(@user)
       get :new
       response.should redirect_to(root_path)
-      expect(flash[:alert]).to eq('Permission Denied.')
+      expect(flash[:alert]).to eq('Information cannot be found.')
     end
 
     it 'assigns @programmer to a new object where the user_id is that of the user, and renders template' do
@@ -87,7 +87,7 @@ describe ProgrammersController do
       sign_out(@user)
       post :create, programmer: valid_programmer(@user.id)
       response.should redirect_to(root_path)
-      expect(flash[:alert]).to eq('Permission Denied.')
+      expect(flash[:alert]).to eq('Information cannot be found.')
     end
 
     it 'should not be allowed if the user_id does not match the id of the user' do
@@ -95,7 +95,7 @@ describe ProgrammersController do
       other_user = FactoryGirl.create(:user)
       post :create, programmer: valid_programmer(other_user.id)
       response.should redirect_to(root_path)
-      expect(flash[:alert]).to eq('Permission Denied.')
+      expect(flash[:alert]).to eq('Information cannot be found.')
       assert_nil Programmer.find_by_user_id(@user.id)
     end
 
@@ -122,14 +122,14 @@ describe ProgrammersController do
       programmer = FactoryGirl.create(:programmer)
       get :edit, id: programmer.id
       response.should redirect_to(root_path)
-      expect(flash[:alert]).to eq('Permission Denied.')
+      expect(flash[:alert]).to eq('Information cannot be found.')
     end
 
     it 'should not be allowed when user has no programmer' do
       programmer = FactoryGirl.create(:programmer)
       get :edit, id: programmer.id
       response.should redirect_to(root_path)
-      expect(flash[:alert]).to eq('Permission Denied.')
+      expect(flash[:alert]).to eq('Information cannot be found.')
     end
 
     it 'should not be allowed when the programmer id is different from that of the user' do
@@ -137,7 +137,7 @@ describe ProgrammersController do
       other_programmer = FactoryGirl.create(:programmer)
       get :edit, id: other_programmer.id
       response.should redirect_to(root_path)
-      expect(flash[:alert]).to eq('Permission Denied.')
+      expect(flash[:alert]).to eq('Information cannot be found.')
     end
 
     it 'should assign @programmer and render view when programmer id is correct' do
@@ -157,14 +157,14 @@ describe ProgrammersController do
       sign_out(@user)
       post :update, id: @programmer.id, programmer: valid_programmer(@user.id)
       response.should redirect_to(root_path)
-      expect(flash[:alert]).to eq('Permission Denied.')
+      expect(flash[:alert]).to eq('Information cannot be found.')
     end
 
     it 'should not be allowed if id refers to a programmer not associated with the user' do
       other_programmer = FactoryGirl.create(:programmer)
       post :update, id: other_programmer.id, programmer: valid_programmer(other_programmer.user_id)
       response.should redirect_to(root_path)
-      expect(flash[:alert]).to eq('Permission Denied.')
+      expect(flash[:alert]).to eq('Information cannot be found.')
       expect(Programmer.find_by_user_id(@user.id)).to eq(@programmer)
     end
 

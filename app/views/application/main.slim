@@ -1,19 +1,11 @@
+| Logged in
 p
-  a class="btn-auth btn-github" href="#{user_omniauth_authorize_path(:github)}"
-    | Log in with GitHub
-- if user_signed_in?
-  p
-    | Logged in
-  p
-    = current_user.full_name
-  p
+   = current_user.full_name
+p
   = link_to('View programmers', programmers_path)
   - if current_user.programmer.present?
-     p
-       = link_to('View your information', programmer_path(current_user.programmer))
+    p
+      = link_to('View your information', programmer_path(current_user.programmer))
   - else
-     p
-       = link_to('Create programmer account', new_programmer_path)
-- else
-  p
-    | Logged out
+    p
+      = link_to('Create programmer account', new_programmer_path)

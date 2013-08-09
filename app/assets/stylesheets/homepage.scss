@@ -1,0 +1,29 @@
+.splashlogo {
+  font-size: 18px;
+  padding-top: 15px;
+  text-align: center;
+  h1 {
+    font-size: 48px;
+  }
+}
+
+.introbox_container {
+  margin: auto;
+  margin-top: 70px;
+  width: 700px;
+}
+
+.introbox {
+  background-color: #C9D6C2;
+  border-radius: 10px;
+  font-size: 19px;
+  padding: 20px;
+  width: 300px;
+  h2 {
+    text-align: center;
+  }
+  .btn-auth {
+    margin-top: 20px;
+    margin-left: 60px;
+  }
+}

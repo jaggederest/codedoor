@@ -8,4 +8,4 @@ p
       = link_to('View your information', programmer_path(current_user.programmer))
   - else
     p
-      = link_to('Create programmer account', new_programmer_path)
+      = link_to('Create programmer account', new_user_programmer_path(current_user))

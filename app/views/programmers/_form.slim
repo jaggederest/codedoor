@@ -1,4 +1,4 @@
-= form_for programmer, url: {action: action} do |f|
+= form_for [current_user, programmer], url: {action: action} do |f|
   = f.hidden_field :user_id
   p
     = render partial: 'shared/inline_error', locals: {model: programmer, attribute: :title}

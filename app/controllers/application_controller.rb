@@ -17,12 +17,16 @@ class ApplicationController < ActionController::Base
     render('loggedout') unless current_user.present?
   end
 
-  rescue_from CanCan::AccessDenied do |exception|
+  def redirect_cannot_be_found
     redirect_to root_url, alert: 'Information cannot be found.'
   end
 
+  rescue_from CanCan::AccessDenied do |exception|
+    redirect_cannot_be_found
+  end
+
   rescue_from ActiveRecord::RecordNotFound do |exception|
-    redirect_to root_url, alert: 'Information cannot be found.'
+    redirect_cannot_be_found
   end
 
 end

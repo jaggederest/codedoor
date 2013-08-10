@@ -62,13 +62,13 @@ describe ProgrammersController do
   describe 'GET new' do
     it 'should not be allowed when logged out' do
       sign_out(@user)
-      get :new
+      get :new, user_id: @user.id
       response.should redirect_to(root_path)
       expect(flash[:alert]).to eq('Information cannot be found.')
     end
 
     it 'assigns @programmer to a new object where the user_id is that of the user, and renders template' do
-      get :new
+      get :new, user_id: @user.id
       expect(assigns(:programmer).new_record?).to be_true
       expect(assigns(:programmer).user_id).to eq(@user.id)
       expect(response).to render_template('new')
@@ -76,7 +76,7 @@ describe ProgrammersController do
 
     it 'should not be allowed when the user already has a user object' do
       FactoryGirl.create(:programmer, user: @user)
-      get :new
+      get :new, user_id: @user.id
       response.should redirect_to(root_path)
       expect(flash[:alert]).to eq('You are already a programmer.')
     end
@@ -85,7 +85,7 @@ describe ProgrammersController do
   describe 'POST create' do
     it 'should not be allowed when logged out' do
       sign_out(@user)
-      post :create, programmer: valid_programmer(@user.id)
+      post :create, user_id: @user.id, programmer: valid_programmer(@user.id)
       response.should redirect_to(root_path)
       expect(flash[:alert]).to eq('Information cannot be found.')
     end
@@ -93,7 +93,7 @@ describe ProgrammersController do
     it 'should not be allowed if the user_id does not match the id of the user' do
       assert_nil Programmer.find_by_user_id(@user.id)
       other_user = FactoryGirl.create(:user)
-      post :create, programmer: valid_programmer(other_user.id)
+      post :create, user_id: @user.id, programmer: valid_programmer(other_user.id)
       response.should redirect_to(root_path)
       expect(flash[:alert]).to eq('Information cannot be found.')
       assert_nil Programmer.find_by_user_id(@user.id)
@@ -102,14 +102,14 @@ describe ProgrammersController do
     it 'should fail if the parameters passed in are invalid' do
       invalid_programmer = valid_programmer(@user.id)
       invalid_programmer[:rate] = 10000000
-      post :create, programmer: invalid_programmer
+      post :create, user_id: @user.id, programmer: invalid_programmer
       expect(response).to render_template('new')
       expect(assigns(:programmer).errors[:rate]).to eq(['must be less than or equal to 1000'])
     end
 
     it 'should redirect to show and create the programmer' do
       assert_nil Programmer.find_by_user_id(@user.id)
-      post :create, programmer: valid_programmer(@user.id)
+      post :create, user_id: @user.id, programmer: valid_programmer(@user.id)
       programmer = Programmer.find_by_user_id(@user.id)
       response.should redirect_to(programmer_path(programmer))
       expect(programmer.user_id).to eq(@user.id)
@@ -120,14 +120,14 @@ describe ProgrammersController do
     it 'should not be allowed when logged out' do
       sign_out(@user)
       programmer = FactoryGirl.create(:programmer)
-      get :edit, id: programmer.id
+      get :edit, user_id: @user.id, id: programmer.id
       response.should redirect_to(root_path)
       expect(flash[:alert]).to eq('Information cannot be found.')
     end
 
     it 'should not be allowed when user has no programmer' do
       programmer = FactoryGirl.create(:programmer)
-      get :edit, id: programmer.id
+      get :edit, user_id: @user.id, id: programmer.id
       response.should redirect_to(root_path)
       expect(flash[:alert]).to eq('Information cannot be found.')
     end
@@ -135,14 +135,14 @@ describe ProgrammersController do
     it 'should not be allowed when the programmer id is different from that of the user' do
       programmer = FactoryGirl.create(:programmer, user: @user)
       other_programmer = FactoryGirl.create(:programmer)
-      get :edit, id: other_programmer.id
+      get :edit, user_id: @user.id, id: other_programmer.id
       response.should redirect_to(root_path)
       expect(flash[:alert]).to eq('Information cannot be found.')
     end
 
     it 'should assign @programmer and render view when programmer id is correct' do
       programmer = FactoryGirl.create(:programmer, user: @user)
-      get :edit, id: programmer.id
+      get :edit, user_id: @user.id, id: programmer.id
       expect(assigns(:programmer)).to eq(programmer)
       expect(response).to render_template('edit')
     end
@@ -155,14 +155,14 @@ describe ProgrammersController do
 
     it 'should not be allowed when logged out' do
       sign_out(@user)
-      post :update, id: @programmer.id, programmer: valid_programmer(@user.id)
+      post :update, user_id: @user.id, id: @programmer.id, programmer: valid_programmer(@user.id)
       response.should redirect_to(root_path)
       expect(flash[:alert]).to eq('Information cannot be found.')
     end
 
     it 'should not be allowed if id refers to a programmer not associated with the user' do
       other_programmer = FactoryGirl.create(:programmer)
-      post :update, id: other_programmer.id, programmer: valid_programmer(other_programmer.user_id)
+      post :update, user_id: @user.id, id: other_programmer.id, programmer: valid_programmer(other_programmer.user_id)
       response.should redirect_to(root_path)
       expect(flash[:alert]).to eq('Information cannot be found.')
       expect(Programmer.find_by_user_id(@user.id)).to eq(@programmer)
@@ -171,7 +171,7 @@ describe ProgrammersController do
     it 'should ignore the user_id parameter, redirect to show and update the programmer' do
       programmer_params = valid_programmer('user-id-ignored')
       programmer_params[:rate] = 500
-      post :update, id: @programmer.id, programmer: programmer_params
+      post :update, user_id: @user.id, id: @programmer.id, programmer: programmer_params
       programmer = Programmer.find_by_user_id(@user.id)
       response.should redirect_to(programmer_path(programmer))
       expect(programmer.user_id).to eq(@user.id)
@@ -181,7 +181,7 @@ describe ProgrammersController do
     it 'should fail if the parameters passed in are invalid' do
       invalid_programmer = valid_programmer(@user.id)
       invalid_programmer[:rate] = 1000000
-      post :update, id: @programmer.id, programmer: invalid_programmer
+      post :update, user_id: @user.id, id: @programmer.id, programmer: invalid_programmer
       expect(response).to render_template('edit')
       expect(assigns(:programmer).errors[:rate]).to eq(['must be less than or equal to 1000'])
       # The rate in @programmer should be 1000000, because the user will see the input they typed in.

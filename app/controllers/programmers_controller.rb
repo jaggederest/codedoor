@@ -1,5 +1,4 @@
 class ProgrammersController < ApplicationController
-  # NOTE: A programmer model must belong to a user, and a user model has at most one programmer model.
   load_and_authorize_resource
 
   def index
@@ -33,10 +32,10 @@ class ProgrammersController < ApplicationController
   end
 
   def update
-    @programmer = Programmer.find(params[:id])
+    @programmer = Programmer.find(current_user.programmer.id)
     if @programmer.update(update_programmer_params)
       flash[:notice] = 'Your profile has been updated.'
-      redirect_to programmer_path(params[:id])
+      redirect_to programmer_path(@programmer)
     else
       render :edit
     end
@@ -45,6 +44,9 @@ class ProgrammersController < ApplicationController
   private
 
   def programmer_params
+    unless params[:user_id].blank?
+      params[:user_id] = current_user.present? ? current_user.id : nil
+    end
     params.require(:programmer).permit(:user_id, :title, :description, :rate, :time_status, :client_can_visit, :onsite_status, :contract_to_hire)
   end
 

@@ -5,6 +5,19 @@ describe User do
     it { should validate_presence_of(:full_name) }
     it { should validate_presence_of(:email) }
     it { should validate_uniqueness_of(:email) }
+
+    it 'should require that the Terms of Use are checked on update' do
+      user = FactoryGirl.create(:user)
+      user.full_name = 'Changing name'
+      user.valid?.should be_false
+      user.checked_terms = true
+      user.valid?.should be_true
+    end
+
+    it 'should not require that the Terms of Use are checked to be created' do
+      user = User.new(full_name: 'Test User Creation', email: 'user@creation.com', password: 'usercreation')
+      user.save.should be_true
+    end
   end
 
   context 'associations' do

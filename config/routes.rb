@@ -5,7 +5,7 @@ Codedoor::Application.routes.draw do
 
   resources :programmers, only: [:index, :show]
 
-  resources :users, only: [] do
+  resources :users, only: [:edit, :update] do
     resource :programmer, only: [:new, :create, :edit, :update]
   end
 

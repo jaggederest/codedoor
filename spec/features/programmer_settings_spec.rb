@@ -3,7 +3,10 @@ require 'spec_helper'
 feature 'Logging in' do
   scenario 'programmer sign up and editing' do
     github_login
-    click_link 'Create programmer account'
+    click_link 'Edit user account'
+    check('user_checked_terms')
+    click_button 'Create Programmer Account'
+
     fill_in 'Title', with: 'Test Title'
     fill_in 'Description', with: 'Test Description'
     fill_in 'Rate', with: 100

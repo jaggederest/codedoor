@@ -1,6 +1,8 @@
 class ProgrammersController < ApplicationController
   load_and_authorize_resource
 
+  before_filter :ensure_terms_checked, except: [:index, :show]
+
   def index
     @programmers = Programmer.all
   end
@@ -44,15 +46,17 @@ class ProgrammersController < ApplicationController
   private
 
   def programmer_params
-    unless params[:user_id].blank?
-      params[:user_id] = current_user.present? ? current_user.id : nil
-    end
+    params[:user_id] = current_user.id if params[:user_id].present? && current_user.present?
     params.require(:programmer).permit(:user_id, :title, :description, :rate, :time_status, :client_can_visit, :onsite_status, :contract_to_hire)
   end
 
   # NOTE: user_id is immutable
   def update_programmer_params
     params.require(:programmer).permit(:title, :description, :rate, :time_status, :client_can_visit, :onsite_status, :contract_to_hire)
+  end
+
+  def ensure_terms_checked
+    redirect_cannot_be_found unless current_user.present? && current_user.checked_terms?
   end
 
 end

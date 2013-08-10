@@ -1,3 +1,6 @@
 - if model.errors.has_key?(attribute)
   span
-    = "#{attribute.to_s.titleize} #{model.errors[attribute].join(', ')}"
+    - # TODO: Create better way to aggregate error messages (custom_error_messages does not lend itself to inline errors)
+    - full_messages = model.errors.messages[attribute].select{|m| m.first == '^'}.map{|m| m[1..-1]}
+    - other_messages = model.errors.messages[attribute].reject{|m| m.first == '^'}
+    = "#{full_messages.join(' ')} #{other_messages.join(', ')}"

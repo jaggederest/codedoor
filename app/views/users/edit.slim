@@ -1,0 +1,17 @@
+= form_for [current_user], url: {action: :update} do |f|
+  p
+    = render partial: 'shared/inline_error', locals: {model: current_user, attribute: :full_name}
+    = f.label :full_name
+    = f.text_field :full_name
+  p
+    = render partial: 'shared/inline_error', locals: {model: current_user, attribute: :email}
+    = f.label :email
+    = f.text_field :email
+  p
+    | TODO Add country and zip code for Americans
+  - unless current_user.checked_terms_was
+    p
+      = render partial: 'shared/inline_error', locals: {model: current_user, attribute: :checked_terms}
+      = f.check_box :checked_terms
+      = f.label :checked_terms, 'By checking this box, I agree to abide by CodeDoor\'s Terms of Use.'
+  = f.submit 'Create Programmer Account'

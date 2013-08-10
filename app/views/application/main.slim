@@ -3,9 +3,11 @@ p
    = current_user.full_name
 p
   = link_to('View programmers', programmers_path)
+p
+  = link_to('Edit user account', edit_user_path(current_user))
   - if current_user.programmer.present?
     p
       = link_to('View your information', programmer_path(current_user.programmer))
-  - else
+  - elsif current_user.checked_terms?
     p
       = link_to('Create programmer account', new_user_programmer_path(current_user))

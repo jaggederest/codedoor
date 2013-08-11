@@ -14,4 +14,4 @@
       = render partial: 'shared/inline_error', locals: {model: current_user, attribute: :checked_terms}
       = f.check_box :checked_terms
       = f.label :checked_terms, 'By checking this box, I agree to abide by CodeDoor\'s Terms of Use.'
-  = f.submit 'Create Programmer Account'
+  = f.submit current_user.programmer.present? ? 'Edit Info' : 'Create Programmer Account'

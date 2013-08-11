@@ -22,4 +22,6 @@ p
 
 - if @programmer.user == current_user
   p
+    = link_to('Edit Basic Info', edit_user_path(current_user))
+  p
     = link_to('Edit Info', edit_user_programmer_path(current_user))

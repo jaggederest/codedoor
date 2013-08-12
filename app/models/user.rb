@@ -7,7 +7,7 @@ class User < ActiveRecord::Base
   has_one  :programmer
 
   validates :full_name, presence: true
-  validates :email, presence: true, uniqueness: true
+  validates :email, uniqueness: true
   validates :checked_terms, inclusion: { in: [true], on: :update, message: '^The Terms of Use must be accepted.' }
 
   def self.find_for_github_oauth(auth, signed_in_resource=nil)

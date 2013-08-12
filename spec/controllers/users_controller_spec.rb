@@ -7,34 +7,52 @@ describe UsersController do
   end
 
   describe 'GET edit' do
-    it 'should not be allowed when logged out' do
-      pending('must implement')
-    end
-
-    it 'should not be allowed when Terms of Use are not checked' do
-      pending('must implement')
-    end
-
     it 'should render view when logged in' do
-      pending('must implement')
+      get :edit, id: @user.id
+      expect(response).to render_template('edit')
+    end
+
+    it 'should fail if the id is not the id of the user' do
+      other_user = FactoryGirl.create(:user)
+      get :edit, id: other_user.id
+      response.should redirect_to(root_path)
+      expect(flash[:alert]).to eq('Information cannot be found.')
+    end
+
+    it 'should not be allowed when logged out' do
+      sign_out(@user)
+      get :edit, id: @user.id
+      response.should redirect_to(root_path)
+      expect(flash[:alert]).to eq('Information cannot be found.')
     end
   end
 
   describe 'POST update' do
     it 'should pass with correct inputs, redirect to programmer page' do
-      pending('must implement')
+      post :update, id: @user.id, user: {full_name: 'New Name', email: 'newemail@example.com', checked_terms: '1'}
+      response.should redirect_to(new_user_programmer_path(@user))
+      @user.reload
+      expect(@user.full_name).to eq('New Name')
+      expect(@user.email).to eq('newemail@example.com')
     end
 
     it 'should not be allowed when logged out' do
-      pending('must implement')
+      sign_out(@user)
+      post :update, id: @user.id, user: {full_name: 'New Name', email: 'newemail@example.com', checked_terms: '1'}
+      response.should redirect_to(root_path)
+      expect(flash[:alert]).to eq('Information cannot be found.')
     end
 
     it 'should fail if the Terms of Use are not checked' do
-      pending('must implement')
+      post :update, id: @user.id, user: {full_name: 'New Name', email: 'newemail@example.com'}
+      expect(response).to render_template('edit')
+      expect(assigns(:current_user).errors[:checked_terms]).to eq(['^The Terms of Use must be accepted.'])
     end
 
     it 'should fail if the parameters passed in are invalid' do
-      pending('must implement')
+      post :update, id: @user.id, user: {full_name: 'New Name', email: '', checked_terms: '1'}
+      expect(response).to render_template('edit')
+      expect(assigns(:current_user).errors[:email]).to eq(['can\'t be blank'])
     end
 
   end

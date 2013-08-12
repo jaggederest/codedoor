@@ -8,7 +8,7 @@
     = f.label :email
     = f.text_field :email
   p
-    | TODO Add country and zip code for Americans
+    = f.select(:country, Countries.supported_by_paypal)
   - unless current_user.checked_terms_was
     p
       = render partial: 'shared/inline_error', locals: {model: current_user, attribute: :checked_terms}

@@ -1,6 +1,10 @@
 - if flash[:alert]
-  p class='flash alert'
+  p class='alert alert-failure'
+    button type="button" class="close" data-dismiss="alert"
+      | &times;
     = flash[:alert]
 - if flash[:notice]
-  p class='flash notice'
+  p class='alert'
+    button type="button" class="close" data-dismiss="alert"
+      | &times;
     = flash[:notice]

@@ -1,17 +1,39 @@
-= form_for [current_user], url: {action: :update} do |f|
+- checked_terms = current_user.checked_terms_was
+.span3
   p
-    = render partial: 'shared/inline_error', locals: {model: current_user, attribute: :full_name}
-    = f.label :full_name
-    = f.text_field :full_name
-  p
-    = render partial: 'shared/inline_error', locals: {model: current_user, attribute: :email}
-    = f.label :email
-    = f.text_field :email
-  p
-    = f.select(:country, Countries.supported_by_paypal)
-  - unless current_user.checked_terms_was
-    p
-      = render partial: 'shared/inline_error', locals: {model: current_user, attribute: :checked_terms}
-      = f.check_box :checked_terms
-      = f.label :checked_terms, 'By checking this box, I agree to abide by CodeDoor\'s Terms of Use.'
-  = f.submit current_user.programmer.present? ? 'Edit Info' : 'Create Programmer Account'
+    | Basic Info
+.span9
+  h2.span8.settings-header
+    = checked_terms ? 'Basic Info' : 'Registration'
+  = form_for [current_user], url: {action: :update}, html: {class: 'form-horizontal'} do |f|
+    .control-group class="#{model_attribute_class(current_user, :full_name)}"
+      .control-label
+        = f.label :full_name
+      .controls
+        = f.text_field :full_name, placeholder: 'Your Name'
+        span.help-inline
+          = model_error_message(current_user, :full_name)
+    .control-group class="#{model_attribute_class(current_user, :email)}"
+      .control-label
+        = f.label :email
+      .controls
+        = f.text_field :email, placeholder: 'Email'
+        span.help-inline
+          = model_error_message(current_user, :email)
+    .control-group class="#{model_attribute_class(current_user, :country)}"
+      .control-label
+        = f.label :country
+      .controls
+        = f.select(:country, Countries.supported_by_paypal, include_blank: true)
+        span.help-inline
+          = model_error_message(current_user, :country)
+    - unless checked_terms
+      .control-group class="#{model_attribute_class(current_user, :checked_terms)}"
+        .controls
+          = render partial: 'shared/attribute_error_non_inline', locals: {model: current_user, attribute: :checked_terms}
+          label class='checkbox'
+            = f.check_box :checked_terms
+            | By checking this box, I agree to abide by CodeDoor's Terms of Use.
+    .control-group
+      .controls
+        = f.submit current_user.programmer.present? ? 'Edit Info' : 'Create Programmer Account'

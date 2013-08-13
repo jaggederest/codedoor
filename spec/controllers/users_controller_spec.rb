@@ -29,7 +29,7 @@ describe UsersController do
 
   describe 'POST update' do
     it 'should pass with correct inputs, redirect to programmer page' do
-      post :update, id: @user.id, user: {full_name: 'New Name', email: 'newemail@example.com', checked_terms: '1'}
+      post :update, id: @user.id, user: {full_name: 'New Name', email: 'newemail@example.com', checked_terms: '1', country: 'US'}
       response.should redirect_to(new_user_programmer_path(@user))
       @user.reload
       expect(@user.full_name).to eq('New Name')
@@ -38,19 +38,19 @@ describe UsersController do
 
     it 'should not be allowed when logged out' do
       sign_out(@user)
-      post :update, id: @user.id, user: {full_name: 'New Name', email: 'newemail@example.com', checked_terms: '1'}
+      post :update, id: @user.id, user: {full_name: 'New Name', email: 'newemail@example.com', checked_terms: '1', country: 'US'}
       response.should redirect_to(root_path)
       expect(flash[:alert]).to eq('Information cannot be found.')
     end
 
     it 'should fail if the Terms of Use are not checked' do
-      post :update, id: @user.id, user: {full_name: 'New Name', email: 'newemail@example.com'}
+      post :update, id: @user.id, user: {full_name: 'New Name', email: 'newemail@example.com', country: 'US'}
       expect(response).to render_template('edit')
       expect(assigns(:current_user).errors[:checked_terms]).to eq(['^The Terms of Use must be accepted.'])
     end
 
     it 'should fail if the parameters passed in are invalid' do
-      post :update, id: @user.id, user: {full_name: 'New Name', email: '', checked_terms: '1'}
+      post :update, id: @user.id, user: {full_name: 'New Name', email: '', checked_terms: '1', country: 'US'}
       expect(response).to render_template('edit')
       expect(assigns(:current_user).errors[:email]).to eq(['can\'t be blank'])
     end

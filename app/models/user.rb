@@ -6,6 +6,7 @@ class User < ActiveRecord::Base
   has_many :user_accounts
   has_one  :programmer
 
+  validates :country, presence: true, if: Proc.new{|user| user.checked_terms?}
   validates :full_name, presence: true
   validates :email, uniqueness: true
   validates :checked_terms, inclusion: { in: [true], on: :update, message: '^The Terms of Use must be accepted.' }

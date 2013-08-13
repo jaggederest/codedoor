@@ -86,12 +86,14 @@ describe Programmer do
     it 'should return correct status descriptions for each status type' do
       expect(Programmer.onsite_status_description(:onsite)).to eq('Work can be done at a client\'s office if it is nearby.')
       expect(Programmer.onsite_status_description(:occasional)).to eq('Work can occasionally be done at a client\'s office if it is nearby.')
+      expect(Programmer.onsite_status_description(:visits_allowed)).to eq('Clients can visit the programmer\'s office if they wish.')
       expect(Programmer.onsite_status_description(:offsite)).to eq('All work is to be done remotely.')
     end
 
     it 'should work for strings as well as symbols' do
       expect(Programmer.onsite_status_description('onsite')).to eq('Work can be done at a client\'s office if it is nearby.')
       expect(Programmer.onsite_status_description('occasional')).to eq('Work can occasionally be done at a client\'s office if it is nearby.')
+      expect(Programmer.onsite_status_description('visits_allowed')).to eq('Clients can visit the programmer\'s office if they wish.')
       expect(Programmer.onsite_status_description('offsite')).to eq('All work is to be done remotely.')
     end
 

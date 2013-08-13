@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130812151242) do
+ActiveRecord::Schema.define(version: 20130813104428) do
 
   create_table "programmers", force: true do |t|
     t.integer  "user_id"
@@ -19,7 +19,6 @@ ActiveRecord::Schema.define(version: 20130812151242) do
     t.text     "description"
     t.integer  "rate"
     t.string   "time_status"
-    t.boolean  "client_can_visit"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "onsite_status"

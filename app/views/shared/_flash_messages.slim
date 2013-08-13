@@ -1,8 +1,6 @@
-- if !@flash_messages_rendered
-  - if flash[:alert]
-    p class='alert'
-      = flash[:alert]
-  - if flash[:notice]
-    p class='notice'
-      = flash[:notice]
-  - @flash_messages_rendered = true
+- if flash[:alert]
+  p class='flash alert'
+    = flash[:alert]
+- if flash[:notice]
+  p class='flash notice'
+    = flash[:notice]

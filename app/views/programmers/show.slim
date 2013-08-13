@@ -13,9 +13,6 @@ p
   = @programmer.time_status.titleize
 p
   = Programmer.onsite_status_description(@programmer.onsite_status)
-- if @programmer.client_can_visit?
-  p
-    | Clients can visit the programmer's office.
 - if @programmer.contract_to_hire?
   p
     | Clients may offer contract to hire positions.

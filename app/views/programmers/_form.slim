@@ -1,45 +1,74 @@
-= form_for [current_user, programmer], url: {action: action} do |f|
-  = f.hidden_field :user_id
-  p
-    = render partial: 'shared/inline_error', locals: {model: programmer, attribute: :title}
-    = f.label :title
-    = f.text_field :title
-  p
-    = render partial: 'shared/inline_error', locals: {model: programmer, attribute: :description}
-    = f.label :description
-    = f.text_area :description
-  p
-    = render partial: 'shared/inline_error', locals: {model: programmer, attribute: :rate}
+.span3
+.span9
+  h2.span8.settings-header
+    | Programmer Info
+  = form_for [current_user, programmer], url: {action: action}, html: {class: 'form-horizontal'}  do |f|
+    = f.hidden_field :user_id
+    .control-group class="#{model_attribute_class(programmer, :title)}"
+      .control-label
+        = f.label :title
+      .controls
+        = f.text_field :title, placeholder: 'Short Description'
+        span.help-inline
+          = model_error_message(programmer, :title)
+
+    .control-group class="#{model_attribute_class(programmer, :description)}"
+      .control-label
+        = f.label :description
+      .controls
+        = f.text_area :description, placeholder: 'Describe why you a great hire.', class: 'span6', cols: '5'
+        span.help-inline
+          = model_error_message(programmer, :description)
+
     - # TODO: add javascript to calculate per day for full-timers
-    = f.label :rate
-    = f.text_field :rate
-  p
-    = render partial: 'shared/inline_error', locals: {model: programmer, attribute: :time_status}
-    | I can work
-    = f.radio_button :time_status, :'full-time'
-    = f.label :'time_status_full-time', 'full-time'
-    = f.radio_button :time_status, :'part-time'
-    = f.label :'time_status_part-time', 'part-time'
-  p
-    = render partial: 'shared/inline_error', locals: {model: programmer, attribute: :onsite_status}
-    | What is your policy about working at a client's office?
-    br
-      = f.radio_button :onsite_status, :onsite
-      = f.label :onsite_status_onsite, Programmer.onsite_status_description(:onsite)
-    br
-      = f.radio_button :onsite_status, :occasional
-      = f.label :onsite_status_occasional, Programmer.onsite_status_description(:occasional)
-    br
-      = f.radio_button :onsite_status, :offsite
-      = f.label :onsite_status_offsite, Programmer.onsite_status_description(:offsite)
+    .control-group class="#{model_attribute_class(programmer, :rate)}"
+      .control-label
+        = f.label :rate
+      .controls
+        = f.text_field :rate, placeholder: 'Short Description'
+        span.help-inline
+          = model_error_message(programmer, :rate)
 
-  p
-    = render partial: 'shared/inline_error', locals: {model: programmer, attribute: :client_can_visit}
-    = f.check_box :client_can_visit
-    = f.label :client_can_visit, 'Clients can visit my office if they wish.'
-  p
-    = render partial: 'shared/inline_error', locals: {model: programmer, attribute: :contract_to_hire}
-    = f.check_box :contract_to_hire
-    = f.label :contract_to_hire, 'I will consider contract to hire positions.'
+    .control-group class="#{model_attribute_class(programmer, :time_status)}"
+      .control-label
+        = f.label :work_status
+      .controls
+        - if model_has_error?(programmer, :time_status)
+          .help-inline.but-help-is-not-inline
+            = model_error_message(programmer, :time_status)
+        label class='radio'
+          = f.radio_button :time_status, :'full-time'
+          | Full-time
+        label class='radio'
+          = f.radio_button :time_status, :'part-time'
+          | Part-time
 
-  = f.submit (action == :update ? 'Edit Info' : 'Add Info')
+    .control-group class="#{model_attribute_class(programmer, :onsite_status)}"
+      .control-label
+        = f.label :onsite_status
+
+      .controls
+        = render partial: 'shared/attribute_error_non_inline', locals: {model: programmer, attribute: :onsite_status}
+        label class='radio'
+          = f.radio_button :onsite_status, :onsite
+          = Programmer.onsite_status_description(:onsite)
+        label class='radio'
+          = f.radio_button :onsite_status, :occasional
+          = Programmer.onsite_status_description(:occasional)
+        label class='radio'
+          = f.radio_button :onsite_status, :visits_allowed
+          = Programmer.onsite_status_description(:visits_allowed)
+        label class='radio'
+          = f.radio_button :onsite_status, :offsite
+          = Programmer.onsite_status_description(:offsite)
+
+    .control-group class="#{model_attribute_class(current_user, :contract_to_hire)}"
+      .controls
+        = render partial: 'shared/attribute_error_non_inline', locals: {model: programmer, attribute: :contract_to_hire}
+        label class='checkbox'
+          = f.check_box :contract_to_hire
+          | I will consider contract to hire positions.
+
+    .control-group
+      .controls
+        = f.submit (action == :update ? 'Edit Info' : 'Add Info')

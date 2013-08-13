@@ -7,11 +7,18 @@ describe User do
     it { should validate_uniqueness_of(:email) }
 
     it 'should require that the Terms of Use are checked on update' do
-      user = FactoryGirl.create(:user)
+      user = FactoryGirl.create(:user, country: 'US')
       user.full_name = 'Changing name'
       user.valid?.should be_false
       user.checked_terms = true
       user.valid?.should be_true
+    end
+
+    it 'should require that a country is selected if the terms are checked' do
+      user = FactoryGirl.create(:user)
+      user.checked_terms = true
+      user.valid?
+      user.errors[:country].should eq(['can\'t be blank'])
     end
 
     it 'should not require that the Terms of Use are checked to be created' do

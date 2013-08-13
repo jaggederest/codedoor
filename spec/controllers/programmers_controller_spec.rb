@@ -8,13 +8,12 @@ describe ProgrammersController do
      description: 'description',
      rate: 50,
      time_status: 'full-time',
-     client_can_visit: true,
      onsite_status: 'occasional',
      contract_to_hire: true}
   end
 
   before :each do
-    @user = FactoryGirl.create(:user, checked_terms: true)
+    @user = FactoryGirl.create(:user, checked_terms: true, country: 'US')
     sign_in(@user)
   end
 

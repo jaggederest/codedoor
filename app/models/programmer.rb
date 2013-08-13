@@ -6,7 +6,7 @@ class Programmer < ActiveRecord::Base
   validates :title, length: { minimum: 5, maximum: 80 }
   validates :rate, numericality: { greater_than_or_equal_to: 20, less_than_or_equal_to: 1000, only_integer: true }
   validates :time_status, inclusion: { in: ['part-time', 'full-time'], message: 'must be selected' }
-  validates :onsite_status, inclusion: { in: ['offsite', 'occasional', 'onsite'], message: 'must be selected' }
+  validates :onsite_status, inclusion: { in: ['offsite', 'visits_allowed', 'occasional', 'onsite'], message: 'must be selected' }
 
   def daily_rate_to_programmer
     rate * 8
@@ -22,6 +22,8 @@ class Programmer < ActiveRecord::Base
       'Work can be done at a client\'s office if it is nearby.'
     when :occasional
       'Work can occasionally be done at a client\'s office if it is nearby.'
+    when :visits_allowed
+      'Clients can visit the programmer\'s office if they wish.'
     when :offsite
       'All work is to be done remotely.'
     else

@@ -1,7 +1,6 @@
 - checked_terms = current_user.checked_terms_was
 .span3
-  p
-    | Basic Info
+  = render partial: 'settings/sidebar', locals: {active: :basic}
 .span9
   h2.span8.settings-header
     = checked_terms ? 'Basic Info' : 'Registration'

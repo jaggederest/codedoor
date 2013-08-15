@@ -9,6 +9,7 @@ describe ProgrammersController do
      rate: 50,
      time_status: 'full-time',
      onsite_status: 'occasional',
+     visibility: 'public',
      contract_to_hire: true}
   end
 
@@ -95,6 +96,7 @@ describe ProgrammersController do
       post :create, user_id: @user.id, programmer: valid_programmer(@user.id)
       programmer = Programmer.find_by_user_id(@user.id)
       response.should redirect_to(programmer_path(programmer))
+      expect(flash[:notice]).to eq('Your programmer account has been created.')
       expect(programmer.user_id).to eq(@user.id)
     end
 
@@ -127,6 +129,7 @@ describe ProgrammersController do
       invalid_programmer[:rate] = 10000000
       post :create, user_id: @user.id, programmer: invalid_programmer
       expect(response).to render_template('new')
+      expect(flash[:alert]).to eq('Your programmer account could not be created.')
       expect(assigns(:programmer).errors[:rate]).to eq(['must be less than or equal to 1000'])
     end
   end
@@ -185,6 +188,7 @@ describe ProgrammersController do
       post :update, user_id: @user.id, id: @programmer.id, programmer: programmer_params
       programmer = Programmer.find_by_user_id(@user.id)
       response.should redirect_to(programmer_path(programmer))
+      expect(flash[:notice]).to eq('Your programmer account has been updated.')
       expect(programmer.user_id).to eq(@user.id)
       expect(programmer.rate).to eq(500)
     end
@@ -218,6 +222,7 @@ describe ProgrammersController do
       invalid_programmer[:rate] = 1000000
       post :update, user_id: @user.id, id: @programmer.id, programmer: invalid_programmer
       expect(response).to render_template('edit')
+      expect(flash[:alert]).to eq('Your programmer account could not be updated.')
       expect(assigns(:programmer).errors[:rate]).to eq(['must be less than or equal to 1000'])
       # The rate in @programmer should be 1000000, because the user will see the input they typed in.
       expect(assigns(:programmer).rate).to eq(1000000)

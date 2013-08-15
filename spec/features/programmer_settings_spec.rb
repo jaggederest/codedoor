@@ -16,7 +16,7 @@ feature 'Logging in' do
     choose('programmer_onsite_status_onsite')
     click_button 'Add Info'
 
-    expect(page).to have_content 'Your profile has been created.'
+    expect(page).to have_content 'Your programmer account has been created.'
     expect(page).to have_content 'Test User'
     expect(page).to have_content 'Test Title'
     expect(page).to have_content '$900 per day'
@@ -29,7 +29,7 @@ feature 'Logging in' do
 
     fill_in 'Rate', with: 50
     click_button 'Edit Info'
-    expect(page).to have_content 'Your profile has been updated.'
+    expect(page).to have_content 'Your programmer account has been updated.'
     expect(page).to have_content '$450 per day'
   end
 end

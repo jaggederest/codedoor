@@ -32,6 +32,7 @@ describe UsersController do
       post :update, id: @user.id, user: {full_name: 'New Name', email: 'newemail@example.com', checked_terms: '1', country: 'US'}
       response.should redirect_to(new_user_programmer_path(@user))
       @user.reload
+      expect(flash[:notice]).to eq('Your information has been updated.')
       expect(@user.full_name).to eq('New Name')
       expect(@user.email).to eq('newemail@example.com')
     end
@@ -46,12 +47,14 @@ describe UsersController do
     it 'should fail if the Terms of Use are not checked' do
       post :update, id: @user.id, user: {full_name: 'New Name', email: 'newemail@example.com', country: 'US'}
       expect(response).to render_template('edit')
+      expect(flash[:alert]).to eq('Your information could not be updated.')
       expect(assigns(:current_user).errors[:checked_terms]).to eq(['^The Terms of Use must be accepted.'])
     end
 
     it 'should fail if the parameters passed in are invalid' do
       post :update, id: @user.id, user: {full_name: 'New Name', email: '', checked_terms: '1', country: 'US'}
       expect(response).to render_template('edit')
+      expect(flash[:alert]).to eq('Your information could not be updated.')
       expect(assigns(:current_user).errors[:email]).to eq(['can\'t be blank'])
     end
 

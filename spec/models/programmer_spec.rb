@@ -7,6 +7,12 @@ describe Programmer do
 
     it { should ensure_length_of(:title).is_at_least(5).is_at_most(80) }
 
+    it { ensure_inclusion_only_of(Programmer, :visibility, ['public', 'codedoor', 'private']) }
+
+    it { ensure_inclusion_only_of(Programmer, :time_status, ['part-time', 'full-time']) }
+
+    it { ensure_inclusion_only_of(Programmer, :onsite_status, ['offsite', 'occasional', 'visits_allowed', 'onsite'])}
+
     it 'should allow integer rates between 20 and 1000' do
       FactoryGirl.build(:programmer, rate: 20).should be_valid
       FactoryGirl.build(:programmer, rate: 1000).should be_valid
@@ -17,22 +23,6 @@ describe Programmer do
       FactoryGirl.build(:programmer, rate: nil).should_not be_valid
     end
 
-    it 'should only allow time_status to be "part-time" or "full-time"' do
-      FactoryGirl.build(:programmer, time_status: 'part-time').should be_valid
-      FactoryGirl.build(:programmer, time_status: 'full-time').should be_valid
-
-      FactoryGirl.build(:programmer, time_status: nil).should_not be_valid
-      FactoryGirl.build(:programmer, time_status: 'full time').should_not be_valid
-    end
-
-    it 'should only allow onsite_status to be "offsite", "occasional", or "onsite"' do
-      FactoryGirl.build(:programmer, onsite_status: 'offsite').should be_valid
-      FactoryGirl.build(:programmer, onsite_status: 'occasional').should be_valid
-      FactoryGirl.build(:programmer, onsite_status: 'onsite').should be_valid
-
-      FactoryGirl.build(:programmer, onsite_status: nil).should_not be_valid
-      FactoryGirl.build(:programmer, onsite_status: 'on site').should_not be_valid
-    end
   end
 
   context 'associations' do

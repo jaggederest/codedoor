@@ -12,7 +12,7 @@ module ApplicationHelper
     return '' unless model_has_error?(model, attribute)
     full_messages = model.errors.messages[attribute].select{|m| m.first == '^'}.map{|m| m[1..-1]}
     other_messages = model.errors.messages[attribute].reject{|m| m.first == '^'}
-    other_messages_text = other_messages.empty? ? '' : "#{attribute.to_s.humanize} #{other_messages.join(', ')}."
+    other_messages_text = other_messages.empty? ? '' : "#{attribute.to_s.humanize} #{other_messages.to_sentence}."
     "#{full_messages.join(' ')} #{other_messages_text}"
   end
 end

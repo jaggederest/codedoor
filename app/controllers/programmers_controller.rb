@@ -16,15 +16,16 @@ class ProgrammersController < ApplicationController
       flash[:alert] = 'You are already a programmer.'
       redirect_to root_path
     end
-    @programmer = Programmer.new(user_id: current_user.id)
+    @programmer = Programmer.new(user_id: current_user.id, visibility: :public)
   end
 
   def create
     @programmer = Programmer.new(programmer_params)
     if @programmer.save
-      flash[:notice] = 'Your profile has been created.'
+      flash[:notice] = 'Your programmer account has been created.'
       redirect_to programmer_path(@programmer)
     else
+      flash[:alert] = 'Your programmer account could not be created.'
       render :new
     end
   end
@@ -36,9 +37,10 @@ class ProgrammersController < ApplicationController
   def update
     @programmer = Programmer.find(current_user.programmer.id)
     if @programmer.update(update_programmer_params)
-      flash[:notice] = 'Your profile has been updated.'
+      flash[:notice] = 'Your programmer account has been updated.'
       redirect_to programmer_path(@programmer)
     else
+      flash[:alert] = 'Your programmer account could not be updated.'
       render :edit
     end
   end
@@ -47,12 +49,12 @@ class ProgrammersController < ApplicationController
 
   def programmer_params
     params[:user_id] = current_user.id if params[:user_id].present? && current_user.present?
-    params.require(:programmer).permit(:user_id, :title, :description, :rate, :time_status, :client_can_visit, :onsite_status, :contract_to_hire)
+    params.require(:programmer).permit(:user_id, :title, :description, :rate, :time_status, :client_can_visit, :onsite_status, :contract_to_hire, :visibility)
   end
 
   # NOTE: user_id is immutable
   def update_programmer_params
-    params.require(:programmer).permit(:title, :description, :rate, :time_status, :client_can_visit, :onsite_status, :contract_to_hire)
+    params.require(:programmer).permit(:title, :description, :rate, :time_status, :client_can_visit, :onsite_status, :contract_to_hire, :visibility)
   end
 
   def ensure_terms_checked

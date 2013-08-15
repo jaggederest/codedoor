@@ -1,3 +1,8 @@
+- if programmer.private?
+  p class='alert'
+    button type="button" class="close" data-dismiss="alert"
+      | &times;
+    | Your programmer account is currently private.  Change your account visibility if you want clients to contact you.
 .span3
   = render partial: 'settings/sidebar', locals: {active: :programmer}
 .span9
@@ -24,7 +29,7 @@
     - # TODO: add javascript to calculate per day for full-timers
     .control-group class="#{model_attribute_class(programmer, :rate)}"
       .control-label
-        = f.label :rate
+        = f.label :rate, 'Rate (USD)'
       .controls
         = f.text_field :rate, placeholder: 'Short Description'
         span.help-inline
@@ -64,11 +69,30 @@
           = Programmer.onsite_status_description(:offsite)
 
     .control-group class="#{model_attribute_class(current_user, :contract_to_hire)}"
+      .control-label
+        = f.label :contract_to_hire
+
       .controls
         = render partial: 'shared/attribute_error_non_inline', locals: {model: programmer, attribute: :contract_to_hire}
         label class='checkbox'
           = f.check_box :contract_to_hire
           | I will consider contract to hire positions.
+
+    .control-group class="#{model_attribute_class(programmer, :visibility)}"
+      .control-label
+        = f.label :visibility
+
+      .controls
+        = render partial: 'shared/attribute_error_non_inline', locals: {model: programmer, attribute: :visibility}
+        label class='radio'
+          = f.radio_button :visibility, :public
+          | Public (Visible to search engines)
+        label class='radio'
+          = f.radio_button :visibility, :codedoor
+          | Visible to other CodeDoor users
+        label class='radio'
+          = f.radio_button :visibility, :disabled
+          | Private (Visible to only myself and clients I have engaged with)
 
     .control-group
       .controls

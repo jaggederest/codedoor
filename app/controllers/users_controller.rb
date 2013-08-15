@@ -9,6 +9,7 @@ class UsersController < ApplicationController
       flash[:notice] = 'Your information has been updated.'
       redirect_to current_user.programmer.present? ? edit_user_programmer_path(@user) : new_user_programmer_path(@user)
     else
+      flash[:alert] = 'Your information could not be updated.'
       render :edit
     end
   end

@@ -7,6 +7,7 @@ class Programmer < ActiveRecord::Base
   validates :rate, numericality: { greater_than_or_equal_to: 20, less_than_or_equal_to: 1000, only_integer: true }
   validates :time_status, inclusion: { in: ['part-time', 'full-time'], message: 'must be selected' }
   validates :onsite_status, inclusion: { in: ['offsite', 'visits_allowed', 'occasional', 'onsite'], message: 'must be selected' }
+  validates :visibility, inclusion: { in: ['public', 'codedoor', 'private'], message: 'must be selected' }
 
   def daily_rate_to_programmer
     rate * 8
@@ -29,6 +30,10 @@ class Programmer < ActiveRecord::Base
     else
       raise 'Invalid Onsite Status'
     end
+  end
+
+  def private?
+    self.visibility == 'private'
   end
 
 end

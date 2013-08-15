@@ -44,10 +44,19 @@ describe ProgrammersController do
       expect(response).to render_template('show')
     end
 
-    it 'still renders the show template logged out' do
+    it 'still renders the show template logged out if the programmer is public' do
       sign_out(@user)
+      @programmer.visibility = 'public'
+      @programmer.save!
       get :show, id: @programmer.id
       expect(response).to render_template('show')
+    end
+
+    it 'does not render the show template logged out if the programmer is not public' do
+      sign_out(@user)
+      get :show, id: @programmer.id
+      response.should redirect_to(root_path)
+      expect(flash[:alert]).to eq('Information cannot be found.')
     end
 
     it 'fails gracefully when the programmer id does not exist' do

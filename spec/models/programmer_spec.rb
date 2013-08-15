@@ -34,25 +34,29 @@ describe Programmer do
     let(:ability) { Ability.new(user) }
 
     it 'show allow a user to manage a programmer that belongs to the user' do
-      programmer = FactoryGirl.create(:programmer, user: user)
+      programmer = FactoryGirl.create(:programmer, user: user, visibility: 'private')
       ability.should be_able_to(:read, programmer)
       ability.should be_able_to(:create, programmer)
       ability.should be_able_to(:update, programmer)
       ability.should be_able_to(:destroy, programmer)
     end
 
-    it 'should only allow a user to read a programmer that belongs to someone else' do
-      programmer = FactoryGirl.create(:programmer, user: FactoryGirl.create(:user))
+    it 'should only allow a user to read a non-private programmer that belongs to someone else' do
+      programmer = FactoryGirl.create(:programmer, user: FactoryGirl.create(:user), visibility: 'codedoor')
+      private_programmer = FactoryGirl.create(:programmer, user: FactoryGirl.create(:user), visibility: 'private')
       ability.should be_able_to(:read, programmer)
+      ability.should_not be_able_to(:read, private_programmer)
       ability.should_not be_able_to(:create, programmer)
       ability.should_not be_able_to(:update, programmer)
       ability.should_not be_able_to(:destroy, programmer)
     end
 
-    it 'should only allow logged out users to view programmers' do
+    it 'should only allow logged out users to view public programmers' do
       ability = Ability.new(nil)
-      programmer = FactoryGirl.create(:programmer)
-      ability.should be_able_to(:read, programmer)
+      programmer = FactoryGirl.create(:programmer, visibility: 'codedoor')
+      public_programmer = FactoryGirl.create(:programmer, visibility: 'public')
+      ability.should be_able_to(:read, public_programmer)
+      ability.should_not be_able_to(:read, programmer)
       ability.should_not be_able_to(:create, programmer)
       ability.should_not be_able_to(:update, programmer)
       ability.should_not be_able_to(:destroy, programmer)

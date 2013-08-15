@@ -2,7 +2,7 @@
   p class='alert'
     button type="button" class="close" data-dismiss="alert"
       | &times;
-    | Your programmer account is currently private.  Change your account visibility if you want clients to contact you.
+    | Your account is currently private.  Change your account visibility if you want clients to contact you.
 .span3
   = render partial: 'settings/sidebar', locals: {active: :programmer}
 .span9
@@ -92,7 +92,7 @@
           | Visible to other CodeDoor users
         label class='radio'
           = f.radio_button :visibility, :disabled
-          | Private (Visible to only myself and clients I have engaged with)
+          | Private (Visible to only myself)
 
     .control-group
       .controls

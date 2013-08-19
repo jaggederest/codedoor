@@ -1,0 +1,19 @@
+- # TODO: Use JavaScript framework like Backbone, and not use DOM as data store
+javascript:
+  $('#hourly_rate_to_programmer').bind('blur', function() {
+    var rate = $('#hourly_rate_to_programmer').val();
+    var isInteger = parseInt(rate, '10').toString() == rate;
+    if (isInteger) {
+    $('#daily_rate_to_programmer').text(rate * 8);
+    $('#hourly_fee_to_codedoor').text((rate / 8.0).toFixed(2));
+    $('#daily_fee_to_codedoor').text(rate);
+    $('#hourly_rate_to_client').text((rate * 9.0 / 8.0).toFixed(2));
+    $('#daily_rate_to_client').text(rate * 9);
+    } else {
+      $('#daily_rate_to_programmer').text('');
+      $('#hourly_fee_to_codedoor').text('');
+      $('#daily_fee_to_codedoor').text('');
+      $('#hourly_rate_to_client').text('');
+      $('#daily_rate_to_client').text('');
+    }
+  });

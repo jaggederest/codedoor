@@ -39,28 +39,42 @@
         .span5
           .span2
             | $
-            = f.text_field(:rate, class: 'rate-field')
+            = f.text_field(:rate, class: 'rate-field', id: 'hourly_rate_to_programmer')
             | /hour
           .span2
             strong
-              = "$#{programmer.daily_rate_to_programmer}/day"
+              | $
+              span#daily_rate_to_programmer
+                = programmer.daily_rate_to_programmer
+              | /day
         .span5
           .span2
             | Plus CodeDoor Fee:
         .span5
           .span2
-            = "$#{programmer.hourly_fee_to_codedoor}/hour"
+            | $
+            span#hourly_fee_to_codedoor
+              = number_with_precision(programmer.hourly_fee_to_codedoor, precision: 2)
+            | /hour
           .span2
-            = "$#{programmer.daily_fee_to_codedoor}/day"
+            | $
+            span#daily_fee_to_codedoor
+              = programmer.daily_fee_to_codedoor
+            | /day
         .span5
           .span2
             | Charged to Client:
         .span5
           .span2
-            = "$#{programmer.hourly_rate_to_client}/hour"
+            | $
+            span#hourly_rate_to_client
+              = number_with_precision(programmer.hourly_rate_to_client, precision: 2)
+            | /hour
           .span2
-            = "$#{programmer.daily_rate_to_client}/day"
-
+            | $
+            span#daily_rate_to_client
+              = programmer.daily_rate_to_client
+            | /day
 
     .control-group class="#{model_attribute_class(programmer, :time_status)}"
       .control-label
@@ -122,3 +136,4 @@
     .control-group
       .controls
         = f.submit (action == :update ? 'Edit Info' : 'Add Info')
+= render partial: 'programmers/rates.js'

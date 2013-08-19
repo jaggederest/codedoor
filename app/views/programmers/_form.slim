@@ -26,7 +26,6 @@
         span.help-inline
           = model_error_message(programmer, :description)
 
-    - # TODO: add javascript to calculate per day for full-timers
     .control-group class="#{model_attribute_class(programmer, :rate)}"
       .control-label
         = f.label :rate, 'Rate (USD)'

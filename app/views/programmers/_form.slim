@@ -31,49 +31,65 @@
         = f.label :rate, 'Rate (USD)'
       .controls
         = render partial: 'shared/attribute_error_non_inline', locals: {model: programmer, attribute: :rate}
-        .span5
-          .span2
-            strong
-              | Paid to You:
-        .span5
-          .span2
-            | $
-            = f.text_field(:rate, class: 'rate-field', id: 'hourly_rate_to_programmer')
-            | /hour
-          .span2
-            strong
-              | $
-              span#daily_rate_to_programmer
-                = programmer.daily_rate_to_programmer
-              | /day
-        .span5
-          .span2
+        .row#full-time-explanation
+          p.span5
+            | As a full-time programmer, billing is generally done a daily basis.  The hourly rate is used when you spend an hour or two with a client.
+        .row
+          .span5
+            .row
+              .span2
+                strong
+                  | Paid to You:
+        .row
+          .span5
+            .row
+              .span2
+                | $
+                = f.text_field(:rate, class: 'rate-field', id: 'hourly_rate_to_programmer')
+                | /hour
+              .span2
+                strong
+                  span#daily_rate_to_programmer
+                    | $
+                    span#daily_rate_to_programmer_value
+                      = programmer.daily_rate_to_programmer
+                    | /day
+        .row
+          .span5
             | Plus CodeDoor Fee:
-        .span5
-          .span2
-            | $
-            span#hourly_fee_to_codedoor
-              = number_with_precision(programmer.hourly_fee_to_codedoor, precision: 2)
-            | /hour
-          .span2
-            | $
-            span#daily_fee_to_codedoor
-              = programmer.daily_fee_to_codedoor
-            | /day
-        .span5
-          .span2
+        .row
+          .span5
+            .row
+              .span2
+                span#hourly_fee_to_codedoor
+                  | $
+                  span#hourly_fee_to_codedoor_value
+                    = number_with_precision(programmer.hourly_fee_to_codedoor, precision: 2)
+                  | /hour
+              .span2
+                span#daily_fee_to_codedoor
+                  | $
+                  span#daily_fee_to_codedoor_value
+                    = programmer.daily_fee_to_codedoor
+                  | /day
+        .row
+          .span5
             | Charged to Client:
-        .span5
-          .span2
-            | $
-            span#hourly_rate_to_client
-              = number_with_precision(programmer.hourly_rate_to_client, precision: 2)
-            | /hour
-          .span2
-            | $
-            span#daily_rate_to_client
-              = programmer.daily_rate_to_client
-            | /day
+        .row
+          .span5
+            .row
+              .span2
+                span#hourly_rate_to_client
+                  | $
+                  span#hourly_rate_to_client_value
+                    = number_with_precision(programmer.hourly_rate_to_client, precision: 2)
+                  | /hour
+              .span2
+                span#daily_rate_to_client
+                  | $
+                  span#daily_rate_to_client_value
+                    = programmer.daily_rate_to_client
+                  | /day
 
     .control-group class="#{model_attribute_class(programmer, :time_status)}"
       .control-label

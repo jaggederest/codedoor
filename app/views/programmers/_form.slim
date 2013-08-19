@@ -31,17 +31,42 @@
       .control-label
         = f.label :rate, 'Rate (USD)'
       .controls
-        = f.text_field :rate, placeholder: 'Short Description'
-        span.help-inline
-          = model_error_message(programmer, :rate)
+        = render partial: 'shared/attribute_error_non_inline', locals: {model: programmer, attribute: :rate}
+        .span5
+          .span2
+            strong
+              | Paid to You:
+        .span5
+          .span2
+            | $
+            = f.text_field(:rate, class: 'rate-field')
+            | /hour
+          .span2
+            strong
+              = "$#{programmer.daily_rate_to_programmer}/day"
+        .span5
+          .span2
+            | Plus CodeDoor Fee:
+        .span5
+          .span2
+            = "$#{programmer.hourly_fee_to_codedoor}/hour"
+          .span2
+            = "$#{programmer.daily_fee_to_codedoor}/day"
+        .span5
+          .span2
+            | Charged to Client:
+        .span5
+          .span2
+            = "$#{programmer.hourly_rate_to_client}/hour"
+          .span2
+            = "$#{programmer.daily_rate_to_client}/day"
+
 
     .control-group class="#{model_attribute_class(programmer, :time_status)}"
       .control-label
         = f.label :work_status
       .controls
-        - if model_has_error?(programmer, :time_status)
-          .help-inline.but-help-is-not-inline
-            = model_error_message(programmer, :time_status)
+        = render partial: 'shared/attribute_error_non_inline', locals: {model: programmer, attribute: :time_status}
         label class='radio'
           = f.radio_button :time_status, :'full-time'
           | Full-time

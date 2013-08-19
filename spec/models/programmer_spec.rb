@@ -65,14 +65,37 @@ describe Programmer do
 
   context 'rates' do
     before :each do
-      @programmer = FactoryGirl.create(:programmer, rate: 50)
+      @programmer = FactoryGirl.create(:programmer, rate: 51)
     end
 
     it 'should return the correct daily rate for the programmer' do
       expect(@programmer.daily_rate_to_programmer).to eq(@programmer.rate * 8)
     end
+
     it 'should return the correct daily rate for the client' do
       expect(@programmer.daily_rate_to_client).to eq(@programmer.rate * 9)
+    end
+
+    it 'should return the correct daily fee for CodeDoor' do
+      expect(@programmer.daily_fee_to_codedoor).to eq(@programmer.rate)
+    end
+
+    it 'should return the correct hourly rate for the client' do
+      expect(@programmer.hourly_rate_to_client).to eq(57.38)
+    end
+
+    it 'should return the correct hourly fee for CodeDoor' do
+      expect(@programmer.hourly_fee_to_codedoor).to eq(6.38)
+    end
+
+    it 'should return nil when rate is nil' do
+      new_programmer = Programmer.new(rate: nil)
+
+      expect(new_programmer.daily_rate_to_programmer).to be_nil
+      expect(new_programmer.daily_rate_to_client).to be_nil
+      expect(new_programmer.daily_fee_to_codedoor).to be_nil
+      expect(new_programmer.hourly_rate_to_client).to be_nil
+      expect(new_programmer.hourly_fee_to_codedoor).to be_nil
     end
   end
 

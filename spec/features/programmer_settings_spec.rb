@@ -11,7 +11,7 @@ feature 'Logging in' do
 
     fill_in 'Title', with: 'Test Title'
     fill_in 'Description', with: 'Test Description'
-    fill_in 'Rate', with: 100
+    fill_in 'hourly_rate_to_programmer', with: 100
     choose('Full-time')
     choose('programmer_onsite_status_onsite')
     click_button 'Add Info'
@@ -27,7 +27,7 @@ feature 'Logging in' do
     expect(page).not_to have_content 'By checking this box, I agree to abide by CodeDoor\'s Terms of Use.'
     click_button 'Edit Info'
 
-    fill_in 'Rate', with: 50
+    fill_in 'hourly_rate_to_programmer', with: 50
     click_button 'Edit Info'
     expect(page).to have_content 'Your programmer account has been updated.'
     expect(page).to have_content '$450 per day'

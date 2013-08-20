@@ -4,8 +4,12 @@ feature 'Logging in' do
   scenario 'Successful log in and log out' do
     visit '/'
     expect(page).to have_content 'Log in with GitHub'
-    expect(page).to have_content 'Work for clients that appreciate top developers that contribute to open source. Daily billing.'
-    expect(page).to have_content 'Find programmers that have contributed to meaningful open source projects, and see their code samples.'
+    expect(page).to have_content 'Work for clients who recognize top open source contributors.'
+    expect(page).to have_content 'Bill by the day.'
+
+    expect(page).to have_content 'Find freelance coders who have contributed to meaningful open source projects.'
+    expect(page).to have_content 'See their code.'
+
     click_link 'Log in with GitHub'
     expect(page).to have_content 'Log out'
 

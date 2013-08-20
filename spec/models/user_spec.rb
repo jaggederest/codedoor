@@ -62,14 +62,15 @@ describe User do
 
   context 'find_for_github_oauth' do
     it 'should create a new user if the there is no UserAccount with that account id' do
+      email = "email#{rand}@example.com"
       auth = OmniAuth::AuthHash.new({uid: 'new account id',
                                      provider: 'github',
                                      credentials: {token: 'oauth token'},
-                                     info: {email: 'email@example.com'},
+                                     info: {email: email},
                                      extra: {raw_info: {name: 'Test User'}}})
       user = User.find_for_github_oauth(auth)
       expect(user.full_name).to eq('Test User')
-      expect(user.email).to eq('email@example.com')
+      expect(user.email).to eq(email)
 
       user_account = UserAccount.where(provider: 'github', account_id: 'new account id').first
       expect(user_account.user).to eq(user)

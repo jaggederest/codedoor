@@ -26,6 +26,18 @@
         span.help-inline
           = model_error_message(programmer, :description)
 
+    .control-group class="#{model_attribute_class(programmer, :time_status)}"
+      .control-label
+        = f.label :work_status
+      .controls
+        = render partial: 'shared/attribute_error_non_inline', locals: {model: programmer, attribute: :time_status}
+        label class='radio'
+          = f.radio_button :time_status, :'full-time'
+          | Full-time
+        label class='radio'
+          = f.radio_button :time_status, :'part-time'
+          | Part-time
+
     .control-group class="#{model_attribute_class(programmer, :rate)}"
       .control-label
         = f.label :rate, 'Rate (USD)'
@@ -90,18 +102,6 @@
                   span#daily_rate_to_client_value
                     = programmer.daily_rate_to_client
                   | /day
-
-    .control-group class="#{model_attribute_class(programmer, :time_status)}"
-      .control-label
-        = f.label :work_status
-      .controls
-        = render partial: 'shared/attribute_error_non_inline', locals: {model: programmer, attribute: :time_status}
-        label class='radio'
-          = f.radio_button :time_status, :'full-time'
-          | Full-time
-        label class='radio'
-          = f.radio_button :time_status, :'part-time'
-          | Part-time
 
     .control-group class="#{model_attribute_class(programmer, :onsite_status)}"
       .control-label

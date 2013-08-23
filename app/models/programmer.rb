@@ -2,6 +2,9 @@ class Programmer < ActiveRecord::Base
 
   belongs_to :user
 
+  has_many :resume_items, dependent: :destroy
+  accepts_nested_attributes_for :resume_items, allow_destroy: true
+
   scope :not_private, -> { where(:visibility != 'private') }
 
   validates :user_id, presence: true, uniqueness: true

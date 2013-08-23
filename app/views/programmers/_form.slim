@@ -8,7 +8,7 @@
 .span9
   h2.span8.settings-header
     | Programmer Info
-  = form_for [current_user, programmer], url: {action: action}, html: {class: 'form-horizontal'}  do |f|
+  = nested_form_for [current_user, programmer], url: {action: action}, html: {class: 'form-horizontal'}  do |f|
     = f.hidden_field :user_id
     .control-group class="#{model_attribute_class(programmer, :title)}"
       .control-label
@@ -147,6 +147,29 @@
         label class='radio'
           = f.radio_button :visibility, :disabled
           | Private (Visible to only myself)
+
+    .control-group
+      .control-label
+        | Resume
+
+      .controls
+        = f.fields_for :resume_items do |resume_form|
+          p
+            | Name
+            = resume_form.text_field :company_name
+          p
+            | Description
+            = resume_form.text_area :description
+          p
+            | Year Started
+            = resume_form.text_field :year_started
+          p
+            | Year Finished
+            = resume_form.text_field :year_finished
+
+          = resume_form.link_to_remove 'Remove this from your resume'
+        p
+          = f.link_to_add 'Add a resume item', :resume_items
 
     .control-group
       .controls

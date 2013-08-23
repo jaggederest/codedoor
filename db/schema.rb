@@ -11,7 +11,24 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130815081621) do
+ActiveRecord::Schema.define(version: 20130823061750) do
+
+  create_table "github_repos", force: true do |t|
+    t.integer  "user_id"
+    t.string   "repo_org"
+    t.string   "repo_name"
+    t.boolean  "hidden"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "portfolio_items", force: true do |t|
+    t.string   "title"
+    t.string   "url"
+    t.text     "description"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "programmers", force: true do |t|
     t.integer  "user_id"
@@ -27,6 +44,23 @@ ActiveRecord::Schema.define(version: 20130815081621) do
     t.boolean  "disabled"
   end
 
+  create_table "resume_items", force: true do |t|
+    t.integer  "programmer_id"
+    t.string   "company_name"
+    t.string   "title"
+    t.integer  "year_started"
+    t.integer  "year_finished"
+    t.text     "description"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "skills", force: true do |t|
+    t.string   "title"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "user_accounts", force: true do |t|
     t.string   "account_id"
     t.string   "provider"
@@ -37,6 +71,13 @@ ActiveRecord::Schema.define(version: 20130815081621) do
   end
 
   add_index "user_accounts", ["account_id", "provider"], name: "index_user_accounts_on_account_id_and_provider", unique: true
+
+  create_table "user_skills", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "skill_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "users", force: true do |t|
     t.string   "email",                              default: "", null: false

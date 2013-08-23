@@ -43,6 +43,8 @@ gem 'omniauth-github'
 # Manage environment variables related to this application
 gem 'figaro'
 
+gem 'nested_form', '~> 0.3.2'
+
 group :development, :test do
   gem 'pry'
   gem 'pry-debugger'

@@ -51,7 +51,7 @@ describe Programmer do
       ability.should_not be_able_to(:destroy, programmer)
     end
 
-    it 'should only allow logged out users to view public programmers' do
+    it 'should allow logged out users to only view public programmers' do
       ability = Ability.new(nil)
       programmer = FactoryGirl.create(:programmer, visibility: 'codedoor')
       public_programmer = FactoryGirl.create(:programmer, visibility: 'public')

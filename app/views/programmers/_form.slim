@@ -148,28 +148,37 @@
           = f.radio_button :visibility, :disabled
           | Private (Visible to only myself)
 
+    h2.span8.settings-header
+      | Résumé
+
     .control-group
       .control-label
-        | Resume
+        = f.link_to_add 'Add a résumé item', :resume_items
 
-      .controls
-        = f.fields_for :resume_items do |resume_form|
-          p
-            | Name
-            = resume_form.text_field :company_name
-          p
-            | Description
-            = resume_form.text_area :description
-          p
-            | Year Started
-            = resume_form.text_field :year_started
-          p
-            | Year Finished
-            = resume_form.text_field :year_finished
+    = f.fields_for :resume_items do |resume_form|
+      .control-group
+        .control-label
+          | Company
+        .controls
+          = resume_form.text_field :company_name
+      .control-group
+        .control-label
+          | Description
+        .controls
+          = resume_form.text_area :description
+      .control-group
+        .control-label
+          | Year Started
+        .controls
+          = resume_form.text_field :year_started
+      .control-group
+        .control-label
+          | Year Finished
+        .controls
+          = resume_form.text_field :year_finished
 
-          = resume_form.link_to_remove 'Remove this from your resume'
-        p
-          = f.link_to_add 'Add a resume item', :resume_items
+      p
+        = resume_form.link_to_remove 'Remove from résumé'
 
     .control-group
       .controls

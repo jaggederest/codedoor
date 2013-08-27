@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130823061750) do
+ActiveRecord::Schema.define(version: 20130827181810) do
 
   create_table "github_repos", force: true do |t|
     t.integer  "user_id"
@@ -53,6 +53,8 @@ ActiveRecord::Schema.define(version: 20130823061750) do
     t.text     "description"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "month_started"
+    t.string   "month_finished"
   end
 
   create_table "skills", force: true do |t|

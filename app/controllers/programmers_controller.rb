@@ -49,12 +49,12 @@ class ProgrammersController < ApplicationController
 
   def programmer_params
     params[:user_id] = current_user.id if params[:user_id].present? && current_user.present?
-    params.require(:programmer).permit(:user_id, :title, :description, :rate, :time_status, :client_can_visit, :onsite_status, :contract_to_hire, :visibility, resume_items_attributes: [:company_name, :description, :year_started, :year_finished, :_destroy, :id])
+    params.require(:programmer).permit(:user_id, :title, :description, :rate, :time_status, :client_can_visit, :onsite_status, :contract_to_hire, :visibility, resume_items_attributes: [:company_name, :description, :year_started, :year_finished, :month_started, :month_finished, :title, :_destroy, :id])
   end
 
   # NOTE: user_id is immutable
   def update_programmer_params
-    params.require(:programmer).permit(:title, :description, :rate, :time_status, :client_can_visit, :onsite_status, :contract_to_hire, :visibility, resume_items_attributes: [:company_name, :description, :year_started, :year_finished, :_destroy, :id])
+    params.require(:programmer).permit(:title, :description, :rate, :time_status, :client_can_visit, :onsite_status, :contract_to_hire, :visibility, resume_items_attributes: [:company_name, :description, :year_started, :year_finished, :month_started, :month_finished, :title, :_destroy, :id])
   end
 
   def ensure_terms_checked

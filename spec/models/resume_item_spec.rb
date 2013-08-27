@@ -7,6 +7,14 @@ describe ResumeItem do
     it { should validate_presence_of(:company_name) }
     it { should validate_numericality_of(:year_started) }
     it { should validate_numericality_of(:year_finished) }
+    it 'should validate month_started' do
+      ensure_inclusion_only_of(ResumeItem, :month_started, ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'])
+      FactoryGirl.build(:resume_item, month_started: nil).should be_valid
+    end
+    it 'should validate month_finished' do
+      ensure_inclusion_only_of(ResumeItem, :month_finished, ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'])
+      FactoryGirl.build(:resume_item, month_finished: nil).should be_valid
+    end
   end
 
   context 'year_started and year_finished' do

@@ -163,6 +163,11 @@
           = resume_form.text_field :company_name
       .control-group
         .control-label
+          | Title
+        .controls
+          = resume_form.text_field :title
+      .control-group
+        .control-label
           | Description
         .controls
           = resume_form.text_area :description
@@ -170,12 +175,14 @@
         .control-label
           | Year Started
         .controls
-          = resume_form.text_field :year_started
+          = resume_form.select(:month_started, Months::LIST)
+          = resume_form.text_field :year_started, class: 'year-field'
       .control-group
         .control-label
           | Year Finished
         .controls
-          = resume_form.text_field :year_finished
+          = resume_form.select(:month_finished, Months::LIST)
+          = resume_form.text_field :year_finished, class: 'year-field'
 
       p
         = resume_form.link_to_remove 'Remove from résumé'

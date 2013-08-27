@@ -2,7 +2,7 @@ class ResumeItem < ActiveRecord::Base
 
   belongs_to :programmer
 
-  validates :programmer_id, presence: true, uniqueness: true
+  validates :programmer_id, uniqueness: true
   validates :company_name, presence: true
   validates :year_started, numericality: { greater_than: 1900, less_than: 2014 }
   validates :year_finished, numericality: { greater_than: 1900, less_than: 2014, allow_nil: true}

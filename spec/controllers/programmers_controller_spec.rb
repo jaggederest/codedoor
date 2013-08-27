@@ -10,6 +10,17 @@ describe ProgrammersController do
      time_status: 'full-time',
      onsite_status: 'occasional',
      visibility: 'public',
+     resume_items_attributes:
+       {"1377632429748" =>
+         {company_name: 'test company',
+          title: 'test title',
+          description: 'description',
+          month_started: 'June',
+          year_started: 2010,
+          month_finished: 'January',
+          year_finished: 2011,
+          _destroy: 'false'}
+       },
      contract_to_hire: true}
   end
 

@@ -2,7 +2,6 @@ require 'spec_helper'
 
 describe ResumeItem do
   context 'validations' do
-    it { should validate_presence_of(:programmer_id) }
     it { should validate_uniqueness_of(:programmer_id) }
     it { should validate_presence_of(:company_name) }
     it { should validate_numericality_of(:year_started) }

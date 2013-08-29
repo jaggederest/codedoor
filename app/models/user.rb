@@ -12,7 +12,8 @@ class User < ActiveRecord::Base
   validates :checked_terms, inclusion: { in: [true], on: :update, message: '^The Terms of Use must be accepted.' }
 
   def self.find_for_github_oauth(auth, signed_in_resource=nil)
-    user_account = UserAccount.where(provider: auth.provider, account_id: auth.uid).first
+    user_account = GithubUserAccount.where(account_id: auth.uid).first
+
     if user_account
       user = user_account.user
     else
@@ -23,10 +24,10 @@ class User < ActiveRecord::Base
         user.password = Devise.friendly_token[0, 20]
         user.save!
 
-        user_account = UserAccount.new
+        user_account = GithubUserAccount.new
         user_account.user = user
         user_account.account_id = auth.uid
-        user_account.provider = auth.provider
+        user_account.username = auth.info.nickname
         user_account.oauth_token = auth.credentials.token
         user_account.save!
       end

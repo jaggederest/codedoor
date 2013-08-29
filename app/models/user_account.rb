@@ -3,6 +3,8 @@ class UserAccount < ActiveRecord::Base
 
   validates :account_id, presence: true, uniqueness: {scope: :user}
   validates :oauth_token, presence: true
-  validates :provider, presence: true
+  validates :type, presence: true
   validates :user, presence: true
+  validates :username, presence: true
+
 end

@@ -28,9 +28,10 @@
 
     .control-group class="#{model_attribute_class(programmer, :time_status)}"
       .control-label
-        = f.label :work_status
+        = f.label :time_status
       .controls
-        = render partial: 'shared/attribute_error_non_inline', locals: {model: programmer, attribute: :time_status}
+        span.help-block
+          = model_error_message(programmer, :time_status)
         label class='radio'
           = f.radio_button :time_status, :'full-time'
           | Full-time
@@ -42,7 +43,8 @@
       .control-label
         = f.label :rate, 'Rate (USD)'
       .controls
-        = render partial: 'shared/attribute_error_non_inline', locals: {model: programmer, attribute: :rate}
+        span.help-block
+          = model_error_message(programmer, :rate)
         .row#full-time-explanation
           p.span5
             | As a full-time programmer, billing is generally done a daily basis.  The hourly rate is used when you spend an hour or two with a client.
@@ -108,7 +110,8 @@
         = f.label :onsite_status
 
       .controls
-        = render partial: 'shared/attribute_error_non_inline', locals: {model: programmer, attribute: :onsite_status}
+        span.help-block
+          = model_error_message(programmer, :onsite_status)
         label class='radio'
           = f.radio_button :onsite_status, :onsite
           = Programmer.onsite_status_description(:onsite)
@@ -127,7 +130,8 @@
         = f.label :contract_to_hire
 
       .controls
-        = render partial: 'shared/attribute_error_non_inline', locals: {model: programmer, attribute: :contract_to_hire}
+        span.help-block
+          = model_error_message(programmer, :contract_to_hire)
         label class='checkbox'
           = f.check_box :contract_to_hire
           | I will consider contract to hire positions.
@@ -137,7 +141,8 @@
         = f.label :visibility
 
       .controls
-        = render partial: 'shared/attribute_error_non_inline', locals: {model: programmer, attribute: :visibility}
+        span.help-block
+          = model_error_message(programmer, :visibility)
         label class='radio'
           = f.radio_button :visibility, :public
           | Public (Visible to search engines)
@@ -173,13 +178,13 @@
           = resume_form.text_area :description
       .control-group
         .control-label
-          | Year Started
+          | Started
         .controls
           = resume_form.select(:month_started, Months::LIST)
           = resume_form.text_field :year_started, class: 'year-field'
       .control-group
         .control-label
-          | Year Finished
+          | Finished
         .controls
           = resume_form.select(:month_finished, Months::LIST)
           = resume_form.text_field :year_finished, class: 'year-field'

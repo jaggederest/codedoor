@@ -7,14 +7,8 @@ module FeatureTestHelper
       click_link 'Log in with GitHub'
     end
 
-    # TODO: DRY with setting variable in spec_helper.rb
     def set_github_user
-      OmniAuth.config.mock_auth[:github] = OmniAuth::AuthHash.new(
-        {uid: 'test account id',
-         provider: 'github',
-         credentials: {token: 'oauth token'},
-         info: {email: 'email@example.com'},
-         extra: {raw_info: {name: 'Test User'}}})
+      OmniAuth.config.mock_auth[:github] = MockGitHubAuth.test_user
     end
 
     # TODO: Calling this method shouldn't call log spew in test

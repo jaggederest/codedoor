@@ -29,7 +29,8 @@
     - unless checked_terms
       .control-group class="#{model_attribute_class(current_user, :checked_terms)}"
         .controls
-          = render partial: 'shared/attribute_error_non_inline', locals: {model: current_user, attribute: :checked_terms}
+          span.help-block
+            = model_error_message(current_user, :checked_terms)
           label class='checkbox'
             = f.check_box :checked_terms
             | By checking this box, I agree to abide by CodeDoor's Terms of Use.

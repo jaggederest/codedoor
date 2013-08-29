@@ -6,7 +6,10 @@ FactoryGirl.define do
     sequence :oauth_token do |n|
       "oauth token #{n}"
     end
-    provider 'github'
+    sequence :username do |n|
+      "username-#{n}"
+    end
+    type 'GithubUserAccount'
     user
   end
 end

@@ -85,6 +85,13 @@ GEM
       bundler (~> 1.0)
       rails (>= 3, < 5)
     fssm (0.2.10)
+    github_api (0.10.2)
+      addressable
+      faraday (~> 0.8.7)
+      hashie (>= 1.2)
+      multi_json (~> 1.4)
+      nokogiri (~> 1.6.0)
+      oauth2
     hashie (2.0.5)
     hike (1.2.3)
     httpauth (0.2.0)
@@ -227,6 +234,7 @@ DEPENDENCIES
   devise (~> 3.0.1)
   factory_girl_rails
   figaro
+  github_api (~> 0.10.1)
   jbuilder (~> 1.2)
   jquery-rails
   launchy

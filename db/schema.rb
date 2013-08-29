@@ -11,15 +11,32 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130827181810) do
+ActiveRecord::Schema.define(version: 20130829054117) do
+
+  create_table "education_items", force: true do |t|
+    t.integer  "programmer_id"
+    t.string   "school_name"
+    t.string   "degree_and_major"
+    t.text     "description"
+    t.integer  "year_started"
+    t.integer  "year_finished"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "github_repos", force: true do |t|
-    t.integer  "user_id"
-    t.string   "repo_org"
+    t.integer  "programmer_id"
+    t.string   "repo_owner"
     t.string   "repo_name"
     t.boolean  "hidden"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "default_branch"
+    t.integer  "forks_count"
+    t.integer  "stars_count"
+    t.string   "language"
+    t.boolean  "is_fork"
+    t.text     "description"
   end
 
   create_table "portfolio_items", force: true do |t|
@@ -65,14 +82,15 @@ ActiveRecord::Schema.define(version: 20130827181810) do
 
   create_table "user_accounts", force: true do |t|
     t.string   "account_id"
-    t.string   "provider"
+    t.string   "type"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "user_id"
     t.string   "oauth_token"
+    t.string   "username"
   end
 
-  add_index "user_accounts", ["account_id", "provider"], name: "index_user_accounts_on_account_id_and_provider", unique: true
+  add_index "user_accounts", ["account_id", "type"], name: "index_user_accounts_on_account_id_and_type", unique: true
 
   create_table "user_skills", force: true do |t|
     t.integer  "user_id"

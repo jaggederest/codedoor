@@ -243,7 +243,8 @@ DEPENDENCIES
   pry
   pry-debugger
   rails (= 4.0.0)
-  rspec-rails (= 2.14.0)
+  rspec-mocks (~> 2.14.3)
+  rspec-rails (~> 2.14.0)
   sass-rails (~> 4.0.0)
   sdoc
   shoulda

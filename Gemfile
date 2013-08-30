@@ -50,7 +50,8 @@ gem 'github_api', '~> 0.10.1'
 group :development, :test do
   gem 'pry'
   gem 'pry-debugger'
-  gem 'rspec-rails', '2.14.0'
+  gem 'rspec-rails', '~> 2.14.0'
+  gem 'rspec-mocks', '~> 2.14.3'
 end
 
 group :test do

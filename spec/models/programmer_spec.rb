@@ -69,54 +69,54 @@ describe Programmer do
     end
 
     it 'should return the correct daily rate for the programmer' do
-      expect(@programmer.daily_rate_to_programmer).to eq(@programmer.rate * 8)
+      @programmer.daily_rate_to_programmer.should eq(@programmer.rate * 8)
     end
 
     it 'should return the correct daily rate for the client' do
-      expect(@programmer.daily_rate_to_client).to eq(@programmer.rate * 9)
+      @programmer.daily_rate_to_client.should eq(@programmer.rate * 9)
     end
 
     it 'should return the correct daily fee for CodeDoor' do
-      expect(@programmer.daily_fee_to_codedoor).to eq(@programmer.rate)
+      @programmer.daily_fee_to_codedoor.should eq(@programmer.rate)
     end
 
     it 'should return the correct hourly rate for the client' do
-      expect(@programmer.hourly_rate_to_client).to eq(57.38)
+      @programmer.hourly_rate_to_client.should eq(57.38)
     end
 
     it 'should return the correct hourly fee for CodeDoor' do
-      expect(@programmer.hourly_fee_to_codedoor).to eq(6.38)
+      @programmer.hourly_fee_to_codedoor.should eq(6.38)
     end
 
     it 'should return nil when rate is nil' do
       new_programmer = Programmer.new(rate: nil)
 
-      expect(new_programmer.daily_rate_to_programmer).to be_nil
-      expect(new_programmer.daily_rate_to_client).to be_nil
-      expect(new_programmer.daily_fee_to_codedoor).to be_nil
-      expect(new_programmer.hourly_rate_to_client).to be_nil
-      expect(new_programmer.hourly_fee_to_codedoor).to be_nil
+      new_programmer.daily_rate_to_programmer.should be_nil
+      new_programmer.daily_rate_to_client.should be_nil
+      new_programmer.daily_fee_to_codedoor.should be_nil
+      new_programmer.hourly_rate_to_client.should be_nil
+      new_programmer.hourly_fee_to_codedoor.should be_nil
     end
   end
 
   context 'onsite status description' do
     it 'should return correct status descriptions for each status type' do
-      expect(Programmer.onsite_status_description(:onsite)).to eq('Work can be done at a client\'s office if it is nearby.')
-      expect(Programmer.onsite_status_description(:occasional)).to eq('Work can occasionally be done at a client\'s office if it is nearby.')
-      expect(Programmer.onsite_status_description(:visits_allowed)).to eq('Clients can visit the programmer\'s office if they wish.')
-      expect(Programmer.onsite_status_description(:offsite)).to eq('All work is to be done remotely.')
+      Programmer.onsite_status_description(:onsite).should eq('Work can be done at a client\'s office if it is nearby.')
+      Programmer.onsite_status_description(:occasional).should eq('Work can occasionally be done at a client\'s office if it is nearby.')
+      Programmer.onsite_status_description(:visits_allowed).should eq('Clients can visit the programmer\'s office if they wish.')
+      Programmer.onsite_status_description(:offsite).should eq('All work is to be done remotely.')
     end
 
     it 'should work for strings as well as symbols' do
-      expect(Programmer.onsite_status_description('onsite')).to eq('Work can be done at a client\'s office if it is nearby.')
-      expect(Programmer.onsite_status_description('occasional')).to eq('Work can occasionally be done at a client\'s office if it is nearby.')
-      expect(Programmer.onsite_status_description('visits_allowed')).to eq('Clients can visit the programmer\'s office if they wish.')
-      expect(Programmer.onsite_status_description('offsite')).to eq('All work is to be done remotely.')
+      Programmer.onsite_status_description('onsite').should eq('Work can be done at a client\'s office if it is nearby.')
+      Programmer.onsite_status_description('occasional').should eq('Work can occasionally be done at a client\'s office if it is nearby.')
+      Programmer.onsite_status_description('visits_allowed').should eq('Clients can visit the programmer\'s office if they wish.')
+      Programmer.onsite_status_description('offsite').should eq('All work is to be done remotely.')
     end
 
     it 'should throw an error for any other parameter' do
-      expect { programmer.onsite_status_description(nil) }.to raise_error
-      expect { programmer.onsite_status_description(:other) }.to raise_error
+      -> { programmer.onsite_status_description(nil) }.should raise_error
+      -> { programmer.onsite_status_description(:other) }.should raise_error
     end
   end
 

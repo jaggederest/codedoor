@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  factory :user_account do
+  factory :user_account, aliases: [:github_user_account] do
     sequence :account_id do |n|
       "github account #{n}"
     end

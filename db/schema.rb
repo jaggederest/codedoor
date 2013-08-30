@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130829054117) do
+ActiveRecord::Schema.define(version: 20130830174841) do
 
   create_table "education_items", force: true do |t|
     t.integer  "programmer_id"
@@ -31,12 +31,12 @@ ActiveRecord::Schema.define(version: 20130829054117) do
     t.boolean  "hidden"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.text     "description"
     t.string   "default_branch"
     t.integer  "forks_count"
     t.integer  "stars_count"
     t.string   "language"
     t.boolean  "is_fork"
-    t.text     "description"
   end
 
   create_table "portfolio_items", force: true do |t|
@@ -52,7 +52,7 @@ ActiveRecord::Schema.define(version: 20130829054117) do
     t.string   "title"
     t.text     "description"
     t.integer  "rate"
-    t.string   "time_status"
+    t.string   "availability"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "onsite_status"

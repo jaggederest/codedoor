@@ -26,18 +26,21 @@
         span.help-inline
           = model_error_message(programmer, :description)
 
-    .control-group class="#{model_attribute_class(programmer, :time_status)}"
+    .control-group class="#{model_attribute_class(programmer, :availability)}"
       .control-label
-        = f.label :time_status
+        = f.label :availability
       .controls
         span.help-block
-          = model_error_message(programmer, :time_status)
+          = model_error_message(programmer, :availability)
         label class='radio'
-          = f.radio_button :time_status, :'full-time'
+          = f.radio_button :availability, :'full-time'
           | Full-time
         label class='radio'
-          = f.radio_button :time_status, :'part-time'
+          = f.radio_button :availability, :'part-time'
           | Part-time
+        label class='radio'
+          = f.radio_button :availability, :unavailable
+          | Unavailable
 
     .control-group class="#{model_attribute_class(programmer, :rate)}"
       .control-label

@@ -10,7 +10,7 @@ p
   | Rate:
   = "$#{@programmer.daily_rate_to_client} per day"
 p
-  = @programmer.time_status.titleize
+  = @programmer.availability.titleize
 p
   = Programmer.onsite_status_description(@programmer.onsite_status)
 - if @programmer.contract_to_hire?

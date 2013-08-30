@@ -7,7 +7,7 @@ describe ProgrammersController do
      title: 'title',
      description: 'description',
      rate: 50,
-     time_status: 'full-time',
+     availability: 'full-time',
      onsite_status: 'occasional',
      visibility: 'public',
      resume_items_attributes:

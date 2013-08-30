@@ -17,7 +17,7 @@ javascript:
       $('#daily_rate_to_client_value').text('');
     }
 
-    if ($('form input[name="programmer[time_status]"]:checked').val() == 'part-time') {
+    if ($('form input[name="programmer[availability]"]:checked').val() == 'part-time') {
       $('#full-time-explanation').hide();
       $('#daily_rate_to_programmer').hide();
       $('#daily_fee_to_codedoor').hide();
@@ -31,5 +31,5 @@ javascript:
   };
 
   $('#hourly_rate_to_programmer').bind('blur', refreshProgrammerRates);
-  $('[name="programmer[time_status]"]').bind('change', refreshProgrammerRates);
+  $('[name="programmer[availability]"]').bind('change', refreshProgrammerRates);
   refreshProgrammerRates();

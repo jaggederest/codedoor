@@ -9,7 +9,7 @@ describe Programmer do
 
     it { ensure_inclusion_only_of(Programmer, :visibility, ['public', 'codedoor', 'private']) }
 
-    it { ensure_inclusion_only_of(Programmer, :time_status, ['part-time', 'full-time']) }
+    it { ensure_inclusion_only_of(Programmer, :availability, ['part-time', 'full-time', 'unavailable']) }
 
     it { ensure_inclusion_only_of(Programmer, :onsite_status, ['offsite', 'occasional', 'visits_allowed', 'onsite'])}
 

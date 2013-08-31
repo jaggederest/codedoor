@@ -21,6 +21,7 @@ class ProgrammersController < ApplicationController
       @programmer = Programmer.new(user_id: current_user.id, visibility: :public)
       @programmer.save({validate: false})
     end
+    current_user.github_account.load_repos if current_user.github_account.present?
   end
 
   def update
@@ -34,7 +35,11 @@ class ProgrammersController < ApplicationController
       end
       redirect_to programmer_path(@programmer)
     else
-      flash[:alert] = 'Your programmer account could not be updated.'
+      if incomplete
+        flash[:alert] = 'Your programmer account could not be created.'
+      else
+        flash[:alert] = 'Your programmer account could not be updated.'
+      end
       render :edit
     end
   end

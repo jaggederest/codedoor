@@ -81,8 +81,10 @@ describe ProgrammersController do
 
   describe 'GET edit' do
 
-    it 'should assign @programmer and render view when programmer id is correct' do
+    it 'should load github repos, assign @programmer and render view when programmer id is correct' do
       programmer = FactoryGirl.create(:programmer, user: @user)
+      FactoryGirl.create(:github_user_account, user: @user)
+      GithubUserAccount.any_instance.should_receive(:load_repos).exactly(:once).and_return([])
       get :edit, user_id: @user.id, id: programmer.id
       assigns(:programmer).should eq(programmer)
       response.should render_template('edit')
@@ -124,11 +126,10 @@ describe ProgrammersController do
 
   describe 'POST update' do
     before :each do
-      @programmer = FactoryGirl.create(:programmer, user: @user, rate: 20)
+      @programmer = FactoryGirl.create(:programmer, user: @user, rate: 20, state: :activated)
     end
 
     it 'should ignore the user_id parameter, redirect to show and update the programmer' do
-      @programmer.activate!
       programmer_params = valid_programmer('user-id-ignored')
       programmer_params[:rate] = 500
       post :update, user_id: @user.id, id: @programmer.id, programmer: programmer_params
@@ -140,6 +141,7 @@ describe ProgrammersController do
     end
 
     it 'should say that the programmer was created if the programmer was not activated' do
+      @programmer.update_columns(state: 'incomplete')
       programmer_params = valid_programmer('user-id-ignored')
       programmer_params[:rate] = 500
       post :update, user_id: @user.id, id: @programmer.id, programmer: programmer_params

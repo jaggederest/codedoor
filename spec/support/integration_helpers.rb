@@ -2,7 +2,8 @@ require 'spec_helper'
 
 module FeatureTestHelper
   module SignIn
-    def github_login
+    def github_login(stub_out_calls = true)
+      GithubUserAccount.any_instance.stub(:load_repos).and_return([]) if stub_out_calls
       visit '/'
       click_link 'Log in with GitHub'
     end

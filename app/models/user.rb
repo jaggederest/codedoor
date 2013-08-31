@@ -4,6 +4,7 @@ class User < ActiveRecord::Base
   devise :omniauthable, omniauth_providers: [:github]
 
   has_many :user_accounts
+  has_many :github_user_accounts
   has_one  :programmer
 
   validates :country, presence: true, if: Proc.new{|user| user.checked_terms?}
@@ -33,5 +34,10 @@ class User < ActiveRecord::Base
       end
     end
     user
+  end
+
+  # Since uniqueness is scoped to account_id and user, there can only be one
+  def github_account
+    self.github_user_accounts.first
   end
 end

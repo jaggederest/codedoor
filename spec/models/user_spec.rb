@@ -80,4 +80,18 @@ describe User do
       expect(user_account.user).to eq(User.find_for_github_oauth(auth))
     end
   end
+
+  context 'github_account' do
+    it 'should be nil when there is none' do
+      user = FactoryGirl.create(:user)
+      user.github_account.should be_nil
+    end
+
+    it 'should return the account when it exists' do
+      user = FactoryGirl.create(:user)
+      ua = FactoryGirl.create(:github_user_account, user: user)
+      user.github_account.class.should eq(GithubUserAccount)
+      user.github_account.user.should eq(user)
+    end
+  end
 end

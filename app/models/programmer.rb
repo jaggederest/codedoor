@@ -66,6 +66,10 @@ class Programmer < ActiveRecord::Base
     end
   end
 
+  def unavailable?
+    self.availability == 'unavailable'
+  end
+
   def private?
     self.visibility == 'private'
   end

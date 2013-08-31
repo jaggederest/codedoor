@@ -1,10 +1,17 @@
-- if @programmer.private?
+- if @programmer.private? && flash.empty?
+  p
   p class='alert'
     button type="button" class="close" data-dismiss="alert"
       | &times;
-    | Your account is currently private.  Change your account visibility if you want clients to contact you.
+    | Your account is currently private.  If you want clients to contact you, change your account visibility.
+- elsif @programmer.unavailable? && flash.empty?
+  p
+  p class='alert'
+    button type="button" class="close" data-dismiss="alert"
+      | &times;
+    | You are listed as unavailable on your account.  If you want clients to contact you, set availability to full-time or part-time.
 .span3
-  = render partial: 'settings/sidebar', locals: {active: :@programmer}
+  = render partial: 'settings/sidebar', locals: {active: :programmer}
 .span9
   h2.span8.settings-header
     | Programmer Info
@@ -41,6 +48,15 @@
         label class='radio'
           = f.radio_button :availability, :unavailable
           | Unavailable
+
+    .control-group class="#{model_attribute_class(current_user, :contract_to_hire)}"
+      .control-label
+      .controls
+        span.help-block
+          = model_error_message(@programmer, :contract_to_hire)
+        label class='checkbox'
+          = f.check_box :contract_to_hire
+          | I will consider contract to hire positions.
 
     .control-group class="#{model_attribute_class(@programmer, :rate)}"
       .control-label
@@ -127,17 +143,6 @@
         label class='radio'
           = f.radio_button :onsite_status, :offsite
           = Programmer.onsite_status_description(:offsite)
-
-    .control-group class="#{model_attribute_class(current_user, :contract_to_hire)}"
-      .control-label
-        = f.label :contract_to_hire
-
-      .controls
-        span.help-block
-          = model_error_message(@programmer, :contract_to_hire)
-        label class='checkbox'
-          = f.check_box :contract_to_hire
-          | I will consider contract to hire positions.
 
     .control-group class="#{model_attribute_class(@programmer, :visibility)}"
       .control-label

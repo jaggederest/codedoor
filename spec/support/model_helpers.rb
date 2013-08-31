@@ -5,7 +5,7 @@ module ModelTestHelper
       validator.is_a?(ActiveModel::Validations::InclusionValidator)
     }
     acceptable_values = inclusion_validator.options[:in] rescue nil
-    expect(acceptable_values.sort).to eq(values.sort)
+    acceptable_values.sort.should eq(values.sort)
   end
 end
 

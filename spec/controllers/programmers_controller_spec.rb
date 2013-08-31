@@ -33,14 +33,14 @@ describe ProgrammersController do
     it 'assigns @programmers and renders template' do
       programmer = FactoryGirl.create(:programmer)
       get :index
-      expect(assigns(:programmers)).to eq([programmer])
-      expect(response).to render_template('index')
+      assigns(:programmers).should eq([programmer])
+      response.should render_template('index')
     end
 
     it 'still renders the index template logged out' do
       sign_out(@user)
       get :index
-      expect(response).to render_template('index')
+      response.should render_template('index')
     end
   end
 
@@ -51,8 +51,8 @@ describe ProgrammersController do
 
     it 'assigns @programmer and renders template' do
       get :show, id: @programmer.id
-      expect(assigns(:programmer)).to eq(@programmer)
-      expect(response).to render_template('show')
+      assigns(:programmer).should eq(@programmer)
+      response.should render_template('show')
     end
 
     it 'still renders the show template logged out if the programmer is public' do
@@ -60,20 +60,20 @@ describe ProgrammersController do
       @programmer.visibility = 'public'
       @programmer.save!
       get :show, id: @programmer.id
-      expect(response).to render_template('show')
+      response.should render_template('show')
     end
 
     it 'does not render the show template logged out if the programmer is not public' do
       sign_out(@user)
       get :show, id: @programmer.id
       response.should redirect_to(root_path)
-      expect(flash[:alert]).to eq('Information cannot be found.')
+      flash[:alert].should eq('Information cannot be found.')
     end
 
     it 'fails gracefully when the programmer id does not exist' do
       get :show, id: 9999999
       response.should redirect_to(root_path)
-      expect(flash[:alert]).to eq('Information cannot be found.')
+      flash[:alert].should eq('Information cannot be found.')
     end
 
     # TODO: When you can disable a profile, they should not be available to anyone other than the programmer
@@ -84,8 +84,8 @@ describe ProgrammersController do
     it 'should assign @programmer and render view when programmer id is correct' do
       programmer = FactoryGirl.create(:programmer, user: @user)
       get :edit, user_id: @user.id, id: programmer.id
-      expect(assigns(:programmer)).to eq(programmer)
-      expect(response).to render_template('edit')
+      assigns(:programmer).should eq(programmer)
+      response.should render_template('edit')
     end
 
     it 'should not be allowed when terms are not checked' do
@@ -94,7 +94,7 @@ describe ProgrammersController do
       @user.save(validate: false)
       get :edit, user_id: @user.id, id: programmer.id
       response.should redirect_to(root_path)
-      expect(flash[:alert]).to eq('Information cannot be found.')
+      flash[:alert].should eq('Information cannot be found.')
     end
 
     it 'should not be allowed when logged out' do
@@ -102,14 +102,14 @@ describe ProgrammersController do
       programmer = FactoryGirl.create(:programmer)
       get :edit, user_id: @user.id, id: programmer.id
       response.should redirect_to(root_path)
-      expect(flash[:alert]).to eq('Information cannot be found.')
+      flash[:alert].should eq('Information cannot be found.')
     end
 
     it 'should not be allowed when user has no programmer' do
       programmer = FactoryGirl.create(:programmer)
       get :edit, user_id: @user.id, id: programmer.id
       response.should redirect_to(root_path)
-      expect(flash[:alert]).to eq('Information cannot be found.')
+      flash[:alert].should eq('Information cannot be found.')
     end
 
     it 'should not be allowed when the programmer id is different from that of the user' do
@@ -117,7 +117,7 @@ describe ProgrammersController do
       other_programmer = FactoryGirl.create(:programmer)
       get :edit, user_id: @user.id, id: other_programmer.id
       response.should redirect_to(root_path)
-      expect(flash[:alert]).to eq('Information cannot be found.')
+      flash[:alert].should eq('Information cannot be found.')
     end
 
   end
@@ -134,16 +134,16 @@ describe ProgrammersController do
       post :update, user_id: @user.id, id: @programmer.id, programmer: programmer_params
       programmer = Programmer.find_by_user_id(@user.id)
       response.should redirect_to(programmer_path(programmer))
-      expect(flash[:notice]).to eq('Your programmer account has been updated.')
-      expect(programmer.user_id).to eq(@user.id)
-      expect(programmer.rate).to eq(500)
+      flash[:notice].should eq('Your programmer account has been updated.')
+      programmer.user_id.should eq(@user.id)
+      programmer.rate.should eq(500)
     end
 
     it 'should say that the programmer was created if the programmer was not activated' do
       programmer_params = valid_programmer('user-id-ignored')
       programmer_params[:rate] = 500
       post :update, user_id: @user.id, id: @programmer.id, programmer: programmer_params
-      expect(flash[:notice]).to eq('Your programmer account has been created.')
+      flash[:notice].should eq('Your programmer account has been created.')
     end
 
     it 'should not be allowed when terms are not checked' do
@@ -152,34 +152,34 @@ describe ProgrammersController do
       programmer_params = valid_programmer('user-id-ignored')
       post :update, user_id: @user.id, id: @programmer.id, programmer: programmer_params
       response.should redirect_to(root_path)
-      expect(flash[:alert]).to eq('Information cannot be found.')
+      flash[:alert].should eq('Information cannot be found.')
     end
 
     it 'should not be allowed when logged out' do
       sign_out(@user)
       post :update, user_id: @user.id, id: @programmer.id, programmer: valid_programmer(@user.id)
       response.should redirect_to(root_path)
-      expect(flash[:alert]).to eq('Information cannot be found.')
+      flash[:alert].should eq('Information cannot be found.')
     end
 
     it 'should not be allowed if id refers to a programmer not associated with the user' do
       other_programmer = FactoryGirl.create(:programmer)
       post :update, user_id: @user.id, id: other_programmer.id, programmer: valid_programmer(other_programmer.user_id)
       response.should redirect_to(root_path)
-      expect(flash[:alert]).to eq('Information cannot be found.')
-      expect(Programmer.find_by_user_id(@user.id)).to eq(@programmer)
+      flash[:alert].should eq('Information cannot be found.')
+      Programmer.find_by_user_id(@user.id).should eq(@programmer)
     end
 
     it 'should fail if the parameters passed in are invalid' do
       invalid_programmer = valid_programmer(@user.id)
       invalid_programmer[:rate] = 1000000
       post :update, user_id: @user.id, id: @programmer.id, programmer: invalid_programmer
-      expect(response).to render_template('edit')
-      expect(flash[:alert]).to eq('Your programmer account could not be updated.')
-      expect(assigns(:programmer).errors[:rate]).to eq(['must be less than or equal to 1000'])
+      response.should render_template('edit')
+      flash[:alert].should eq('Your programmer account could not be updated.')
+      assigns(:programmer).errors[:rate].should eq(['must be less than or equal to 1000'])
       # The rate in @programmer should be 1000000, because the user will see the input they typed in.
-      expect(assigns(:programmer).rate).to eq(1000000)
-      expect(@programmer.reload.rate).to eq(20)
+      assigns(:programmer).rate.should eq(1000000)
+      @programmer.reload.rate.should eq(20)
     end
 
   end

@@ -1,1 +1,201 @@
-= render partial: 'programmers/form', locals: {programmer: @programmer, action: :update}
+- if @programmer.private?
+  p class='alert'
+    button type="button" class="close" data-dismiss="alert"
+      | &times;
+    | Your account is currently private.  Change your account visibility if you want clients to contact you.
+.span3
+  = render partial: 'settings/sidebar', locals: {active: :@programmer}
+.span9
+  h2.span8.settings-header
+    | Programmer Info
+  = nested_form_for [current_user, @programmer], url: {action: :update}, html: {class: 'form-horizontal'}  do |f|
+    = f.hidden_field :user_id
+    .control-group class="#{model_attribute_class(@programmer, :title)}"
+      .control-label
+        = f.label :title
+      .controls
+        = f.text_field :title, placeholder: 'Short Description'
+        span.help-inline
+          = model_error_message(@programmer, :title)
+
+    .control-group class="#{model_attribute_class(@programmer, :description)}"
+      .control-label
+        = f.label :description
+      .controls
+        = f.text_area :description, placeholder: 'Describe why you a great hire.', class: 'span6', cols: '5'
+        span.help-inline
+          = model_error_message(@programmer, :description)
+
+    .control-group class="#{model_attribute_class(@programmer, :availability)}"
+      .control-label
+        = f.label :availability
+      .controls
+        span.help-block
+          = model_error_message(@programmer, :availability)
+        label class='radio'
+          = f.radio_button :availability, :'full-time'
+          | Full-time
+        label class='radio'
+          = f.radio_button :availability, :'part-time'
+          | Part-time
+        label class='radio'
+          = f.radio_button :availability, :unavailable
+          | Unavailable
+
+    .control-group class="#{model_attribute_class(@programmer, :rate)}"
+      .control-label
+        = f.label :rate, 'Rate (USD)'
+      .controls
+        span.help-block
+          = model_error_message(@programmer, :rate)
+        .row#full-time-explanation
+          p.span5
+            | As a full-time programmer, billing is generally done a daily basis.  The hourly rate is used when you spend an hour or two with a client.
+        .row
+          .span5
+            .row
+              .span2
+                strong
+                  | Paid to You:
+        .row
+          .span5
+            .row
+              .span2
+                | $
+                = f.text_field(:rate, class: 'rate-field', id: 'hourly_rate_to_programmer')
+                | /hour
+              .span2
+                strong
+                  span#daily_rate_to_programmer
+                    | $
+                    span#daily_rate_to_programmer_value
+                      = @programmer.daily_rate_to_programmer
+                    | /day
+        .row
+          .span5
+            | Plus CodeDoor Fee:
+        .row
+          .span5
+            .row
+              .span2
+                span#hourly_fee_to_codedoor
+                  | $
+                  span#hourly_fee_to_codedoor_value
+                    = number_with_precision(@programmer.hourly_fee_to_codedoor, precision: 2)
+                  | /hour
+              .span2
+                span#daily_fee_to_codedoor
+                  | $
+                  span#daily_fee_to_codedoor_value
+                    = @programmer.daily_fee_to_codedoor
+                  | /day
+        .row
+          .span5
+            | Charged to Client:
+        .row
+          .span5
+            .row
+              .span2
+                span#hourly_rate_to_client
+                  | $
+                  span#hourly_rate_to_client_value
+                    = number_with_precision(@programmer.hourly_rate_to_client, precision: 2)
+                  | /hour
+              .span2
+                span#daily_rate_to_client
+                  | $
+                  span#daily_rate_to_client_value
+                    = @programmer.daily_rate_to_client
+                  | /day
+
+    .control-group class="#{model_attribute_class(@programmer, :onsite_status)}"
+      .control-label
+        = f.label :onsite_status
+
+      .controls
+        span.help-block
+          = model_error_message(@programmer, :onsite_status)
+        label class='radio'
+          = f.radio_button :onsite_status, :onsite
+          = Programmer.onsite_status_description(:onsite)
+        label class='radio'
+          = f.radio_button :onsite_status, :occasional
+          = Programmer.onsite_status_description(:occasional)
+        label class='radio'
+          = f.radio_button :onsite_status, :visits_allowed
+          = Programmer.onsite_status_description(:visits_allowed)
+        label class='radio'
+          = f.radio_button :onsite_status, :offsite
+          = Programmer.onsite_status_description(:offsite)
+
+    .control-group class="#{model_attribute_class(current_user, :contract_to_hire)}"
+      .control-label
+        = f.label :contract_to_hire
+
+      .controls
+        span.help-block
+          = model_error_message(@programmer, :contract_to_hire)
+        label class='checkbox'
+          = f.check_box :contract_to_hire
+          | I will consider contract to hire positions.
+
+    .control-group class="#{model_attribute_class(@programmer, :visibility)}"
+      .control-label
+        = f.label :visibility
+
+      .controls
+        span.help-block
+          = model_error_message(@programmer, :visibility)
+        label class='radio'
+          = f.radio_button :visibility, :public
+          | Public (Visible to search engines)
+        label class='radio'
+          = f.radio_button :visibility, :codedoor
+          | Visible to other CodeDoor users
+        label class='radio'
+          = f.radio_button :visibility, :disabled
+          | Private (Visible to only myself)
+
+    h2.span8.settings-header
+      | Résumé
+
+    .control-group
+      .control-label
+        = f.link_to_add 'Add a résumé item', :resume_items
+
+    = f.fields_for :resume_items do |resume_form|
+      .control-group
+        .control-label
+          | Company
+        .controls
+          = resume_form.text_field :company_name
+      .control-group
+        .control-label
+          | Title
+        .controls
+          = resume_form.text_field :title
+      .control-group
+        .control-label
+          | Description
+        .controls
+          = resume_form.text_area :description
+      .control-group
+        .control-label
+          | Started
+        .controls
+          = resume_form.select(:month_started, Months::LIST)
+          = resume_form.text_field :year_started, class: 'year-field'
+      .control-group
+        .control-label
+          | Finished
+        .controls
+          = resume_form.select(:month_finished, Months::LIST)
+          = resume_form.text_field :year_finished, class: 'year-field'
+
+      p
+        = resume_form.link_to_remove 'Remove from résumé'
+
+    .control-group
+      .controls
+        = f.submit (@programmer.incomplete? ? 'Add Info' : 'Edit Info')
+= render partial: 'programmers/rates.js'

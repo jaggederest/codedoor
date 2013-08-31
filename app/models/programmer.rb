@@ -15,6 +15,22 @@ class Programmer < ActiveRecord::Base
   validates :onsite_status, inclusion: { in: ['offsite', 'visits_allowed', 'occasional', 'onsite'], message: 'must be selected' }
   validates :visibility, inclusion: { in: ['public', 'codedoor', 'private'], message: 'must be selected' }
 
+  before_update {|programmer| programmer.activate! if programmer.incomplete?}
+
+  state_machine :state, initial: :incomplete do
+    event :activate do
+      transition incomplete: :activated
+    end
+
+    event :qualify do
+      transition all => :qualified
+    end
+
+    event :disable do
+      transition all => :disabled
+    end
+  end
+
   def daily_rate_to_programmer
     rate.nil? ? nil : (rate * 8)
   end

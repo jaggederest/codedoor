@@ -29,6 +29,36 @@ describe Programmer do
     it { should belong_to(:user) }
   end
 
+  context 'state_machine' do
+    it 'should activate on update' do
+      programmer = FactoryGirl.create(:programmer, state: :incomplete)
+      # TODO: Ideally, this is not necessary...
+      programmer.reload
+      programmer.save!
+      programmer.activated?.should be_true
+    end
+
+    it 'should stay qualified on update' do
+      programmer = FactoryGirl.create(:programmer, state: :qualified)
+      programmer.reload
+      programmer.save!
+      programmer.qualified?.should be_true
+    end
+
+    it 'should get qualified' do
+      programmer = FactoryGirl.create(:programmer)
+      programmer.qualify!
+      programmer.qualified?.should be_true
+    end
+
+    it 'should get disabled' do
+      programmer = FactoryGirl.create(:programmer)
+      programmer.disable!
+      programmer.disabled?.should be_true
+    end
+
+  end
+
   context 'abilities' do
     let(:user) { FactoryGirl.create(:user) }
     let(:ability) { Ability.new(user) }

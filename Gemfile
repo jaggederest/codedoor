@@ -47,6 +47,8 @@ gem 'nested_form', '~> 0.3.2'
 
 gem 'github_api', '~> 0.10.1'
 
+gem 'state_machine', '~> 1.2.0'
+
 group :development, :test do
   gem 'pry'
   gem 'pry-debugger'

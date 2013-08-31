@@ -79,81 +79,6 @@ describe ProgrammersController do
     # TODO: When you can disable a profile, they should not be available to anyone other than the programmer
   end
 
-  describe 'GET new' do
-    it 'assigns @programmer to a new object where the user_id is that of the user, and renders template' do
-      get :new, user_id: @user.id
-      expect(assigns(:programmer).new_record?).to be_true
-      expect(assigns(:programmer).user_id).to eq(@user.id)
-      expect(response).to render_template('new')
-    end
-
-    it 'should not be allowed when terms are not checked' do
-      @user.checked_terms = false
-      @user.save(validate: false)
-      get :new, user_id: @user.id
-      response.should redirect_to(root_path)
-      expect(flash[:alert]).to eq('Information cannot be found.')
-    end
-
-    it 'should not be allowed when logged out' do
-      sign_out(@user)
-      get :new, user_id: @user.id
-      response.should redirect_to(root_path)
-      expect(flash[:alert]).to eq('Information cannot be found.')
-    end
-
-    it 'should not be allowed when the user already has a programmer object' do
-      FactoryGirl.create(:programmer, user: @user)
-      get :new, user_id: @user.id
-      response.should redirect_to(root_path)
-      expect(flash[:alert]).to eq('You are already a programmer.')
-    end
-  end
-
-  describe 'POST create' do
-    it 'should redirect to show and create the programmer' do
-      assert_nil Programmer.find_by_user_id(@user.id)
-      post :create, user_id: @user.id, programmer: valid_programmer(@user.id)
-      programmer = Programmer.find_by_user_id(@user.id)
-      response.should redirect_to(programmer_path(programmer))
-      expect(flash[:notice]).to eq('Your programmer account has been created.')
-      expect(programmer.user_id).to eq(@user.id)
-    end
-
-    it 'should not be allowed when terms are not checked' do
-      @user.checked_terms = false
-      @user.save(validate: false)
-      post :create, user_id: @user.id, programmer: valid_programmer(@user.id)
-      response.should redirect_to(root_path)
-      expect(flash[:alert]).to eq('Information cannot be found.')
-    end
-
-    it 'should not be allowed when logged out' do
-      sign_out(@user)
-      post :create, user_id: @user.id, programmer: valid_programmer(@user.id)
-      response.should redirect_to(root_path)
-      expect(flash[:alert]).to eq('Information cannot be found.')
-    end
-
-    it 'should not be allowed if the user_id does not match the id of the user' do
-      assert_nil Programmer.find_by_user_id(@user.id)
-      other_user = FactoryGirl.create(:user)
-      post :create, user_id: @user.id, programmer: valid_programmer(other_user.id)
-      response.should redirect_to(root_path)
-      expect(flash[:alert]).to eq('Information cannot be found.')
-      assert_nil Programmer.find_by_user_id(@user.id)
-    end
-
-    it 'should fail if the parameters passed in are invalid' do
-      invalid_programmer = valid_programmer(@user.id)
-      invalid_programmer[:rate] = 10000000
-      post :create, user_id: @user.id, programmer: invalid_programmer
-      expect(response).to render_template('new')
-      expect(flash[:alert]).to eq('Your programmer account could not be created.')
-      expect(assigns(:programmer).errors[:rate]).to eq(['must be less than or equal to 1000'])
-    end
-  end
-
   describe 'GET edit' do
 
     it 'should assign @programmer and render view when programmer id is correct' do
@@ -203,6 +128,7 @@ describe ProgrammersController do
     end
 
     it 'should ignore the user_id parameter, redirect to show and update the programmer' do
+      @programmer.activate!
       programmer_params = valid_programmer('user-id-ignored')
       programmer_params[:rate] = 500
       post :update, user_id: @user.id, id: @programmer.id, programmer: programmer_params
@@ -211,6 +137,13 @@ describe ProgrammersController do
       expect(flash[:notice]).to eq('Your programmer account has been updated.')
       expect(programmer.user_id).to eq(@user.id)
       expect(programmer.rate).to eq(500)
+    end
+
+    it 'should say that the programmer was created if the programmer was not activated' do
+      programmer_params = valid_programmer('user-id-ignored')
+      programmer_params[:rate] = 500
+      post :update, user_id: @user.id, id: @programmer.id, programmer: programmer_params
+      expect(flash[:notice]).to eq('Your programmer account has been created.')
     end
 
     it 'should not be allowed when terms are not checked' do

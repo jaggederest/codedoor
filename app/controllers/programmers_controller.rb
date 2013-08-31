@@ -11,33 +11,27 @@ class ProgrammersController < ApplicationController
     @programmer = Programmer.find(params[:id])
   end
 
-  def new
-    if current_user.programmer.present?
-      flash[:alert] = 'You are already a programmer.'
-      redirect_to root_path
-    end
-    @programmer = Programmer.new(user_id: current_user.id, visibility: :public)
-  end
-
-  def create
-    @programmer = Programmer.new(programmer_params)
-    if @programmer.save
-      flash[:notice] = 'Your programmer account has been created.'
-      redirect_to programmer_path(@programmer)
-    else
-      flash[:alert] = 'Your programmer account could not be created.'
-      render :new
-    end
-  end
-
+  # There are no new or create routes.  This way, loading the controller will load repos,
+  # which can be saved.  The programmer isn't "really created" unless it is activated,
+  # which occurs on update.
   def edit
-    @programmer = current_user.programmer
+    if current_user.programmer.present?
+      @programmer = current_user.programmer
+    else
+      @programmer = Programmer.new(user_id: current_user.id, visibility: :public)
+      @programmer.save({validate: false})
+    end
   end
 
   def update
     @programmer = Programmer.find(current_user.programmer.id)
+    incomplete = @programmer.incomplete?
     if @programmer.update(update_programmer_params)
-      flash[:notice] = 'Your programmer account has been updated.'
+      if incomplete
+        flash[:notice] = 'Your programmer account has been created.'
+      else
+        flash[:notice] = 'Your programmer account has been updated.'
+      end
       redirect_to programmer_path(@programmer)
     else
       flash[:alert] = 'Your programmer account could not be updated.'
@@ -46,11 +40,6 @@ class ProgrammersController < ApplicationController
   end
 
   private
-
-  def programmer_params
-    params[:user_id] = current_user.id if params[:user_id].present? && current_user.present?
-    params.require(:programmer).permit(:user_id, :title, :description, :rate, :availability, :client_can_visit, :onsite_status, :contract_to_hire, :visibility, resume_items_attributes: [:company_name, :description, :year_started, :year_finished, :month_started, :month_finished, :title, :_destroy, :id])
-  end
 
   # NOTE: user_id is immutable
   def update_programmer_params

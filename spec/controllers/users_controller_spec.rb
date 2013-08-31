@@ -30,7 +30,7 @@ describe UsersController do
   describe 'POST update' do
     it 'should pass with correct inputs, redirect to programmer page' do
       post :update, id: @user.id, user: {full_name: 'New Name', email: 'newemail@example.com', checked_terms: '1', country: 'US'}
-      response.should redirect_to(new_user_programmer_path(@user))
+      response.should redirect_to(edit_user_programmer_path(@user))
       @user.reload
       expect(flash[:notice]).to eq('Your information has been updated.')
       expect(@user.full_name).to eq('New Name')

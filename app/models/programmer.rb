@@ -5,6 +5,7 @@ class Programmer < ActiveRecord::Base
   has_many :github_repos, dependent: :destroy
   has_many :resume_items, dependent: :destroy
   accepts_nested_attributes_for :resume_items, allow_destroy: true
+  accepts_nested_attributes_for :github_repos
 
   scope :not_private, -> { where(:visibility != 'private') }
 

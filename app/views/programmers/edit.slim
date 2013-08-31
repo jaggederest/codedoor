@@ -162,6 +162,17 @@
           | Private (Visible to only myself)
 
     h2.span8.settings-header
+      | Portfolio
+
+    = f.fields_for :github_repos do |github_form|
+
+      .control-group
+        .control-label
+        .controls
+          - repo = github_form.object
+          = "#{repo.repo_owner}/#{repo.repo_name} #{repo.is_fork? ? '(fork)' : ''} #{pluralize(repo.stars_count, 'star')}"
+
+    h2.span8.settings-header
       | Résumé
 
     .control-group

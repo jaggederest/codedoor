@@ -41,6 +41,7 @@ describe GithubUserAccount do
       repo.repo_owner.should eq('test-user')
       repo.repo_name.should eq('test name')
       repo.description.should eq('test description')
+      repo.shown.should be_true
 
       @user_account.load_repos
 
@@ -69,6 +70,12 @@ describe GithubUserAccount do
       repos = @programmer.reload.github_repos
       repos.count.should eq(2)
       [repos[0].repo_name, repos[1].repo_name].sort.should eq([example_repo_data.name, other_repo_data.name].sort)
+
+      # The first repo should be shown by default, and the second one should be hidden by default
+      repos.each do |repo|
+        repo.shown.should be_true if repo.repo_name == example_repo_data.name
+        repo.shown.should be_false if repo.repo_name == other_repo_data.name
+      end
     end
 
     it 'should not add private repos' do

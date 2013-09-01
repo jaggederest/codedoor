@@ -36,4 +36,4 @@
             | By checking this box, I agree to abide by CodeDoor's Terms of Use.
     .control-group
       .controls
-        = f.submit current_user.programmer.present? ? 'Edit Info' : 'Create Programmer Account'
+        = f.submit current_user.programmer.present? ? 'Edit Info' : 'Create Programmer Account', data: {disable_with: 'Submitting...'}

@@ -164,13 +164,18 @@
     h2.span8.settings-header
       | Portfolio
 
+    - first_element = true
     = f.fields_for :github_repos do |github_form|
 
       .control-group
         .control-label
+          - if first_element
+            | Repositories
+            - first_element = false
         .controls
           - repo = github_form.object
-          = "#{repo.repo_owner}/#{repo.repo_name} #{repo.is_fork? ? '(fork)' : ''} #{pluralize(repo.stars_count, 'star')}"
+          - repo_text = "#{repo.repo_owner}/#{repo.repo_name} #{repo.is_fork? ? '(fork)' : ''} #{pluralize(repo.stars_count, 'star')}"
+          = repo_commits_link(current_user.github_account.username, repo.repo_owner, repo.repo_name, repo_text)
 
     h2.span8.settings-header
       | Résumé
@@ -213,5 +218,5 @@
 
     .control-group
       .controls
-        = f.submit (@programmer.incomplete? ? 'Add Info' : 'Edit Info')
+        = f.submit (@programmer.incomplete? ? 'Add Info' : 'Edit Info'), data: {disable_with: 'Submitting...'}
 = render partial: 'programmers/rates.js'

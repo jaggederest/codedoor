@@ -13,7 +13,7 @@ class GithubUserAccount < UserAccount
       repo_owner = r.owner.login
       repo_name = r.name
       next if existing_repos.where(repo_owner: repo_owner, repo_name: repo_name).count > 0
-      repo = GithubRepo.new(programmer_id: self.user.programmer.id, hidden: (existing_repos.count > 0))
+      repo = GithubRepo.new(programmer_id: self.user.programmer.id, shown: (existing_repos.count == 0))
       repo.default_branch = r.default_branch
       repo.forks_count = r.forks_count
       # NOTE: Watching and starring used to be the same, hence the naming discrepancy

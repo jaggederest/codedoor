@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130830182137) do
+ActiveRecord::Schema.define(version: 20130901002949) do
 
   create_table "education_items", force: true do |t|
     t.integer  "programmer_id"
@@ -28,7 +28,7 @@ ActiveRecord::Schema.define(version: 20130830182137) do
     t.integer  "programmer_id"
     t.string   "repo_owner"
     t.string   "repo_name"
-    t.boolean  "hidden"
+    t.boolean  "shown"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.text     "description"

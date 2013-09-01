@@ -13,7 +13,7 @@
 .span3
   = render partial: 'settings/sidebar', locals: {active: :programmer}
 .span9
-  h2.span8.settings-header
+  h2.span9.settings-header
     | Programmer Info
   = nested_form_for [current_user, @programmer], url: {action: :update}, html: {class: 'form-horizontal'}  do |f|
     = f.hidden_field :user_id
@@ -161,8 +161,13 @@
           = f.radio_button :visibility, :disabled
           | Private (Visible to only myself)
 
-    h2.span8.settings-header
+    h2.span9.settings-header
       | Portfolio
+
+    .control-group
+      .control-label
+      .controls
+        | Shown
 
     - first_element = true
     = f.fields_for :github_repos do |github_form|
@@ -173,11 +178,14 @@
             | Repositories
             - first_element = false
         .controls
-          - repo = github_form.object
-          - repo_text = "#{repo.repo_owner}/#{repo.repo_name} #{repo.is_fork? ? '(fork)' : ''} #{pluralize(repo.stars_count, 'star')}"
-          = repo_commits_link(current_user.github_account.username, repo.repo_owner, repo.repo_name, repo_text)
+          .row
+            .span1
+              = github_form.check_box :shown
+            - repo = github_form.object
+            - repo_text = "#{repo.repo_owner}/#{repo.repo_name} #{repo.is_fork? ? '(fork)' : ''} #{pluralize(repo.stars_count, 'star')}"
+            = repo_commits_link(current_user.github_account.username, repo.repo_owner, repo.repo_name, repo_text)
 
-    h2.span8.settings-header
+    h2.span9.settings-header
       | Résumé
 
     .control-group

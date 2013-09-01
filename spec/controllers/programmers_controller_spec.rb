@@ -10,17 +10,6 @@ describe ProgrammersController do
      availability: 'full-time',
      onsite_status: 'occasional',
      visibility: 'public',
-     resume_items_attributes:
-       {"1377632429748" =>
-         {company_name: 'test company',
-          title: 'test title',
-          description: 'description',
-          month_started: 'June',
-          year_started: 2010,
-          month_finished: 'January',
-          year_finished: 2011,
-          _destroy: 'false'}
-       },
      contract_to_hire: true}
   end
 
@@ -138,6 +127,32 @@ describe ProgrammersController do
       flash[:notice].should eq('Your programmer account has been updated.')
       programmer.user_id.should eq(@user.id)
       programmer.rate.should eq(500)
+    end
+
+    it 'should update resume items' do
+      programmer_params = valid_programmer('user-id-ignored')
+      @programmer.resume_items.count.should be(0)
+      programmer_params[:resume_items_attributes] =
+       {'0' =>
+         {company_name: 'test company',
+          title: 'test title',
+          description: 'description',
+          month_started: 'June',
+          year_started: 2010,
+          month_finished: 'January',
+          year_finished: 2011,
+          _destroy: 'false'}
+       }
+      post :update, user_id: @user.id, id: @programmer.id, programmer: programmer_params
+      @programmer.reload.resume_items.count.should be(1)
+    end
+
+    it 'should update visibility of github repos' do
+      programmer_params = valid_programmer('user-id-ignored')
+      repo = FactoryGirl.create(:github_repo, programmer: @programmer, shown: false)
+      programmer_params[:github_repos_attributes] = {'0' => {'shown' => '1', 'id' => repo.id}}
+      post :update, user_id: @user.id, id: @programmer.id, programmer: programmer_params
+      repo.reload.shown.should be_true
     end
 
     it 'should say that the programmer was created if the programmer was not activated' do

@@ -7,6 +7,13 @@ module ApplicationHelper
     model_has_error?(model, attribute) ? 'error' : ''
   end
 
+  def model_attribute_class_array(model, attribute_array)
+    attribute_array.each do |attribute|
+      return 'error' if model_has_error?(model, attribute)
+    end
+    ''
+  end
+
   # TODO: Create better way to aggregate error messages (custom_error_messages does not lend itself to inline errors)
   def model_error_message(model, attribute)
     return '' unless model_has_error?(model, attribute)

@@ -2,35 +2,41 @@ require 'spec_helper'
 
 describe ResumeItem do
   context 'validations' do
-    it { should validate_uniqueness_of(:programmer_id) }
     it { should validate_presence_of(:company_name) }
-    it { should validate_numericality_of(:year_started) }
-    it { should validate_numericality_of(:year_finished) }
-    it 'should validate month_started' do
-      ensure_inclusion_only_of(ResumeItem, :month_started, ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'])
-      FactoryGirl.build(:resume_item, month_started: nil).should be_valid
-    end
-    it 'should validate month_finished' do
-      ensure_inclusion_only_of(ResumeItem, :month_finished, ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'])
-      FactoryGirl.build(:resume_item, month_finished: nil).should be_valid
-    end
+    it { should validate_numericality_of(:month_started).is_greater_than_or_equal_to(1).is_less_than_or_equal_to(12) }
+    it { should validate_numericality_of(:month_finished).is_greater_than_or_equal_to(1).is_less_than_or_equal_to(12) }
+
+    it { should validate_numericality_of(:year_started).is_greater_than_or_equal_to(1900).is_less_than_or_equal_to(2014) }
+    it { should validate_numericality_of(:year_finished).is_greater_than_or_equal_to(1900).is_less_than_or_equal_to(2014) }
   end
 
-  context 'year_started and year_finished' do
+  context 'dates' do
     it 'should allow year_started and a year_finished that is a later year' do
-      FactoryGirl.build(:resume_item, year_started: 1990, year_finished: 1999).should be_valid
+      FactoryGirl.build(:resume_item, month_started: 1, month_finished: 1, year_started: 1990, year_finished: 1999).should be_valid
     end
 
-    it 'should allow year_started and a year_finished that is the same year' do
-      FactoryGirl.build(:resume_item, year_started: 1999, year_finished: 1999).should be_valid
+    it 'should allow starting and finishing on the same month' do
+      FactoryGirl.build(:resume_item, month_started: 1, month_finished: 1, year_started: 1999, year_finished: 1999).should be_valid
     end
 
-    it 'should allow year_started and no year_finished' do
-      FactoryGirl.build(:resume_item, year_started: 1990, year_finished: nil).should be_valid
+    it 'should not allow the finish month to come first if the years are the same' do
+      FactoryGirl.build(:resume_item, month_started: 2, month_finished: 1, year_started: 1999, year_finished: 1999).should_not be_valid
     end
 
-    it 'should allow year_started to be 2013 and year_finished to be 2013' do
-      FactoryGirl.build(:resume_item, year_started: 2013, year_finished: 2013).should be_valid
+    it 'should allow no year_finished if it is current' do
+      FactoryGirl.build(:resume_item, year_finished: nil, is_current: true).should be_valid
+    end
+
+    it 'should not allow having no year_finished if it is not current' do
+      FactoryGirl.build(:resume_item, year_finished: nil, is_current: false).should_not be_valid
+    end
+
+    it 'should allow no month_finished if it is current' do
+      FactoryGirl.build(:resume_item, month_finished: nil, is_current: true).should be_valid
+    end
+
+    it 'should not allow having no month_finished if it is not current' do
+      FactoryGirl.build(:resume_item, month_finished: nil, is_current: false).should_not be_valid
     end
 
     it 'should not allow year_started to be nil' do
@@ -40,27 +46,18 @@ describe ResumeItem do
     it 'should not allow a year_finished that comes before a year_started' do
       FactoryGirl.build(:resume_item, year_started: 2013, year_finished: 2012).should_not be_valid
     end
-
-    it 'should not allow year_started to be 1900' do
-      FactoryGirl.build(:resume_item, year_started: 1900, year_finished: 1999).should_not be_valid
-    end
-
-    it 'should not allow year_finished to be 1900' do
-      FactoryGirl.build(:resume_item, year_started: 1900, year_finished: 1900).should_not be_valid
-    end
-
-    it 'should not allow year_started to be 2014' do
-      FactoryGirl.build(:resume_item, year_started: 2014, year_finished: 2014).should_not be_valid
-    end
-
-    it 'should not allow year_finished to be 2014' do
-      FactoryGirl.build(:resume_item, year_started: 2012, year_finished: 2014).should_not be_valid
-    end
-
   end
 
   context 'associations' do
     it { should belong_to(:programmer) }
+  end
+
+  context 'hooks' do
+    it 'should remove month_finished and year_finished if it is current' do
+      resume = FactoryGirl.create(:resume_item, month_finished: 1, year_finished: 2012, is_current: true)
+      resume.month_finished.should be_nil
+      resume.year_finished.should be_nil
+    end
   end
 
   context 'abilities' do

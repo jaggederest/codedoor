@@ -1,0 +1,33 @@
+- id = "#{type}-#{form.object.id}"
+.control-group class="#{model_attribute_class_array(form.object, [:month_started, :year_started])}"
+  .control-label
+    | Started
+  .controls
+    = render partial: 'shared/help_block', locals: {model: form.object, attribute: :month_started}
+    = render partial: 'shared/help_block', locals: {model: form.object, attribute: :year_started}
+    = form.select(:month_started, Months::HASH.invert, {}, class: 'month-field')
+    = form.text_field :year_started, class: 'year-field'
+.control-group class="#{model_attribute_class_array(form.object, [:month_finished, :year_finished])} #{form.object.is_current? ? 'hidden' : ''}" id="year-finished-#{id}"
+  .control-label
+    | Finished
+  .controls
+    = render partial: 'shared/help_block', locals: {model: form.object, attribute: :month_finished}
+    = render partial: 'shared/help_block', locals: {model: form.object, attribute: :year_finished}
+    = form.select(:month_finished, Months::HASH.invert, {}, class: 'month-field')
+    = form.text_field :year_finished, class: 'year-field'
+.control-group class="#{model_attribute_class(form.object, :is_current)}"
+  .control-label
+  .controls
+    = render partial: 'shared/help_block', locals: {model: form.object, attribute: :is_current}
+    label class='checkbox date-is-current'
+      = form.check_box :is_current, id: "is-current-#{id}"
+      = (type == :education) ? 'Currently Studying' : 'Current Position'
+javascript:
+  $("#is-current-#{id}").on('change',
+                            function() {
+                              if (this.checked) {
+                                $("#year-finished-#{id}").hide();
+                              } else {
+                                $("#year-finished-#{id}").show();
+                              }
+                            });

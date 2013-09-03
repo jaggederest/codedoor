@@ -22,23 +22,20 @@
         = f.label :title
       .controls
         = f.text_field :title, placeholder: 'Short Description'
-        span.help-inline
-          = model_error_message(@programmer, :title)
+        = render partial: 'shared/help_inline', locals: {model: @programmer, attribute: :title}
 
     .control-group class="#{model_attribute_class(@programmer, :description)}"
       .control-label
         = f.label :description
       .controls
         = f.text_area :description, placeholder: 'Describe why you a great hire.', class: 'span6', cols: '5'
-        span.help-inline
-          = model_error_message(@programmer, :description)
+        = render partial: 'shared/help_inline', locals: {model: @programmer, attribute: :description}
 
     .control-group class="#{model_attribute_class(@programmer, :availability)}"
       .control-label
         = f.label :availability
       .controls
-        span.help-block
-          = model_error_message(@programmer, :availability)
+        = render partial: 'shared/help_block', locals: {model: @programmer, attribute: :availability}
         label class='radio'
           = f.radio_button :availability, :'full-time'
           | Full-time
@@ -52,8 +49,7 @@
     .control-group class="#{model_attribute_class(current_user, :contract_to_hire)}"
       .control-label
       .controls
-        span.help-block
-          = model_error_message(@programmer, :contract_to_hire)
+        = render partial: 'shared/help_block', locals: {model: @programmer, attribute: :contract_to_hire}
         label class='checkbox'
           = f.check_box :contract_to_hire
           | I will consider contract to hire positions.
@@ -62,8 +58,7 @@
       .control-label
         = f.label :rate, 'Rate (USD)'
       .controls
-        span.help-block
-          = model_error_message(@programmer, :rate)
+        = render partial: 'shared/help_block', locals: {model: @programmer, attribute: :rate}
         .row#full-time-explanation
           p.span5
             | As a full-time programmer, billing is generally done a daily basis.  The hourly rate is used when you spend an hour or two with a client.
@@ -129,8 +124,7 @@
         = f.label :onsite_status
 
       .controls
-        span.help-block
-          = model_error_message(@programmer, :onsite_status)
+        = render partial: 'shared/help_block', locals: {model: @programmer, attribute: :onsite_status}
         label class='radio'
           = f.radio_button :onsite_status, :onsite
           = Programmer.onsite_status_description(:onsite)
@@ -149,8 +143,7 @@
         = f.label :visibility
 
       .controls
-        span.help-block
-          = model_error_message(@programmer, :visibility)
+        = render partial: 'shared/help_block', locals: {model: @programmer, attribute: :visibility}
         label class='radio'
           = f.radio_button :visibility, :public
           | Public (Visible to search engines)
@@ -188,41 +181,58 @@
     h2.span9.settings-header
       | Résumé
 
-    .control-group
-      .control-label
-        = f.link_to_add 'Add a résumé item', :resume_items
-
     = f.fields_for :resume_items do |resume_form|
-      .control-group
+      .control-group class="#{model_attribute_class(resume_form.object, :company_name)}"
         .control-label
           | Company
         .controls
           = resume_form.text_field :company_name
-      .control-group
+          = render partial: 'shared/help_inline', locals: {model: resume_form.object, attribute: :company_name}
+      .control-group class="#{model_attribute_class(resume_form.object, :title)}"
         .control-label
           | Title
         .controls
           = resume_form.text_field :title
-      .control-group
+          = render partial: 'shared/help_inline', locals: {model: resume_form.object, attribute: :title}
+      .control-group class="#{model_attribute_class(resume_form.object, :description)}"
         .control-label
           | Description
         .controls
           = resume_form.text_area :description
-      .control-group
-        .control-label
-          | Started
-        .controls
-          = resume_form.select(:month_started, Months::LIST)
-          = resume_form.text_field :year_started, class: 'year-field'
-      .control-group
-        .control-label
-          | Finished
-        .controls
-          = resume_form.select(:month_finished, Months::LIST)
-          = resume_form.text_field :year_finished, class: 'year-field'
+          = render partial: 'shared/help_inline', locals: {model: resume_form.object, attribute: :description}
+      = render partial: 'programmers/date', locals: {form: resume_form, type: :resume}
 
-      p
-        = resume_form.link_to_remove 'Remove from résumé'
+      = resume_form.link_to_remove 'Remove from résumé'
+
+    = f.link_to_add 'Add to résumé', :resume_items
+
+    h2.span9.settings-header
+      | Education
+
+    = f.fields_for :education_items do |edu_form|
+      .control-group
+        .control-label
+          | School Name
+        .controls
+          = edu_form.text_field :school_name
+          = render partial: 'shared/help_inline', locals: {model: edu_form.object, attribute: :company_name}
+      .control-group
+        .control-label
+          | Degree and Major
+        .controls
+          = edu_form.text_field :degree_and_major
+          = render partial: 'shared/help_inline', locals: {model: edu_form.object, attribute: :degree_and_major}
+      .control-group
+        .control-label
+          | Description
+        .controls
+          = edu_form.text_area :description
+          = render partial: 'shared/help_inline', locals: {model: edu_form.object, attribute: :description}
+      = render partial: 'programmers/date', locals: {form: edu_form, type: :education}
+
+      = edu_form.link_to_remove 'Remove from education'
+
+    = f.link_to_add 'Add to education', :education_items
 
     .control-group
       .controls

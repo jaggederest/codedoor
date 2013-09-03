@@ -137,9 +137,9 @@ describe ProgrammersController do
          {company_name: 'test company',
           title: 'test title',
           description: 'description',
-          month_started: 'June',
+          month_started: 6,
           year_started: 2010,
-          month_finished: 'January',
+          month_finished: 1,
           year_finished: 2011,
           _destroy: 'false'}
        }

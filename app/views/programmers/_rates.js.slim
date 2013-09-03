@@ -30,6 +30,6 @@ javascript:
     }
   };
 
-  $('#hourly_rate_to_programmer').bind('blur', refreshProgrammerRates);
-  $('[name="programmer[availability]"]').bind('change', refreshProgrammerRates);
+  $('#hourly_rate_to_programmer').on('blur', refreshProgrammerRates);
+  $('[name="programmer[availability]"]').on('change', refreshProgrammerRates);
   refreshProgrammerRates();

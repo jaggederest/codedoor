@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130901002949) do
+ActiveRecord::Schema.define(version: 20130905032310) do
 
   create_table "education_items", force: true do |t|
     t.integer  "programmer_id"
@@ -22,6 +22,9 @@ ActiveRecord::Schema.define(version: 20130901002949) do
     t.integer  "year_finished"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "month_started",    limit: 255
+    t.integer  "month_finished",   limit: 255
+    t.boolean  "is_current"
   end
 
   create_table "github_repos", force: true do |t|
@@ -70,8 +73,9 @@ ActiveRecord::Schema.define(version: 20130901002949) do
     t.text     "description"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "month_started"
-    t.string   "month_finished"
+    t.integer  "month_started",  limit: 255
+    t.integer  "month_finished", limit: 255
+    t.boolean  "is_current"
   end
 
   create_table "skills", force: true do |t|

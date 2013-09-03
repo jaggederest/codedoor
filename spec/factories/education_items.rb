@@ -1,6 +1,6 @@
 FactoryGirl.define do
-  factory :resume_item do
-    company_name 'Test Company'
+  factory :education_item do
+    school_name 'Test School'
     month_started 1
     month_finished 1
     year_started 1999

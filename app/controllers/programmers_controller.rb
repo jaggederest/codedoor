@@ -48,7 +48,12 @@ class ProgrammersController < ApplicationController
 
   # NOTE: user_id is immutable
   def update_programmer_params
-    params.require(:programmer).permit(:title, :description, :rate, :availability, :client_can_visit, :onsite_status, :contract_to_hire, :visibility, {resume_items_attributes: [:company_name, :description, :year_started, :year_finished, :month_started, :month_finished, :title, :_destroy, :id], github_repos_attributes: [:shown, :id]})
+    params.require(:programmer).permit(:title, :description, :rate, :availability, :client_can_visit, :onsite_status, :contract_to_hire, :visibility,
+      {resume_items_attributes:
+        [:company_name, :description, :title, :year_started, :year_finished, :month_started, :month_finished, :is_current, :_destroy, :id],
+       education_items_attributes:
+        [:school_name, :degree_and_major, :description, :year_started, :year_finished, :month_started, :month_finished, :is_current, :_destroy, :id],
+       github_repos_attributes: [:shown, :id]})
   end
 
   def ensure_terms_checked

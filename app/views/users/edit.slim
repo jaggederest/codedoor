@@ -10,27 +10,23 @@
         = f.label :full_name
       .controls
         = f.text_field :full_name, placeholder: 'Your Name'
-        span.help-inline
-          = model_error_message(current_user, :full_name)
+        = render partial: 'shared/help_inline', locals: {model: current_user, attribute: :full_name}
     .control-group class="#{model_attribute_class(current_user, :email)}"
       .control-label
         = f.label :email
       .controls
         = f.text_field :email, placeholder: 'Email'
-        span.help-inline
-          = model_error_message(current_user, :email)
+        = render partial: 'shared/help_inline', locals: {model: current_user, attribute: :email}
     .control-group class="#{model_attribute_class(current_user, :country)}"
       .control-label
         = f.label :country
       .controls
         = f.select(:country, Countries.supported_by_paypal, include_blank: true)
-        span.help-inline
-          = model_error_message(current_user, :country)
+        = render partial: 'shared/help_inline', locals: {model: current_user, attribute: :country}
     - unless checked_terms
       .control-group class="#{model_attribute_class(current_user, :checked_terms)}"
         .controls
-          span.help-block
-            = model_error_message(current_user, :checked_terms)
+          = render partial: 'shared/help_inline', locals: {model: current_user, attribute: :checked_terms}
           label class='checkbox'
             = f.check_box :checked_terms
             | By checking this box, I agree to abide by CodeDoor's Terms of Use.

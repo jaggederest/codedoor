@@ -12,6 +12,21 @@ input.rate-field {
   width: 32px;
 }
 
+select.month-field {
+  display: inline;
+  width: 120px;
+}
+
 input.year-field {
+  display: inline;
+  margin-left: 10px;
   width: 35px;
+}
+
+a.add_nested_fields, a.remove_nested_fields {
+  display: block;
+  width: 160px;
+  padding-top: 5px;
+  padding-bottom: 10px;
+  text-align: right;
 }

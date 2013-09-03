@@ -4,11 +4,8 @@ class GithubUserAccount < UserAccount
 
   # This gets the public repos that are *owned* by the programmer
   def load_repos
-    raise 'User must have programmer account to get GitHub repos' if self.user.programmer.nil?
-    github = Github.new
-    github.oauth_token = oauth_token
     existing_repos = self.user.programmer.github_repos
-    fetch_repos(github).each do |r|
+    fetch_repos(github_client).each do |r|
       next if r.private?
       repo_owner = r.owner.login
       repo_name = r.name
@@ -29,7 +26,14 @@ class GithubUserAccount < UserAccount
 
   private
 
-  def fetch_repos(github_client)
-    github_client.repos.list({auto_pagination: true})
+  def github_client
+    raise 'User must have programmer account to call GitHub' if self.user.programmer.nil?
+    github = Github.new
+    github.oauth_token = oauth_token
+    github
+  end
+
+  def fetch_repos(client)
+    client.repos.list({auto_pagination: true})
   end
 end

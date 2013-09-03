@@ -5,6 +5,7 @@ class Ability
     if !user
       can :read, Programmer, visibility: 'public'
       can :read, ResumeItem
+      can :read, EducationItem
     else
       can :manage, User, id: user.id
       can :read, Programmer do |programmer|
@@ -19,6 +20,14 @@ class Ability
       can [:create, :update, :destroy], ResumeItem do |resume_item|
         if user.programmer.present?
           user.programmer.id == resume_item.programmer_id
+        else
+          false
+        end
+      end
+      can :read, EducationItem
+      can [:create, :update, :destroy], EducationItem do |education_item|
+        if user.programmer.present?
+          user.programmer.id == education_item.programmer_id
         else
           false
         end

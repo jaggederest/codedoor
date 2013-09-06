@@ -22,8 +22,7 @@ class GithubUserAccount < UserAccount
     elsif contributors.count == 100
       # NOTE: You cannot use the API to determine if the user is the 101st contributor.
       # So scrape the HTML!
-      html = RestClient.get(GithubRepo.repo_commits_url(username, repo_owner, repo_name))
-      if html.include?('Browse code') && !html.include?('No commits found')
+      if ScrapeHtml.is_contributor_through_html?(username, repo_owner, repo_name)
         repo = GithubRepo.new(programmer_id: self.user.programmer.id, shown: true)
         r = github_client.repos.get(repo_owner, repo_name)
         assign_repo_info_to_repo_model(repo, r)
@@ -80,4 +79,5 @@ class GithubUserAccount < UserAccount
       raise 'The repository does not exist.'
     end
   end
+
 end

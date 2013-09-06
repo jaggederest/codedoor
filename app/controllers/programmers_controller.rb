@@ -26,21 +26,9 @@ class ProgrammersController < ApplicationController
 
   def update
     @programmer = Programmer.find(current_user.programmer.id)
-    # TODO: Should probably use AJAX here
+    # TODO: Should probably use AJAX instead
     if params[:commit] == 'Verify Contribution'
-      if params[:repo_owner].blank? || params[:repo_name].blank?
-        flash[:alert] = 'Please insert the repository owner and name to verify contributions.'
-      elsif params[:repo_owner].include?('/') || params[:repo_name].include?('/')
-        flash[:alert] = 'Please include a valid repository owner and name.'
-      else
-        begin
-          repo = current_user.github_account.verify_contribution(params[:repo_owner], params[:repo_name])
-        rescue Exception => e
-          flash[:alert] = e.message
-        end
-      end
-      flash[:notice] = 'Your contributions to the repository have been added.' if repo.present?
-      render :edit
+      verify_contribution
     else
       incomplete = @programmer.incomplete?
       if @programmer.update(update_programmer_params)
@@ -75,6 +63,22 @@ class ProgrammersController < ApplicationController
 
   def ensure_terms_checked
     redirect_cannot_be_found unless current_user.present? && current_user.checked_terms?
+  end
+
+  def verify_contribution
+    if params[:repo_owner].blank? || params[:repo_name].blank?
+      flash[:alert] = 'Please insert the repository owner and name to verify contributions.'
+    elsif params[:repo_owner].include?('/') || params[:repo_name].include?('/')
+      flash[:alert] = 'Please include a valid repository owner and name.'
+    else
+      begin
+        repo = current_user.github_account.verify_contribution(params[:repo_owner], params[:repo_name])
+      rescue Exception => e
+        flash[:alert] = e.message
+      end
+    end
+    flash[:notice] = 'Your contributions to the repository have been added.' if repo.present?
+    render :edit
   end
 
 end

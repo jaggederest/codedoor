@@ -7,4 +7,8 @@ class GithubRepo < ActiveRecord::Base
   validates :repo_owner, presence: true
   validates :repo_name, presence: true, uniqueness: {scope: :repo_owner}
   validates :default_branch, presence: true
+
+  def self.repo_commits_url(username, repo_owner, repo_name)
+    "https://github.com/#{repo_owner}/#{repo_name}/commits?author=#{username}"
+  end
 end

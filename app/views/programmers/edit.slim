@@ -15,7 +15,7 @@
 .span9
   h2.span9.settings-header
     | Programmer Info
-  = nested_form_for [current_user, @programmer], url: {action: :update}, html: {class: 'form-horizontal'}  do |f|
+  = nested_form_for [current_user, @programmer], url: {action: :update}, html: {class: 'form-horizontal'} do |f|
     = f.hidden_field :user_id
     .control-group class="#{model_attribute_class(@programmer, :title)}"
       .control-label
@@ -177,6 +177,16 @@
             - repo = github_form.object
             - repo_text = "#{repo.repo_owner}/#{repo.repo_name} #{repo.is_fork? ? '(fork)' : ''} #{pluralize(repo.stars_count, 'star')}"
             = repo_commits_link(current_user.github_account.username, repo.repo_owner, repo.repo_name, repo_text)
+
+    .control-group
+      .control-label
+      .controls
+        .row
+          .span1
+          = text_field_tag :repo_owner, nil, placeholder: 'User', class: 'repo-owner-field'
+          | /
+          = text_field_tag :repo_name, nil, placeholder: 'Repository', class: 'repo-name-field'
+          = f.submit 'Verify Contribution', data: {disable_with: 'Submitting...'}
 
     h2.span9.settings-header
       | Résumé

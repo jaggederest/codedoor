@@ -1,5 +1,37 @@
 class GithubUserAccount < UserAccount
-  def verify_repo(repo_org, repo_name)
+  def verify_contribution(repo_owner, repo_name)
+    matching_repos = self.user.programmer.github_repos.where(repo_owner: repo_owner, repo_name: repo_name)
+    return matching_repos.first unless matching_repos.empty?
+
+    contributors = get_contributors(repo_owner, repo_name)
+    if contributors.count == 0
+      # If a 202 response occurs, that means that GitHub is generating the statistics.
+      sleep(3)
+      contributors = get_contributors(repo_owner, repo_name)
+    end
+    contributions = contributors.detect{|c| c.login == username}
+
+    if contributions.present?
+      repo = GithubRepo.new(programmer_id: self.user.programmer.id, shown: true)
+      # Probably would have to refresh daily to make this count worthwhile
+      repo.contributions = contributions.contributions
+      r = github_client.repos.get(repo_owner, repo_name)
+      assign_repo_info_to_repo_model(repo, r)
+      repo.save!
+      return repo
+    elsif contributors.count == 100
+      # NOTE: You cannot use the API to determine if the user is the 101st contributor.
+      # So scrape the HTML!
+      html = RestClient.get(GithubRepo.repo_commits_url(username, repo_owner, repo_name))
+      if html.include?('Browse code') && !html.include?('No commits found')
+        repo = GithubRepo.new(programmer_id: self.user.programmer.id, shown: true)
+        r = github_client.repos.get(repo_owner, repo_name)
+        assign_repo_info_to_repo_model(repo, r)
+        repo.save!
+        return repo
+      end
+    end
+    raise 'You have not contributed any code to this repository.'
   end
 
   # This gets the public repos that are *owned* by the programmer
@@ -7,19 +39,9 @@ class GithubUserAccount < UserAccount
     existing_repos = self.user.programmer.github_repos
     fetch_repos(github_client).each do |r|
       next if r.private?
-      repo_owner = r.owner.login
-      repo_name = r.name
-      next if existing_repos.where(repo_owner: repo_owner, repo_name: repo_name).count > 0
+      next if existing_repos.where(repo_owner: r.owner.login, repo_name: r.name).count > 0
       repo = GithubRepo.new(programmer_id: self.user.programmer.id, shown: (existing_repos.count == 0))
-      repo.default_branch = r.default_branch
-      repo.forks_count = r.forks_count
-      # NOTE: Watching and starring used to be the same, hence the naming discrepancy
-      repo.stars_count = r.watchers_count
-      repo.language = r.language
-      repo.is_fork = r.fork?
-      repo.repo_owner = repo_owner
-      repo.repo_name = repo_name
-      repo.description = r.description
+      assign_repo_info_to_repo_model(repo, r)
       repo.save!
     end
   end
@@ -35,5 +57,27 @@ class GithubUserAccount < UserAccount
 
   def fetch_repos(client)
     client.repos.list({auto_pagination: true})
+  end
+
+  def assign_repo_info_to_repo_model(repo_object, repo_info)
+    repo_object.default_branch = repo_info.default_branch
+    repo_object.forks_count = repo_info.forks_count
+    # NOTE: Watching and starring used to be the same, hence the naming discrepancy
+    repo_object.stars_count = repo_info.watchers_count
+    repo_object.language = repo_info.language
+    # NOTE: Should fix in GitHub API client- fork? works for the repos list, since it is a Mashie,
+    # but not when calling for a specific one, as that is a ResponseWrapper.
+    repo_object.is_fork = repo_info.fork
+    repo_object.repo_owner = repo_info.owner.login
+    repo_object.repo_name = repo_info.name
+    repo_object.description = repo_info.description
+  end
+
+  def get_contributors(repo_owner, repo_name)
+    begin
+      github_client.repos.contributors(repo_owner, repo_name)
+    rescue Exception => e
+      raise 'The repository does not exist.'
+    end
   end
 end

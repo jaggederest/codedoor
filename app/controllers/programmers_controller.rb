@@ -26,21 +26,38 @@ class ProgrammersController < ApplicationController
 
   def update
     @programmer = Programmer.find(current_user.programmer.id)
-    incomplete = @programmer.incomplete?
-    if @programmer.update(update_programmer_params)
-      if incomplete
-        flash[:notice] = 'Your programmer account has been created.'
+    # TODO: Should probably use AJAX here
+    if params[:commit] == 'Verify Contribution'
+      if params[:repo_owner].blank? || params[:repo_name].blank?
+        flash[:alert] = 'Please insert the repository owner and name to verify contributions.'
+      elsif params[:repo_owner].include?('/') || params[:repo_name].include?('/')
+        flash[:alert] = 'Please include a valid repository owner and name.'
       else
-        flash[:notice] = 'Your programmer account has been updated.'
+        begin
+          repo = current_user.github_account.verify_contribution(params[:repo_owner], params[:repo_name])
+        rescue Exception => e
+          flash[:alert] = e.message
+        end
       end
-      redirect_to programmer_path(@programmer)
-    else
-      if incomplete
-        flash[:alert] = 'Your programmer account could not be created.'
-      else
-        flash[:alert] = 'Your programmer account could not be updated.'
-      end
+      flash[:notice] = 'Your contributions to the repository have been added.' if repo.present?
       render :edit
+    else
+      incomplete = @programmer.incomplete?
+      if @programmer.update(update_programmer_params)
+        if incomplete
+          flash[:notice] = 'Your programmer account has been created.'
+        else
+          flash[:notice] = 'Your programmer account has been updated.'
+        end
+        redirect_to programmer_path(@programmer)
+      else
+        if incomplete
+          flash[:alert] = 'Your programmer account could not be created.'
+        else
+          flash[:alert] = 'Your programmer account could not be updated.'
+        end
+        render :edit
+      end
     end
   end
 

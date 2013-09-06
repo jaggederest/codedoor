@@ -23,11 +23,7 @@ module ApplicationHelper
     "#{full_messages.join(' ')} #{other_messages_text}"
   end
 
-  def repo_commits_url(username, repo_owner, repo_name)
-    "https://github.com/#{repo_owner}/#{repo_name}/commits?author=#{username}"
-  end
-
   def repo_commits_link(username, repo_owner, repo_name, text)
-    link_to(text, repo_commits_url(username, repo_owner, repo_name), target: '_blank')
+    link_to(text, GithubRepo.repo_commits_url(username, repo_owner, repo_name), target: '_blank')
   end
 end

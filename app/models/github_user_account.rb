@@ -15,15 +15,13 @@ class GithubUserAccount < UserAccount
       repo = GithubRepo.new(programmer_id: self.user.programmer.id, shown: true)
       # Probably would have to refresh daily to make this count worthwhile
       repo.contributions = contributions.contributions
-      r = github_client.repos.get(repo_owner, repo_name)
-      return assign_repo_info_to_repo_model(repo, r)
+      return create_repo(repo, repo_owner, repo_name)
     elsif contributors.count == 100
       # NOTE: You cannot use the API to determine if the user is the 101st contributor.
       # So scrape the HTML!
       if ScrapeHtml.is_contributor_through_html?(username, repo_owner, repo_name)
         repo = GithubRepo.new(programmer_id: self.user.programmer.id, shown: true)
-        r = github_client.repos.get(repo_owner, repo_name)
-        return assign_repo_info_to_repo_model(repo, r)
+        return create_repo(repo, repo_owner, repo_name)
       end
     end
     raise 'You have not contributed any code to this repository.'
@@ -32,9 +30,10 @@ class GithubUserAccount < UserAccount
   # This gets the public repos that are *owned* by the programmer
   def load_repos
     existing_repos = self.user.programmer.github_repos
+    show_repos = (existing_repos.count == 0)
     fetch_repos(github_client).each do |r|
       next if r.private? || (existing_repos.named(r.owner.login, r.name).count > 0)
-      repo = GithubRepo.new(programmer_id: self.user.programmer.id, shown: (existing_repos.count == 0))
+      repo = GithubRepo.new(programmer_id: self.user.programmer.id, shown: show_repos)
       assign_repo_info_to_repo_model(repo, r)
     end
   end
@@ -66,6 +65,11 @@ class GithubUserAccount < UserAccount
     repo_object.description = repo_info.description
     repo_object.save!
     repo_object
+  end
+
+  def create_repo(repo_object, repo_owner, repo_name)
+    r = github_client.repos.get(repo_owner, repo_name)
+    return assign_repo_info_to_repo_model(repo_object, r)
   end
 
   def get_contributors(repo_owner, repo_name)

@@ -28,20 +28,20 @@ gem 'coffee-rails', '~> 4.0.0'
 # gem 'therubyracer', platforms: :ruby
 
 # Use jquery as the JavaScript library
-gem 'jquery-rails'
+gem 'jquery-rails', '~> 3.0.4'
 
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
-gem 'turbolinks'
+gem 'turbolinks', '~> 1.3.0'
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
-gem 'jbuilder', '~> 1.2'
+gem 'jbuilder', '~> 1.5.1'
 
 # GitHub oAuth is used for login, and omniauth is used with devise
 gem 'devise', '~> 3.0.1'
-gem 'omniauth-github'
+gem 'omniauth-github', '~> 1.1.1'
 
 # Manage environment variables related to this application
-gem 'figaro'
+gem 'figaro', '~> 0.7.0'
 
 gem 'nested_form', '~> 0.3.2'
 

@@ -1,7 +1,7 @@
 class GithubUserAccount < UserAccount
   def verify_contribution(repo_owner, repo_name)
-    matching_repos = self.user.programmer.github_repos.where(repo_owner: repo_owner, repo_name: repo_name)
-    return matching_repos.first unless matching_repos.empty?
+    matching_repo = self.user.programmer.github_repos.named(repo_owner, repo_name).first
+    return matching_repo unless matching_repo.nil?
 
     contributors = get_contributors(repo_owner, repo_name)
     if contributors.count == 0
@@ -33,8 +33,7 @@ class GithubUserAccount < UserAccount
   def load_repos
     existing_repos = self.user.programmer.github_repos
     fetch_repos(github_client).each do |r|
-      next if r.private?
-      next if existing_repos.where(repo_owner: r.owner.login, repo_name: r.name).count > 0
+      next if r.private? || (existing_repos.named(r.owner.login, r.name).count > 0)
       repo = GithubRepo.new(programmer_id: self.user.programmer.id, shown: (existing_repos.count == 0))
       assign_repo_info_to_repo_model(repo, r)
     end

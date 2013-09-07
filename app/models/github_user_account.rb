@@ -37,7 +37,6 @@ class GithubUserAccount < UserAccount
       next if existing_repos.where(repo_owner: r.owner.login, repo_name: r.name).count > 0
       repo = GithubRepo.new(programmer_id: self.user.programmer.id, shown: (existing_repos.count == 0))
       assign_repo_info_to_repo_model(repo, r)
-      repo.save!
     end
   end
 

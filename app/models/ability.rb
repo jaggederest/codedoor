@@ -16,18 +16,10 @@ class Ability
         end
       end
       can [:create, :update, :destroy], Programmer, user_id: user.id
-      can :read, ResumeItem
-      can [:create, :update, :destroy], ResumeItem do |resume_item|
+      can :read, [ResumeItem, EducationItem]
+      can [:create, :update, :destroy], [ResumeItem, EducationItem] do |item|
         if user.programmer.present?
-          user.programmer.id == resume_item.programmer_id
-        else
-          false
-        end
-      end
-      can :read, EducationItem
-      can [:create, :update, :destroy], EducationItem do |education_item|
-        if user.programmer.present?
-          user.programmer.id == education_item.programmer_id
+          user.programmer.id == item.programmer_id
         else
           false
         end

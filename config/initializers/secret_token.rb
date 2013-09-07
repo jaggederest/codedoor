@@ -9,4 +9,7 @@
 
 # Make sure your secret_key_base is kept private
 # if you're sharing your code publicly.
-Codedoor::Application.config.secret_key_base = 'ec828475918b4a4b625ab7d5dc8fa0171c0c637905919d0afcb828fa0dd77ee2029bdff9f6c07f042f126afe603fcd16ce6cdb9ac2a10cfc4ef53b00a1678694'
+unless Rails.env.production?
+  ENV['RAILS_SECRET_KEY_BASE'] = '11c6b8ece23429bcec6d95d311b20653ed641d46736ef3a01df487ee236a72da6e79035e480342562843f2db57f54b267c8f2d95dd6a69bbd6535cad7384c771'
+end
+Codedoor::Application.config.secret_key_base = ENV['RAILS_SECRET_KEY_BASE']

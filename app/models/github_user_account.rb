@@ -16,18 +16,14 @@ class GithubUserAccount < UserAccount
       # Probably would have to refresh daily to make this count worthwhile
       repo.contributions = contributions.contributions
       r = github_client.repos.get(repo_owner, repo_name)
-      assign_repo_info_to_repo_model(repo, r)
-      repo.save!
-      return repo
+      return assign_repo_info_to_repo_model(repo, r)
     elsif contributors.count == 100
       # NOTE: You cannot use the API to determine if the user is the 101st contributor.
       # So scrape the HTML!
       if ScrapeHtml.is_contributor_through_html?(username, repo_owner, repo_name)
         repo = GithubRepo.new(programmer_id: self.user.programmer.id, shown: true)
         r = github_client.repos.get(repo_owner, repo_name)
-        assign_repo_info_to_repo_model(repo, r)
-        repo.save!
-        return repo
+        return assign_repo_info_to_repo_model(repo, r)
       end
     end
     raise 'You have not contributed any code to this repository.'
@@ -70,6 +66,8 @@ class GithubUserAccount < UserAccount
     repo_object.repo_owner = repo_info.owner.login
     repo_object.repo_name = repo_info.name
     repo_object.description = repo_info.description
+    repo_object.save!
+    repo_object
   end
 
   def get_contributors(repo_owner, repo_name)

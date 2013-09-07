@@ -66,6 +66,7 @@ group :test do
   gem 'capybara-webkit'
   gem 'database_cleaner', '~> 1.0.1'
   gem 'launchy'
+  gem 'simplecov', require: false
 end
 
 group :doc do

@@ -201,4 +201,21 @@ describe ProgrammersController do
 
   end
 
+  describe 'POST update- verify_contribution' do
+    it 'should create a github_repo if the user has made a contribution' do
+    end
+
+    it 'should return error if the user has not made a contribution' do
+    end
+
+    it 'should return error if repo does not exist' do
+    end
+
+    it 'should return specific error if repo values are blank' do
+    end
+
+    it 'should return specific error if repo values have "/" in them' do
+    end
+  end
+
 end

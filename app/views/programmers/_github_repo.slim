@@ -1,0 +1,9 @@
+.control-group
+  .control-label
+  .controls
+    .row
+      .span1
+        = github_form.check_box :shown
+      - repo = github_form.object
+      - repo_text = "#{repo.repo_owner}/#{repo.repo_name} #{repo.is_fork? ? '(fork)' : ''} #{pluralize(repo.stars_count, 'star')}"
+      = repo_commits_link(current_user.github_account.username, repo.repo_owner, repo.repo_name, repo_text)

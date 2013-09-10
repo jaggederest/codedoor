@@ -162,31 +162,35 @@
       .controls
         | Shown
 
-    - first_element = true
     = f.fields_for :github_repos do |github_form|
-
-      .control-group
-        .control-label
-          - if first_element
-            | Repositories
-            - first_element = false
-        .controls
-          .row
-            .span1
-              = github_form.check_box :shown
-            - repo = github_form.object
-            - repo_text = "#{repo.repo_owner}/#{repo.repo_name} #{repo.is_fork? ? '(fork)' : ''} #{pluralize(repo.stars_count, 'star')}"
-            = repo_commits_link(current_user.github_account.username, repo.repo_owner, repo.repo_name, repo_text)
+      = render partial: 'programmers/github_repo', locals: {github_form: github_form, repo: :repo}
 
     .control-group
       .control-label
       .controls
         .row
           .span1
-          = text_field_tag :repo_owner, nil, placeholder: 'User', class: 'repo-owner-field'
+          = text_field_tag :repo_owner, nil, placeholder: 'User', class: 'repo-owner-field', id: 'repo-owner'
           | /
-          = text_field_tag :repo_name, nil, placeholder: 'Repository', class: 'repo-name-field'
-          = f.submit 'Verify Contribution', data: {disable_with: 'Submitting...'}
+          = text_field_tag :repo_name, nil, placeholder: 'Repository', class: 'repo-name-field', id: 'repo-name'
+          = link_to 'Add', verify_contribution_user_programmer_path(@programmer), method: :post, remote: true, id: 'verify-contribution', class: 'btn'
+          span.ajax-load.hidden
+            = image_tag('ajax-load.gif')
+          javascript:
+            $('#verify-contribution').bind('ajax:before', function() {
+              $(this).data('params', {repo_owner: $('#repo-owner').val(), repo_name: $('#repo-name').val()});
+            });
+            $('#verify-contribution').bind('ajax:success', function(evt, data, status, xhr) {
+              var responseObject = $.parseJSON(xhr.responseText);
+              $('#contribution-message').text(responseObject.success).removeClass('alert-error').addClass('alert verify-contribution-message');
+            });
+            $('#verify-contribution').bind('ajax:error', function(evt, xhr, status, error) {
+              var responseObject = $.parseJSON(xhr.responseText);
+              $('#contribution-message').text(responseObject.error).addClass('alert alert-error verify-contribution-message');
+            });
+        .row
+          .span1
+          div id='contribution-message' class='verify-contribution-message'
 
     h2.span9.settings-header
       | Résumé

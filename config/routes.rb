@@ -6,7 +6,9 @@ Codedoor::Application.routes.draw do
   resources :programmers, only: [:index, :show]
 
   resources :users, only: [:edit, :update] do
-    resource :programmer, only: [:edit, :update]
+    resource :programmer, only: [:edit, :update] do
+      post :verify_contribution, defaults: { format: :json }
+    end
   end
 
 end

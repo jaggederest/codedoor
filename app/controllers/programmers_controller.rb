@@ -1,5 +1,5 @@
 class ProgrammersController < ApplicationController
-  load_and_authorize_resource
+  load_and_authorize_resource except: [:verify_contribution]
 
   before_filter :ensure_terms_checked, except: [:index, :show]
 
@@ -26,25 +26,53 @@ class ProgrammersController < ApplicationController
 
   def update
     @programmer = Programmer.find(current_user.programmer.id)
-    # TODO: Should probably use AJAX instead
-    if params[:commit] == 'Verify Contribution'
-      verify_contribution
-    else
-      incomplete = @programmer.incomplete?
-      if @programmer.update(update_programmer_params)
-        if incomplete
-          flash[:notice] = 'Your programmer account has been created.'
-        else
-          flash[:notice] = 'Your programmer account has been updated.'
-        end
-        redirect_to programmer_path(@programmer)
+
+    incomplete = @programmer.incomplete?
+    if @programmer.update(update_programmer_params)
+      if incomplete
+        flash[:notice] = 'Your programmer account has been created.'
       else
-        if incomplete
-          flash[:alert] = 'Your programmer account could not be created.'
-        else
-          flash[:alert] = 'Your programmer account could not be updated.'
-        end
-        render :edit
+        flash[:notice] = 'Your programmer account has been updated.'
+      end
+      redirect_to programmer_path(@programmer)
+    else
+      if incomplete
+        flash[:alert] = 'Your programmer account could not be created.'
+      else
+        flash[:alert] = 'Your programmer account could not be updated.'
+      end
+      render :edit
+    end
+  end
+
+  def verify_contribution
+    authorize! :update, Programmer.find(current_user.programmer.id)
+
+    response = {success: nil, error: nil}
+
+    if params[:repo_owner].blank? || params[:repo_name].blank?
+      response[:error] = 'Please insert the repository owner and name to verify contributions.'
+    elsif params[:repo_owner].include?('/') || params[:repo_name].include?('/')
+      response[:error] = 'Please include a valid repository owner and name.'
+    else
+      begin
+        repo = current_user.github_account.verify_contribution(params[:repo_owner], params[:repo_name])
+      rescue Exception => e
+        response[:error] = e.message
+      end
+    end
+    if repo.present?
+      response[:success] = 'Your contributions to the repository have been added.'
+      respond_to do |format|
+        format.json {
+          render json: response.to_json
+        }
+      end
+    else
+      respond_to do |format|
+        format.json {
+          render json: response.to_json, status: :bad_request
+        }
       end
     end
   end
@@ -63,22 +91,6 @@ class ProgrammersController < ApplicationController
 
   def ensure_terms_checked
     redirect_cannot_be_found unless current_user.present? && current_user.checked_terms?
-  end
-
-  def verify_contribution
-    if params[:repo_owner].blank? || params[:repo_name].blank?
-      flash[:alert] = 'Please insert the repository owner and name to verify contributions.'
-    elsif params[:repo_owner].include?('/') || params[:repo_name].include?('/')
-      flash[:alert] = 'Please include a valid repository owner and name.'
-    else
-      begin
-        repo = current_user.github_account.verify_contribution(params[:repo_owner], params[:repo_name])
-      rescue Exception => e
-        flash[:alert] = e.message
-      end
-    end
-    flash[:notice] = 'Your contributions to the repository have been added.' if repo.present?
-    render :edit
   end
 
 end

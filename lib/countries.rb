@@ -200,7 +200,7 @@ class Countries
       :'Venezuela' => :VE,
       :'Vietnam ' => :VN,
       :'Virgin Islands, British' => :VG,
-      :'Virgin Islands, U.s.' => :VI,
+      :'Virgin Islands, U.S.' => :VI,
       :'Wallis And Futuna' => :WF,
       :'Western Sahara' => :EH,
       :'Zambia' => :ZM

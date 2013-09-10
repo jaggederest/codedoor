@@ -1,7 +1,7 @@
 class GithubUserAccount < UserAccount
   def verify_contribution(repo_owner, repo_name)
     matching_repo = self.user.programmer.github_repos.named(repo_owner, repo_name).first
-    return matching_repo unless matching_repo.nil?
+    raise 'This repository has already been added.' unless matching_repo.nil?
 
     contributors = get_contributors(repo_owner, repo_name)
     if contributors.count == 0

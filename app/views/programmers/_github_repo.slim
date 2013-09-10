@@ -3,7 +3,10 @@
   .controls
     .row
       .span1
-        = github_form.check_box :shown
-      - repo = github_form.object
+        - checkbox_name = "programmer[github_repos_attributes][#{index}][shown]"
+        = hidden_field_tag(checkbox_name, '0')
+        = check_box_tag(checkbox_name, '1', repo.shown?)
       - repo_text = "#{repo.repo_owner}/#{repo.repo_name} #{repo.is_fork? ? '(fork)' : ''} #{pluralize(repo.stars_count, 'star')}"
       = repo_commits_link(current_user.github_account.username, repo.repo_owner, repo.repo_name, repo_text)
+- if serverside
+  = hidden_field_tag("programmer[github_repos_attributes][#{index}][id]", repo.id.to_s)

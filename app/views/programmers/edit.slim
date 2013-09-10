@@ -162,8 +162,14 @@
       .controls
         | Shown
 
-    = f.fields_for :github_repos do |github_form|
-      = render partial: 'programmers/github_repo', locals: {github_form: github_form, repo: :repo}
+    span#github-repos
+      / TODO: A hack is used instead of using the actual form,
+      / since we need to render the github repo partial server-side (for AJAX).
+      - index = 0
+      = f.fields_for :github_repos do |github_form|
+        - repo = github_form.object
+        = render partial: 'programmers/github_repo', locals: {repo: repo, index: index, serverside: false}
+        - index += 1
 
     .control-group
       .control-label
@@ -183,6 +189,7 @@
             $('#verify-contribution').bind('ajax:success', function(evt, data, status, xhr) {
               var responseObject = $.parseJSON(xhr.responseText);
               $('#contribution-message').text(responseObject.success).removeClass('alert-error').addClass('alert verify-contribution-message');
+              $('#github-repos').append(responseObject.html);
             });
             $('#verify-contribution').bind('ajax:error', function(evt, xhr, status, error) {
               var responseObject = $.parseJSON(xhr.responseText);

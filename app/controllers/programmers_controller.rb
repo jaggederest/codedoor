@@ -50,19 +50,21 @@ class ProgrammersController < ApplicationController
 
     response = {success: nil, error: nil}
 
-    if params[:repo_owner].blank? || params[:repo_name].blank?
-      response[:error] = 'Please insert the repository owner and name to verify contributions.'
-    elsif params[:repo_owner].include?('/') || params[:repo_name].include?('/')
+    repo_owner = params[:repo_owner]
+    repo_name = params[:repo_name]
+
+    if repo_owner.blank? || repo_name.blank? || repo_owner.include?('/') || repo_name.include?('/')
       response[:error] = 'Please include a valid repository owner and name.'
     else
       begin
-        repo = current_user.github_account.verify_contribution(params[:repo_owner], params[:repo_name])
+        repo = current_user.github_account.verify_contribution(repo_owner, repo_name)
       rescue Exception => e
         response[:error] = e.message
       end
     end
     if repo.present?
-      response[:success] = 'Your contributions to the repository have been added.'
+      response[:success] = "Your contributions to #{repo_name}/#{repo_owner} have been added."
+      response[:html] = render_to_string(partial: 'programmers/github_repo', locals: {repo: repo, index: current_user.programmer.github_repos.count, serverside: true})
       respond_to do |format|
         format.json {
           render json: response.to_json

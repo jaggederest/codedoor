@@ -5,6 +5,7 @@ class User < ActiveRecord::Base
 
   has_many :user_accounts
   has_many :github_user_accounts
+  has_many :github_repos
   has_one  :programmer
 
   validates :country, presence: true, if: Proc.new{|user| user.checked_terms?}

@@ -187,7 +187,20 @@ describe ProgrammersController do
       Programmer.find_by_user_id(@user.id).should eq(@programmer)
     end
 
-    it 'should fail if the parameters passed in are invalid' do
+    it 'should fail creation if the parameters passed in are invalid' do
+      @programmer.update_columns(state: 'incomplete')
+      invalid_programmer = valid_programmer(@user.id)
+      invalid_programmer[:rate] = 1000000
+      post :update, user_id: @user.id, id: @programmer.id, programmer: invalid_programmer
+      response.should render_template('edit')
+      flash[:alert].should eq('Your programmer account could not be created.')
+      assigns(:programmer).errors[:rate].should eq(['must be less than or equal to 1000'])
+      # The rate in @programmer should be 1000000, because the user will see the input they typed in.
+      assigns(:programmer).rate.should eq(1000000)
+      @programmer.reload.rate.should eq(20)
+    end
+
+    it 'should fail update if the parameters passed in are invalid' do
       invalid_programmer = valid_programmer(@user.id)
       invalid_programmer[:rate] = 1000000
       post :update, user_id: @user.id, id: @programmer.id, programmer: invalid_programmer
@@ -201,20 +214,50 @@ describe ProgrammersController do
 
   end
 
-  describe 'POST update- verify_contribution' do
+  describe 'POST verify_contribution' do
+    before :each do
+      @programmer = FactoryGirl.create(:programmer, user: @user, rate: 20, state: :activated)
+      @user_account = FactoryGirl.create(:github_user_account, user: @user)
+    end
+
     it 'should create a github_repo if the user has made a contribution' do
+      @user_account.username = 'dhh'
+      @user_account.save!
+      post :verify_contribution, user_id: @user.id, id: @programmer.id, repo_owner: 'rails', repo_name: 'rails', format: :json
+      response.response_code.should eq(200)
+      JSON.parse(response.body)['success'].should eq('Your contributions to rails/rails have been added.')
+    end
+
+    it 'should return error if the repository has already been added' do
+      FactoryGirl.create(:github_repo, programmer: @programmer, repo_owner: 'repo', repo_name: 'already-exists')
+      post :verify_contribution, user_id: @user.id, id: @programmer.id, repo_owner: 'repo', repo_name: 'already-exists', format: :json
+      response.response_code.should eq(400)
+      JSON.parse(response.body)['error'].should eq('This repository has already been added.')
     end
 
     it 'should return error if the user has not made a contribution' do
+      post :verify_contribution, user_id: @user.id, id: @programmer.id, repo_owner: 'rails', repo_name: 'rails', format: :json
+      response.response_code.should eq(400)
+      JSON.parse(response.body)['error'].should eq('You have not contributed any code to this repository.')
     end
 
     it 'should return error if repo does not exist' do
+      post :verify_contribution, user_id: @user.id, id: @programmer.id, repo_owner: 'rhc2104', repo_name: 'repo-that-does-not-exist', format: :json
+      response.response_code.should eq(400)
+      JSON.parse(response.body)['error'].should eq('The repository does not exist.')
+
     end
 
     it 'should return specific error if repo values are blank' do
+      post :verify_contribution, user_id: @user.id, id: @programmer.id, repo_owner: '', repo_name: '', format: :json
+      response.response_code.should eq(400)
+      JSON.parse(response.body)['error'].should eq('Please include a valid repository owner and name.')
     end
 
     it 'should return specific error if repo values have "/" in them' do
+      post :verify_contribution, user_id: @user.id, id: @programmer.id, repo_owner: 'invalid/owner', repo_name: 'invalid/name', format: :json
+      response.response_code.should eq(400)
+      JSON.parse(response.body)['error'].should eq('Please include a valid repository owner and name.')
     end
   end
 

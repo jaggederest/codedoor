@@ -3,13 +3,11 @@ FactoryGirl.define do
     sequence :account_id do |n|
       "github account #{n}"
     end
-    sequence :oauth_token do |n|
-      "oauth token #{n}"
-    end
     sequence :username do |n|
       "username-#{n}"
     end
     type 'GithubUserAccount'
+    oauth_token { ENV['TEST_OAUTH_TOKEN'] }
     user
   end
 end

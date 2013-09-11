@@ -58,8 +58,10 @@ class ProgrammersController < ApplicationController
     else
       begin
         repo = current_user.github_account.verify_contribution(repo_owner, repo_name)
-      rescue Exception => e
+      rescue GithubApiError => e
         response[:error] = e.message
+      else
+        response[:error] = 'There was a problem in verifying the contribution.'
       end
     end
     if repo.present?

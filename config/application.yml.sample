@@ -3,3 +3,4 @@
 # The callback URL should be: http://0.0.0.0:3000/auth/github/callback
 GITHUB_KEY: PleaseInsert
 GITHUB_SECRET: PleaseInsert
+TEST_OAUTH_TOKEN: PleaseInsert

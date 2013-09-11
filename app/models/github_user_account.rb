@@ -1,7 +1,7 @@
 class GithubUserAccount < UserAccount
   def verify_contribution(repo_owner, repo_name)
     matching_repo = self.user.programmer.github_repos.named(repo_owner, repo_name).first
-    raise 'This repository has already been added.' unless matching_repo.nil?
+    raise GithubApiError.new('This repository has already been added.') unless matching_repo.nil?
 
     contributors = get_contributors(repo_owner, repo_name)
     if contributors.count == 0
@@ -22,14 +22,14 @@ class GithubUserAccount < UserAccount
       repo = GithubRepo.new(programmer_id: self.user.programmer.id, shown: true)
       return create_repo(repo, repo_owner, repo_name)
     end
-    raise 'You have not contributed any code to this repository.'
+    raise GithubApiError.new('You have not contributed any code to this repository.')
   end
 
   # This gets the public repos that are *owned* by the programmer
   def load_repos
     existing_repos = self.user.programmer.github_repos
     show_repos = (existing_repos.count == 0)
-    fetch_user_repos(github_client).each do |r|
+    fetch_user_repos.each do |r|
       next if r.private? || (existing_repos.named(r.owner.login, r.name).count > 0)
       repo = GithubRepo.new(programmer_id: self.user.programmer.id, shown: show_repos)
       assign_repo_info_to_repo_model(repo, r)
@@ -45,12 +45,12 @@ class GithubUserAccount < UserAccount
     github
   end
 
-  def fetch_repo(client, repo_owner, repo_name)
-    client.repos.get(repo_owner, repo_name)
+  def fetch_repo(repo_owner, repo_name)
+    github_client.repos.get(repo_owner, repo_name)
   end
 
-  def fetch_user_repos(client)
-    client.repos.list({auto_pagination: true})
+  def fetch_user_repos
+    github_client.repos.list({auto_pagination: true})
   end
 
   def assign_repo_info_to_repo_model(repo_object, repo_info)
@@ -77,8 +77,10 @@ class GithubUserAccount < UserAccount
     begin
       github_client.repos.contributors(repo_owner, repo_name)
     rescue Exception => e
-      raise 'The repository does not exist.'
+      raise GithubApiError.new('The repository does not exist.')
     end
   end
 
 end
+
+class GithubApiError < StandardError; end

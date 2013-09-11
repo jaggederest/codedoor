@@ -4,8 +4,8 @@
     .row
       .span1
         - checkbox_name = "programmer[github_repos_attributes][#{index}][shown]"
-        = hidden_field_tag(checkbox_name, '0')
-        = check_box_tag(checkbox_name, '1', repo.shown?)
+        = hidden_field_tag(checkbox_name, '0', id: nil)
+        = check_box_tag(checkbox_name, '1', repo.shown?, id: "shown-github-#{index}")
       - repo_text = "#{repo.repo_owner}/#{repo.repo_name} #{repo.is_fork? ? '(fork)' : ''} #{pluralize(repo.stars_count, 'star')}"
       = repo_commits_link(current_user.github_account.username, repo.repo_owner, repo.repo_name, repo_text)
 - if serverside

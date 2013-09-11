@@ -26,7 +26,7 @@ describe GithubUserAccount do
     end
 
     it 'should create repos when called, but not create duplicates' do
-      @user_account.should_receive(:fetch_repos).at_least(:once) { [example_repo_data] }
+      @user_account.should_receive(:fetch_user_repos).at_least(:once) { [example_repo_data] }
       @user_account.load_repos
 
       repos = @programmer.github_repos
@@ -52,7 +52,7 @@ describe GithubUserAccount do
     # NOTE: Should we delete repos that stop showing up?
     # That can lead to terrible edge cases where all repos are deleted.
     it 'should add a repo that is different from what is currently stored' do
-      @user_account.should_receive(:fetch_repos).at_least(:once) { [example_repo_data] }
+      @user_account.should_receive(:fetch_user_repos).at_least(:once) { [example_repo_data] }
       @user_account.load_repos
 
       repos = @programmer.reload.github_repos
@@ -64,7 +64,7 @@ describe GithubUserAccount do
       # TODO: Fix hack where should_receive cannot be overwritten.
       # We can't use stub because fetch_repos is private.
       reloaded_user_account = @user_account.user.user_accounts.first
-      reloaded_user_account.should_receive(:fetch_repos).at_least(:once) { [example_repo_data, other_repo_data] }
+      reloaded_user_account.should_receive(:fetch_user_repos).at_least(:once) { [example_repo_data, other_repo_data] }
       reloaded_user_account.load_repos
 
       repos = @programmer.reload.github_repos
@@ -82,7 +82,7 @@ describe GithubUserAccount do
       repo_data = example_repo_data
       repo_data.private = true
 
-      @user_account.should_receive(:fetch_repos) { [repo_data] }
+      @user_account.should_receive(:fetch_user_repos) { [repo_data] }
       @user_account.load_repos
 
       @programmer.reload.github_repos.should eq([])

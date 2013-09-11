@@ -29,7 +29,7 @@ class GithubUserAccount < UserAccount
   def load_repos
     existing_repos = self.user.programmer.github_repos
     show_repos = (existing_repos.count == 0)
-    fetch_repos(github_client).each do |r|
+    fetch_user_repos(github_client).each do |r|
       next if r.private? || (existing_repos.named(r.owner.login, r.name).count > 0)
       repo = GithubRepo.new(programmer_id: self.user.programmer.id, shown: show_repos)
       assign_repo_info_to_repo_model(repo, r)
@@ -45,7 +45,11 @@ class GithubUserAccount < UserAccount
     github
   end
 
-  def fetch_repos(client)
+  def fetch_repo(client, repo_owner, repo_name)
+    client.repos.get(repo_owner, repo_name)
+  end
+
+  def fetch_user_repos(client)
     client.repos.list({auto_pagination: true})
   end
 
@@ -66,8 +70,7 @@ class GithubUserAccount < UserAccount
   end
 
   def create_repo(repo_object, repo_owner, repo_name)
-    r = github_client.repos.get(repo_owner, repo_name)
-    return assign_repo_info_to_repo_model(repo_object, r)
+    return assign_repo_info_to_repo_model(repo_object, fetch_repo(repo_owner, repo_name))
   end
 
   def get_contributors(repo_owner, repo_name)

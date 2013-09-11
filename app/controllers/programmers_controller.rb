@@ -63,8 +63,8 @@ class ProgrammersController < ApplicationController
       end
     end
     if repo.present?
-      response[:success] = "Your contributions to #{repo_name}/#{repo_owner} have been added."
-      response[:html] = render_to_string(partial: 'programmers/github_repo', locals: {repo: repo, index: current_user.programmer.github_repos.count, serverside: true})
+      response[:success] = "Your contributions to #{repo_owner}/#{repo_name} have been added."
+      response[:html] = render_to_string(partial: 'programmers/github_repo', locals: {repo: repo, index: (current_user.programmer.github_repos.count - 1), serverside: true})
       respond_to do |format|
         format.json {
           render json: response.to_json

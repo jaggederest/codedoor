@@ -3,25 +3,14 @@ class GithubUserAccount < UserAccount
     matching_repo = self.user.programmer.github_repos.named(repo_owner, repo_name).first
     raise GithubApiError.new('This repository has already been added.') unless matching_repo.nil?
 
-    contributors = get_contributors(repo_owner, repo_name)
-    if contributors.count == 0
-      # If a 202 response occurs, that means that GitHub is generating the statistics.
-      sleep(3)
-      contributors = get_contributors(repo_owner, repo_name)
-    end
-    contributions = contributors.detect{|c| c.login == username}
+    contributions = contributed_query(repo_owner, repo_name)
 
-    if contributions.present?
+    if contributions[:contributed]
       repo = GithubRepo.new(programmer_id: self.user.programmer.id, shown: true)
-      # Probably would have to refresh daily to make this count worthwhile
-      repo.contributions = contributions.contributions
-      return create_repo(repo, repo_owner, repo_name)
-    elsif contributors.count == 100 && ScrapeHtml.is_contributor_through_html?(username, repo_owner, repo_name)
-      # NOTE: You cannot use the API to determine if the user is the 101st contributor.
-      # So scrape the HTML!
-      repo = GithubRepo.new(programmer_id: self.user.programmer.id, shown: true)
+      repo.contributions = contributions[:count]
       return create_repo(repo, repo_owner, repo_name)
     end
+
     raise GithubApiError.new('You have not contributed any code to this repository.')
   end
 
@@ -79,6 +68,23 @@ class GithubUserAccount < UserAccount
     rescue Exception => e
       raise GithubApiError.new('The repository does not exist.')
     end
+  end
+
+  def contributed_query(repo_owner, repo_name)
+    contributors = get_contributors(repo_owner, repo_name)
+    if contributors.count == 0
+      # If a 202 response occurs, that means that GitHub is generating the statistics.
+      sleep(3)
+      contributors = get_contributors(repo_owner, repo_name)
+    end
+    contributions = contributors.detect{|c| c.login == username}
+
+    data = {contributed: nil, count: nil}
+
+    # The API only returns 100 contributors, so scrape HTML for more popular repos
+    data[:contributed] = contributions.present? || (contributors.count == 100 && ScrapeHtml.is_contributor_through_html?(username, repo_owner, repo_name))
+    data[:count] = contributions.contributions if contributions.present?
+    data
   end
 
 end

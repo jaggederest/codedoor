@@ -145,8 +145,8 @@ describe Programmer do
     end
 
     it 'should throw an error for any other parameter' do
-      -> { programmer.onsite_status_description(nil) }.should raise_error
-      -> { programmer.onsite_status_description(:other) }.should raise_error
+      -> { Programmer.onsite_status_description(nil) }.should raise_error
+      -> { Programmer.onsite_status_description(:other) }.should raise_error
     end
   end
 

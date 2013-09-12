@@ -20,4 +20,21 @@ describe GithubRepo do
       programmer.github_repos.should eq([repo4, repo2, repo1, repo3, repo5])
     end
   end
+
+  context 'qualify_programmer' do
+    it 'should make programmer qualified if there are at least 25 stars' do
+      repo = FactoryGirl.create(:github_repo, stars_count: 25)
+      repo.programmer.qualified.should be_true
+    end
+
+    it 'should not make the programmer qualified if there are less than 25 stars' do
+      repo = FactoryGirl.create(:github_repo, stars_count: 24)
+      repo.programmer.qualified.should be_false
+    end
+
+    it 'should not fail if stars_count is nil' do
+      repo = FactoryGirl.create(:github_repo, stars_count: nil)
+      repo.programmer.qualified.should be_false
+    end
+  end
 end

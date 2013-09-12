@@ -2,14 +2,8 @@
 - # Clear the flash to ensure that the message doesn't stay
 - # for another page load when there is no redirect.
 - if flash[:alert]
-  p class='alert alert-error'
-    button type="button" class="close" data-dismiss="alert"
-      | &times;
-    = flash[:alert]
-    - flash[:alert] = nil
+  = render partial: 'shared/alert_message', locals: {message: flash[:alert]}
+  - flash[:alert] = nil
 - if flash[:notice]
-  p class='alert'
-    button type="button" class="close" data-dismiss="alert"
-      | &times;
-    = flash[:notice]
-    - flash[:notice] = nil
+  = render partial: 'shared/notice_message', locals: {message: flash[:notice]}
+  - flash[:notice] = nil

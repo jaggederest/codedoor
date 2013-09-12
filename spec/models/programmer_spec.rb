@@ -38,19 +38,6 @@ describe Programmer do
       programmer.activated?.should be_true
     end
 
-    it 'should stay qualified on update' do
-      programmer = FactoryGirl.create(:programmer, state: :qualified)
-      programmer.reload
-      programmer.save!
-      programmer.qualified?.should be_true
-    end
-
-    it 'should get qualified' do
-      programmer = FactoryGirl.create(:programmer)
-      programmer.qualify!
-      programmer.qualified?.should be_true
-    end
-
     it 'should get disabled' do
       programmer = FactoryGirl.create(:programmer)
       programmer.disable!

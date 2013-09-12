@@ -1,15 +1,12 @@
-- if @programmer.private? && flash.empty?
-  p
-  p class='alert'
-    button type="button" class="close" data-dismiss="alert"
-      | &times;
-    | Your account is currently private.  If you want clients to contact you, change your account visibility.
-- elsif @programmer.unavailable? && flash.empty?
-  p
-  p class='alert'
-    button type="button" class="close" data-dismiss="alert"
-      | &times;
-    | You are listed as unavailable on your account.  If you want clients to contact you, set availability to full-time or part-time.
+- unless flash[:notice].present? || flash[:alert].present?
+  - if @programmer.private?
+    p
+    = render partial: 'shared/notice_message', locals: {message: 'Your account is currently private.  If you want clients to contact you, change your account visibility.'}
+  - elsif @programmer.unavailable?
+    p
+    = render partial: 'shared/notice_message', locals: {message: 'You are listed as unavailable on your account.  If you want clients to contact you, set availability to full-time or part-time.'}
+  - elsif !@programmer.qualified?
+    = render partial: 'shared/notice_message', locals: {message: 'Contractors on CodeDoor need at least one open-source contribution to a GitHub repository with at least 25 stars, or another popular repository elsewhere.'}
 .span3
   = render partial: 'settings/sidebar', locals: {active: :programmer}
 .span9
@@ -160,7 +157,21 @@
     .control-group
       .control-label
       .controls
-        | Shown
+        - if @programmer.qualified?
+          p
+            | You have contributed to popular open-source repositories.
+        - else
+          p
+            | Contractors on CodeDoor need at least one open-source contribution to a public repository with at least 25 stars.
+          p
+            | If you've contributed to a major open-source project that isn't on GitHub, please send an email to:&nbsp;
+            a href="mailto:codedoor@codedoor.com"
+              | codedoor@codedoor.com
+
+    .control-group
+      .control-label
+      .controls
+        | Show
 
     span#github-repos
       / TODO: A hack is used instead of using the actual form,

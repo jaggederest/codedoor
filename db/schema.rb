@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130905081158) do
+ActiveRecord::Schema.define(version: 20130911203154) do
 
   create_table "education_items", force: true do |t|
     t.integer  "programmer_id"
@@ -63,6 +63,7 @@ ActiveRecord::Schema.define(version: 20130905081158) do
     t.boolean  "contract_to_hire"
     t.string   "visibility"
     t.string   "state"
+    t.boolean  "qualified"
   end
 
   create_table "resume_items", force: true do |t|

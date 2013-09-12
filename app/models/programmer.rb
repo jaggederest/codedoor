@@ -25,10 +25,6 @@ class Programmer < ActiveRecord::Base
       transition incomplete: :activated
     end
 
-    event :qualify do
-      transition all => :qualified
-    end
-
     event :disable do
       transition all => :disabled
     end

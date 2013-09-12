@@ -55,7 +55,7 @@ describe UsersController do
       post :update, id: @user.id, user: {full_name: 'New Name', email: '', checked_terms: '1', country: 'US'}
       response.should render_template('edit')
       flash[:alert].should eq('Your information could not be updated.')
-      assigns(:current_user).errors[:email].should eq(['can\'t be blank'])
+      assigns(:current_user).errors[:email].sort.should eq(['can\'t be blank', 'is invalid'])
     end
 
   end

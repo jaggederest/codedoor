@@ -43,6 +43,8 @@ GEM
       capybara (~> 2.0, >= 2.0.2)
       json
     chunky_png (1.2.8)
+    codeclimate-test-reporter (0.0.7)
+      simplecov (>= 0.7.1, < 1.0.0)
     coderay (1.0.9)
     coffee-rails (4.0.0)
       coffee-script (>= 2.2.0)
@@ -235,6 +237,7 @@ DEPENDENCIES
   cancan (~> 1.6.10)
   capybara
   capybara-webkit
+  codeclimate-test-reporter
   coffee-rails (~> 4.0.0)
   compass-rails (~> 2.0.alpha.0)
   database_cleaner (~> 1.0.1)

@@ -4,3 +4,4 @@
 GITHUB_KEY: PleaseInsert
 GITHUB_SECRET: PleaseInsert
 TEST_OAUTH_TOKEN: PleaseInsert
+CODECLIMATE_REPO_TOKEN: PleaseInsert

@@ -6,6 +6,7 @@
     p
     = render partial: 'shared/notice_message', locals: {message: 'You are listed as unavailable on your account.  If you want clients to contact you, set availability to full-time or part-time.'}
   - elsif !@programmer.qualified?
+    p
     = render partial: 'shared/notice_message', locals: {message: 'Contractors on CodeDoor need at least one open-source contribution to a GitHub repository with at least 25 stars, or another popular repository elsewhere.'}
 .span3
   = render partial: 'settings/sidebar', locals: {active: :programmer}
@@ -151,10 +152,10 @@
           = f.radio_button :visibility, :disabled
           | Private (Visible to only myself)
 
-    h2.span9.settings-header
+    h2.span9
       | Portfolio
 
-    .control-group
+    .control-group.without-margin
       .control-label
       .controls
         - if @programmer.qualified?
@@ -168,9 +169,12 @@
             a href="mailto:codedoor@codedoor.com"
               | codedoor@codedoor.com
 
-    .control-group
+    h4.span9.settings-header
+      | Repositories
+
+    .control-group.show-row
       .control-label
-      .controls
+      .controls.show-label
         | Show
 
     span#github-repos

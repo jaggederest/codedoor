@@ -51,7 +51,7 @@ feature 'Programmer settings', js: true do
     fill_in 'repo-name', with: repo_name
     click_link 'Add'
 
-    page.should have_content 'test-repo-owner/test-repo-name (fork) 1 star'
+    page.text.should match(/test-repo-owner\/test-repo-name.*1 star.*(fork)/)
     page.should have_content 'Your contributions to test-repo-owner/test-repo-name have been added.'
 
     find('#shown-github-0').checked?.should be_true

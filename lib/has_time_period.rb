@@ -16,9 +16,9 @@ module HasTimePeriod
   def started_before_finished
     if !is_current? && dates_filled_in
       if year_finished < year_started
-        errors[:year_started] << 'must be before the year finished'
+        errors.add(:year_started, 'must be before the year finished')
       elsif (year_finished == year_started) && (month_finished < month_started)
-        errors[:month_started] << 'must be before month finished when the year is the same'
+        errors.add(:month_started, 'must be before month finished when the year is the same')
       end
     end
   end

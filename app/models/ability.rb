@@ -4,8 +4,7 @@ class Ability
   def initialize(user)
     if !user
       can :read, Programmer, visibility: 'public'
-      can :read, ResumeItem
-      can :read, EducationItem
+      can :read, [ResumeItem, EducationItem, PortfolioItem]
     else
       can :manage, User, id: user.id
       can :read, Programmer do |programmer|
@@ -16,8 +15,8 @@ class Ability
         end
       end
       can [:create, :update, :destroy], Programmer, user_id: user.id
-      can :read, [ResumeItem, EducationItem]
-      can [:create, :update, :destroy], [ResumeItem, EducationItem] do |item|
+      can :read, [ResumeItem, EducationItem, PortfolioItem]
+      can [:create, :update, :destroy], [ResumeItem, EducationItem, PortfolioItem] do |item|
         if user.programmer.present?
           user.programmer.id == item.programmer_id
         else

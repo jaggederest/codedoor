@@ -61,35 +61,9 @@ describe EducationItem do
   end
 
   context 'abilities' do
-    let(:user) { FactoryGirl.create(:user) }
-    let(:programmer) { FactoryGirl.create(:programmer, user: user) }
-    let(:ability) { Ability.new(user) }
-
-    it 'should allow users to manage their own resume items' do
-      education_item = FactoryGirl.create(:education_item, programmer: programmer)
-      ability.should be_able_to(:read, education_item)
-      ability.should be_able_to(:create, education_item)
-      ability.should be_able_to(:update, education_item)
-      ability.should be_able_to(:destroy, education_item)
+    it 'should have the permissions of a programmer resume item' do
+      validate_ability_of_programmer_resume_item(:education_item)
     end
-
-    it 'should allow users to only view other people\'s resume items' do
-      education_item = FactoryGirl.create(:education_item, programmer: FactoryGirl.create(:programmer))
-      ability.should be_able_to(:read, education_item)
-      ability.should_not be_able_to(:create, education_item)
-      ability.should_not be_able_to(:update, education_item)
-      ability.should_not be_able_to(:destroy, education_item)
-    end
-
-    it 'should allow logged out users to only view resume items' do
-      ability = Ability.new(nil)
-      education_item = FactoryGirl.create(:education_item)
-      ability.should be_able_to(:read, education_item)
-      ability.should_not be_able_to(:create, education_item)
-      ability.should_not be_able_to(:update, education_item)
-      ability.should_not be_able_to(:destroy, education_item)
-    end
-
   end
 
 end

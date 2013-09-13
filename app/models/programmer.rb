@@ -3,11 +3,13 @@ class Programmer < ActiveRecord::Base
   belongs_to :user
 
   has_many :github_repos, dependent: :destroy
+  has_many :portfolio_items, dependent: :destroy
   has_many :resume_items, dependent: :destroy
   has_many :education_items, dependent: :destroy
+  accepts_nested_attributes_for :github_repos
+  accepts_nested_attributes_for :portfolio_items, allow_destroy: true
   accepts_nested_attributes_for :resume_items, allow_destroy: true
   accepts_nested_attributes_for :education_items, allow_destroy: true
-  accepts_nested_attributes_for :github_repos
 
   scope :not_private, -> { where(:visibility != 'private') }
 

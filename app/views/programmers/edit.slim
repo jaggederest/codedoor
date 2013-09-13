@@ -214,6 +214,33 @@
           .span1
           div id='contribution-message' class='verify-contribution-message'
 
+    h4.span9.settings-header
+      | Projects
+
+    = f.fields_for :portfolio_items do |portfolio_form|
+      .control-group class="#{model_attribute_class(portfolio_form.object, :title)}"
+        .control-label
+          | Title
+        .controls
+          = portfolio_form.text_field :title
+          = render partial: 'shared/help_inline', locals: {model: portfolio_form.object, attribute: :title}
+      .control-group class="#{model_attribute_class(portfolio_form.object, :url)}"
+        .control-label
+          | Link
+        .controls
+          = portfolio_form.text_field :url
+          = render partial: 'shared/help_inline', locals: {model: portfolio_form.object, attribute: :url}
+      .control-group class="#{model_attribute_class(portfolio_form.object, :description)}"
+        .control-label
+          | Description
+        .controls
+          = portfolio_form.text_area :description
+          = render partial: 'shared/help_inline', locals: {model: portfolio_form.object, attribute: :description}
+
+      = portfolio_form.link_to_remove 'Remove project'
+
+    = f.link_to_add 'Add project', :portfolio_items
+
     h2.span9.settings-header
       | Résumé
 

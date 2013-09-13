@@ -35,6 +35,11 @@ module FeatureTestHelper
       click_button 'Add Info'
     end
 
+    def go_to_programmer_settings
+      click_link 'Settings'
+      click_link 'Programmer Info'
+    end
+
     def set_github_user
       OmniAuth.config.mock_auth[:github] = MockGitHubAuth.test_user
     end

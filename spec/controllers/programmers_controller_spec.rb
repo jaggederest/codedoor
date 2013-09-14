@@ -129,7 +129,7 @@ describe ProgrammersController do
       programmer.rate.should eq(500)
     end
 
-    it 'should update resume items' do
+    it 'should update resume' do
       programmer_params = valid_programmer('user-id-ignored')
       @programmer.resume_items.count.should be(0)
       programmer_params[:resume_items_attributes] =
@@ -145,6 +145,36 @@ describe ProgrammersController do
        }
       post :update, user_id: @user.id, id: @programmer.id, programmer: programmer_params
       @programmer.reload.resume_items.count.should be(1)
+    end
+
+    it 'should update education' do
+      programmer_params = valid_programmer('user-id-ignored')
+      @programmer.resume_items.count.should be(0)
+      programmer_params[:education_items_attributes] =
+       {'0' =>
+         {school_name: 'test school',
+          month_started: 6,
+          year_started: 2010,
+          month_finished: 1,
+          year_finished: 2011,
+          _destroy: 'false'}
+       }
+      post :update, user_id: @user.id, id: @programmer.id, programmer: programmer_params
+      @programmer.reload.education_items.count.should be(1)
+    end
+
+    it 'should update projects' do
+      programmer_params = valid_programmer('user-id-ignored')
+      @programmer.resume_items.count.should be(0)
+      programmer_params[:portfolio_items_attributes] =
+       {'0' =>
+         {title: 'test title',
+          url: 'www.example.com',
+          _destroy: 'false'}
+       }
+      post :update, user_id: @user.id, id: @programmer.id, programmer: programmer_params
+      @programmer.reload.portfolio_items.count.should be(1)
+
     end
 
     it 'should update visibility of github repos' do

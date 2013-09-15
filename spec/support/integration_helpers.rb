@@ -13,7 +13,9 @@ module FeatureTestHelper
       click_link 'Edit user account'
       page.should have_content 'By checking this box, I agree to abide by CodeDoor\'s Terms of Use.'
       check('user_checked_terms')
-      select('United States')
+      select('United States', from: 'user_country')
+      select('California', from: 'user_state')
+      fill_in 'City', with: 'Burlingame'
       click_button 'Create Programmer Account'
 
       fill_in 'Title', with: 'Test Title'

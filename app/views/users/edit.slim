@@ -23,6 +23,18 @@
       .controls
         = f.select(:country, Countries.supported_by_paypal, include_blank: true)
         = render partial: 'shared/help_inline', locals: {model: current_user, attribute: :country}
+    .control-group class="#{model_attribute_class(current_user, :state)} #{current_user.american? ? '' : 'hidden'}" id="user_state_container"
+      .control-label
+        = f.label :state
+      .controls
+        = f.select(:state, States::HASH, include_blank: true)
+        = render partial: 'shared/help_inline', locals: {model: current_user, attribute: :state}
+    .control-group class="#{model_attribute_class(current_user, :city)}"
+      .control-label
+        = f.label :city
+      .controls
+        = f.text_field :city, placeholder: 'City'
+        = render partial: 'shared/help_inline', locals: {model: current_user, attribute: :city}
     - unless checked_terms
       .control-group class="#{model_attribute_class(current_user, :checked_terms)}"
         .controls
@@ -33,3 +45,12 @@
     .control-group
       .controls
         = f.submit current_user.programmer.present? ? 'Edit Info' : 'Create Programmer Account', data: {disable_with: 'Submitting...'}
+javascript:
+  $('#user_country').on('change',
+                       function() {
+                         if (this.value == 'US') {
+                           $('#user_state_container').show();
+                         } else {
+                           $('#user_state_container').hide();
+                         }
+                       });

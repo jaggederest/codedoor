@@ -7,7 +7,7 @@ describe User do
 
     context 'email format' do
       before :each do
-        @user = FactoryGirl.create(:user, checked_terms: true, country: 'US')
+        @user = FactoryGirl.create(:user, checked_terms: true, country: 'CA', city: 'Victoria')
       end
 
       it 'should be valid if it has an @ followed by a .' do
@@ -42,7 +42,7 @@ describe User do
     end
 
     it 'should require that the Terms of Use are checked on update' do
-      user = FactoryGirl.create(:user, country: 'US')
+      user = FactoryGirl.create(:user, country: 'CA', city: 'Vancouver')
       user.full_name = 'Changing name'
       user.valid?.should be_false
       user.checked_terms = true
@@ -54,6 +54,20 @@ describe User do
       user.checked_terms = true
       user.valid?
       user.errors[:country].should eq(['can\'t be blank'])
+    end
+
+    it 'should require that a city is added if the terms are checked' do
+      user = FactoryGirl.create(:user, country: 'CA')
+      user.checked_terms = true
+      user.valid?
+      user.errors[:city].should eq(['can\'t be blank'])
+    end
+
+    it 'should require that a state is added if the terms are checked and the country is the US' do
+      user = FactoryGirl.create(:user, country: 'US', city: 'Burlingame')
+      user.checked_terms = true
+      user.valid?
+      user.errors[:state].should eq(['can\'t be blank'])
     end
 
     it 'should not require that the Terms of Use are checked to be created' do

@@ -29,7 +29,7 @@ describe UsersController do
 
   describe 'POST update' do
     it 'should pass with correct inputs, redirect to programmer page' do
-      post :update, id: @user.id, user: {full_name: 'New Name', email: 'newemail@example.com', checked_terms: '1', country: 'US'}
+      post :update, id: @user.id, user: {full_name: 'New Name', email: 'newemail@example.com', checked_terms: '1', country: 'US', state: 'CA', city: 'Burlingame'}
       response.should redirect_to(edit_user_programmer_path(@user))
       @user.reload
       flash[:notice].should eq('Your information has been updated.')

@@ -8,8 +8,10 @@ class User < ActiveRecord::Base
   has_many :github_repos
   has_one  :programmer
 
-  validates :country, presence: true, if: Proc.new{|user| user.checked_terms?}
   validates :full_name, presence: true
+  validates :country, presence: true, if: :checked_terms?
+  validates :city, presence: true, if: :checked_terms?
+  validates :state, presence: { if: Proc.new{|user| user.checked_terms? && user.american?} }
   validates :email, uniqueness: true, format: { with: /\A.*@.*\..*\z/ }
   validates :checked_terms, inclusion: { in: [true], on: :update, message: '^The Terms of Use must be accepted.' }
 
@@ -35,6 +37,10 @@ class User < ActiveRecord::Base
       end
     end
     user
+  end
+
+  def american?
+    country == 'US'
   end
 
   # Since uniqueness is scoped to account_id and user, there can only be one

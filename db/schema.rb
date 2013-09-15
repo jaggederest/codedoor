@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130913025525) do
+ActiveRecord::Schema.define(version: 20130914185549) do
 
   create_table "education_items", force: true do |t|
     t.integer  "programmer_id"
@@ -122,6 +122,8 @@ ActiveRecord::Schema.define(version: 20130913025525) do
     t.string   "full_name"
     t.boolean  "checked_terms"
     t.string   "country"
+    t.string   "city"
+    t.string   "state"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true

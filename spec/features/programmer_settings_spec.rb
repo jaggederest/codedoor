@@ -66,7 +66,7 @@ feature 'Programmer settings', js: true do
     go_to_programmer_settings
 
     find('#programmer_portfolio_items_attributes_0_title').value.should eq('Test Project')
-    find('#programmer_portfolio_items_attributes_0_url').value.should eq('codedoor.com')
+    find('#programmer_portfolio_items_attributes_0_url').value.should eq('http://codedoor.com')
     find('#programmer_portfolio_items_attributes_0_description').value.should eq('Random Website')
 
     find('#programmer_resume_items_attributes_0_company_name').value.should eq('CodeDoor')

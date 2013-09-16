@@ -52,6 +52,17 @@ class Programmer < ActiveRecord::Base
     rate.nil? ? nil : (rate / 8.0).round(2)
   end
 
+  def client_rate_text
+    case availability
+    when 'part-time'
+      "$#{daily_rate_to_client} / 8 hours"
+    when 'full-time'
+      "$#{daily_rate_to_client} / day"
+    else
+      'Unavailable'
+    end
+  end
+
   def self.onsite_status_description(status)
     case status.to_sym
     when :onsite
@@ -73,6 +84,22 @@ class Programmer < ActiveRecord::Base
 
   def private?
     self.visibility == 'private'
+  end
+
+  def show_repos?
+    github_repos.shown.count > 0
+  end
+
+  def show_portfolio?
+    portfolio_items.count > 0
+  end
+
+  def show_resume?
+    resume_items.count > 0
+  end
+
+  def show_education?
+    education_items.count > 0
   end
 
 end

@@ -7,11 +7,11 @@ feature 'Programmer settings', js: true do
     page.should have_content 'Your programmer account has been created.'
     page.should have_content 'Test User'
     page.should have_content 'Test Title'
-    page.should have_content '$900 per day'
+    page.should have_content '$900 / day'
     page.should have_content 'Full Time'
     page.should have_content 'Work can be done at a client\'s office if it is nearby.'
 
-    click_link 'Edit Basic Info'
+    click_link 'Settings'
     page.should_not have_content 'By checking this box, I agree to abide by CodeDoor\'s Terms of Use.'
     click_button 'Edit Info'
 
@@ -30,7 +30,7 @@ feature 'Programmer settings', js: true do
     fill_in 'hourly_rate_to_programmer', with: 50
     click_button 'Edit Info'
     page.should have_content 'Your programmer account has been updated.'
-    page.should have_content '$450 per day'
+    page.should have_content '$450 / 8 hours'
   end
 
   scenario 'Add project, resume, and education', js: true do

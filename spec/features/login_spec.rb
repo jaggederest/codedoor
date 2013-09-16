@@ -7,8 +7,8 @@ feature 'Logging in' do
     page.should have_content 'Work for clients who recognize top open source contributors.'
     page.should have_content 'Bill by the day.'
 
-    page.should have_content 'Find freelance coders who have contributed to meaningful open source projects.'
-    page.should have_content 'See their code.'
+    page.should have_content 'Find freelance coders who have contributed to meaningful projects.'
+    page.should have_content 'See their code before hiring.'
 
     click_link 'Log in with GitHub'
     page.should have_content 'Log out'

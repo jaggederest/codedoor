@@ -143,4 +143,16 @@ describe User do
       user.github_account.user.should eq(user)
     end
   end
+
+  context 'location_text' do
+    it 'should show proper text for Americans' do
+      user = FactoryGirl.create(:user, country: 'US', state: 'CA', city: 'Burlingame')
+      user.location_text.should eq('Burlingame, California (US)')
+    end
+
+    it 'should show proper text for non-Americans' do
+      user = FactoryGirl.create(:user, country: 'CA', city: 'Victoria')
+      user.location_text.should eq('Victoria, Canada')
+    end
+  end
 end

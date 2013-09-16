@@ -26,7 +26,7 @@
       .control-label
         = f.label :description
       .controls
-        = f.text_area :description, placeholder: 'Describe why you a great hire.', class: 'span6', cols: '5'
+        = f.text_area :description, placeholder: 'Describe why you a great hire.', class: 'span6'
         = render partial: 'shared/help_inline', locals: {model: @programmer, attribute: :description}
 
     .control-group class="#{model_attribute_class(@programmer, :availability)}"

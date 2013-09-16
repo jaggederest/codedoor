@@ -28,6 +28,10 @@ module HasTimePeriod
     self.year_finished = nil
   end
 
+  def duration_text
+    "#{Months::HASH[month_started]} #{year_started} - #{is_current? ? 'present' : "#{Months::HASH[month_finished]} #{year_finished}"}"
+  end
+
   private
 
   def dates_filled_in

@@ -47,4 +47,13 @@ class User < ActiveRecord::Base
   def github_account
     self.github_user_accounts.first
   end
+
+  def location_text
+    if american?
+      "#{city}, #{States::HASH.invert[state.to_sym]} (US)"
+    else
+      "#{city}, #{Countries::supported_by_paypal.invert[country.to_sym]}"
+    end
+  end
+
 end

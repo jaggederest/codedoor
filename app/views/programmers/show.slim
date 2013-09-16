@@ -1,24 +1,79 @@
-h1
-  = @programmer.user.full_name
-p
-  | Title:
-  = @programmer.title
-p
-  | Description:
-  = @programmer.description
-p
-  | Rate:
-  = "$#{@programmer.daily_rate_to_client} per day"
-p
-  = @programmer.availability.titleize
-p
-  = Programmer.onsite_status_description(@programmer.onsite_status)
-- if @programmer.contract_to_hire?
-  p
-    | Clients may offer contract to hire positions.
+.row
+  .span1
+  .span6
+    h4
+      = @programmer.user.full_name
+    p
+      = @programmer.title
+    p
+      = current_user.location_text
+    p
+      = @programmer.client_rate_text
 
-- if @programmer.user == current_user
-  p
-    = link_to('Edit Basic Info', edit_user_path(current_user))
-  p
-    = link_to('Edit Info', edit_user_programmer_path(current_user))
+    p
+      = @programmer.availability.titleize
+    p
+      = Programmer.onsite_status_description(@programmer.onsite_status)
+    - if @programmer.contract_to_hire?
+      p
+        | Will consider contract-to-hire.
+    - unless @programmer.description.blank?
+      h4
+        | Description
+      p
+        = @programmer.description
+
+    - if @programmer.show_repos? || @programmer.show_portfolio?
+      h4
+        | Portfolio
+      - if @programmer.show_repos?
+        strong
+          | GitHub&nbsp;/&nbsp;
+        - username = current_user.github_account.username
+        = link_to username, "https://github.com/#{username}", target: '_blank'
+        - @programmer.github_repos.shown.each do |repo|
+          p
+            .row
+              .span3
+                - repo_text = "#{repo.repo_owner}/#{repo.repo_name}"
+                = repo_commits_link(current_user.github_account.username, repo.repo_owner, repo.repo_name, repo_text)
+              .span2
+                = "#{pluralize(repo.stars_count, 'star')} #{repo.is_fork? ? '(fork)' : ''}"
+
+      - if @programmer.show_portfolio?
+        strong
+          | Projects
+        - @programmer.portfolio_items.each do |project|
+          p
+            .row
+              .span6
+                = link_to project.title, project.url, target: '_blank'
+                - unless project.description.blank?
+                  p
+                    = project.description
+
+    - if @programmer.show_resume?
+      h4
+        | Résumé
+      - @programmer.resume_items.each do |resume|
+        strong
+          = resume.title
+        br
+        = resume.company_name
+        br
+        = resume.duration_text
+        br
+        = resume.description
+
+    - if @programmer.show_education?
+      h4
+        | Education
+      - @programmer.education_items.each do |education|
+        strong
+          = education.school_name
+        br
+        = education.degree_and_major
+        br
+        = education.duration_text
+        br
+        = education.description

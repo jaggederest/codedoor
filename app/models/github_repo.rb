@@ -2,6 +2,7 @@ class GithubRepo < ActiveRecord::Base
   default_scope { order('shown DESC, stars_count DESC') }
 
   scope :named, ->(owner, name) { where(repo_owner: owner, repo_name: name) }
+  scope :shown, -> { where(shown: true) }
 
   belongs_to :programmer
 

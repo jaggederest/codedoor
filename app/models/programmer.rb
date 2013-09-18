@@ -20,7 +20,7 @@ class Programmer < ActiveRecord::Base
   validates :onsite_status, inclusion: { in: ['offsite', 'visits_allowed', 'occasional', 'onsite'], message: 'must be selected' }
   validates :visibility, inclusion: { in: ['public', 'codedoor', 'private'], message: 'must be selected' }
 
-  before_update {|programmer| programmer.activate! if programmer.incomplete?}
+  before_update {|programmer| programmer.activate! if programmer.incomplete? && programmer.valid? }
 
   state_machine :state, initial: :incomplete do
     event :activate do

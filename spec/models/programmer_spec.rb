@@ -38,6 +38,14 @@ describe Programmer do
       programmer.activated?.should be_true
     end
 
+    it 'should not activate on update if the model is not valid' do
+      programmer = FactoryGirl.create(:programmer, state: :incomplete)
+      programmer.reload
+      programmer.title = ''
+      programmer.save(validate: false)
+      programmer.activated?.should be_false
+    end
+
     it 'should get disabled' do
       programmer = FactoryGirl.create(:programmer)
       programmer.disable!

@@ -7,6 +7,10 @@ CodeDoor is open source itself.
 
 ---------------
 
+When it is ready, CodeDoor will be available on codedoor.com.  Right now, it is a just landing page.
+
+---------------
+
 CodeDoor is intended to run on Heroku, although that is not supported yet.  Among other things, CodeDoor needs to move off of SQLite. :)
 
 Copy config/application.yml.sample to config/application.yml, and add the relevant keys to your sandbox.

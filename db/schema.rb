@@ -36,12 +36,12 @@ ActiveRecord::Schema.define(version: 20130919013542) do
     t.boolean  "shown"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.text     "description"
     t.string   "default_branch"
     t.integer  "forks_count"
     t.integer  "stars_count"
     t.string   "language"
     t.boolean  "is_fork"
+    t.text     "description"
     t.integer  "contributions"
   end
 
@@ -113,12 +113,12 @@ ActiveRecord::Schema.define(version: 20130919013542) do
   add_index "user_accounts", ["user_id"], name: "index_user_accounts_on_user_id"
 
   create_table "users", force: true do |t|
-    t.string   "email",                              default: "", null: false
-    t.string   "encrypted_password",     limit: 128, default: "", null: false
+    t.string   "email",                  default: "", null: false
+    t.string   "encrypted_password",     default: "", null: false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",                      default: 0
+    t.integer  "sign_in_count",          default: 0
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"

@@ -7,7 +7,7 @@ CodeDoor is open source itself.
 
 ---------------
 
-When it is ready, CodeDoor will be available on codedoor.com.  Right now, it is a just landing page.
+When it is ready, CodeDoor will be available on codedoor.com.  Right now, it is just a landing page.
 
 ---------------
 

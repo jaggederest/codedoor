@@ -2,7 +2,7 @@
 .span3
   = render partial: 'settings/sidebar', locals: {active: :basic}
 .span9
-  h2.span8.settings-header
+  h2.span9.settings-header
     = checked_terms ? 'Basic Info' : 'Registration'
   = form_for [current_user], url: {action: :update}, html: {class: 'form-horizontal'} do |f|
     .control-group class="#{model_attribute_class(current_user, :full_name)}"

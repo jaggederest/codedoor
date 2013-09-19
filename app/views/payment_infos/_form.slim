@@ -1,0 +1,21 @@
+.span3
+  = render partial: 'settings/sidebar', locals: {active: :payments}
+.span9
+  h2.span9.settings-header
+    | Payments
+  = form_for [current_user, @payment_info], url: {action: action}, html: {class: 'form-horizontal'} do |f|
+    = f.hidden_field :user_id
+    .control-group class="#{model_attribute_class(@payment_info, :primary_payment_method)}"
+      .control-label
+        = f.label :primary_payment_method
+      .controls
+        = render partial: 'shared/help_block', locals: {model: @payment_info, attribute: :primary_payment_method}
+        label class='radio'
+          = f.radio_button :primary_payment_method, :paypal
+          | PayPal
+        label class='radio'
+          = f.radio_button :primary_payment_method, :balanced
+          | Credit Card
+    .control-group
+      .controls
+        = f.submit ((action == :new) ? 'Add Payment Info' : 'Edit Payment Info'), data: {disable_with: 'Submitting...'}

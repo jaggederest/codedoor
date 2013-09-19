@@ -111,6 +111,15 @@ describe ProgrammersController do
       flash[:alert].should eq('Information cannot be found.')
     end
 
+    it 'should fail when the user has not checked terms' do
+      programmer = FactoryGirl.create(:programmer, user: @user)
+      @user.checked_terms = false
+      @user.save(validate: false)
+      get :edit, user_id: @user.id, id: programmer.id
+      response.should redirect_to(root_path)
+      flash[:alert].should eq('Information cannot be found.')
+    end
+
   end
 
   describe 'POST update' do

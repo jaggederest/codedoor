@@ -1,7 +1,7 @@
 class ProgrammersController < ApplicationController
   load_and_authorize_resource except: [:verify_contribution]
 
-  before_filter :ensure_terms_checked, except: [:index, :show]
+  before_filter :ensure_user_checked_terms, except: [:index, :show]
 
   def index
     @programmers = Programmer.all
@@ -95,7 +95,7 @@ class ProgrammersController < ApplicationController
        github_repos_attributes: [:shown, :id]})
   end
 
-  def ensure_terms_checked
+  def ensure_user_checked_terms
     redirect_cannot_be_found unless current_user.present? && current_user.checked_terms?
   end
 

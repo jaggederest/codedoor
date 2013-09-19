@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130917022054) do
+ActiveRecord::Schema.define(version: 20130919013542) do
 
   create_table "education_items", force: true do |t|
     t.integer  "programmer_id"
@@ -46,6 +46,15 @@ ActiveRecord::Schema.define(version: 20130917022054) do
   end
 
   add_index "github_repos", ["programmer_id"], name: "index_github_repos_on_programmer_id"
+
+  create_table "payment_infos", force: true do |t|
+    t.integer  "user_id"
+    t.string   "primary_payment_method"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "payment_infos", ["user_id"], name: "index_payment_infos_on_user_id"
 
   create_table "portfolio_items", force: true do |t|
     t.string   "title"

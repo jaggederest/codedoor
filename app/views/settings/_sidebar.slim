@@ -5,3 +5,5 @@ div.well
     - if current_user.checked_terms?
       li class="#{active == :programmer ? 'active' : ''}"
         = link_to('Programmer Info', edit_user_programmer_path(current_user))
+      li class="#{active == :payments ? 'active' : ''}"
+        = link_to('Payments', current_user.payment_info.present? ? edit_user_payment_info_path(current_user) : new_user_payment_info_path(current_user))

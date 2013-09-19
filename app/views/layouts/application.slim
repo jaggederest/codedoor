@@ -6,6 +6,14 @@ html
     = javascript_include_tag 'application', 'data-turbolinks-track' => true
     = csrf_meta_tags
   body
-    = render partial: 'shared/navbar'
-    = render partial: 'shared/flash_messages'
-    = yield
+    #wrap
+      = render partial: 'shared/navbar'
+      = render partial: 'shared/flash_messages'
+      = yield
+      #push
+    #footer
+      .footer-content
+        | &copy; CodeDoor
+        = " #{Time.now.year}"
+        span.footer-source-link
+          = link_to 'View Source', 'https://github.com/CodeDoor/codedoor', target: '_blank'

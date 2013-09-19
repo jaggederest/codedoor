@@ -95,8 +95,4 @@ class ProgrammersController < ApplicationController
        github_repos_attributes: [:shown, :id]})
   end
 
-  def ensure_user_checked_terms
-    redirect_cannot_be_found unless current_user.present? && current_user.checked_terms?
-  end
-
 end

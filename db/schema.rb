@@ -13,6 +13,9 @@
 
 ActiveRecord::Schema.define(version: 20130919013542) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "education_items", force: true do |t|
     t.integer  "programmer_id"
     t.string   "school_name"
@@ -22,12 +25,12 @@ ActiveRecord::Schema.define(version: 20130919013542) do
     t.integer  "year_finished"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "month_started",    limit: 255
-    t.integer  "month_finished",   limit: 255
+    t.integer  "month_started"
+    t.integer  "month_finished"
     t.boolean  "is_current"
   end
 
-  add_index "education_items", ["programmer_id"], name: "index_education_items_on_programmer_id"
+  add_index "education_items", ["programmer_id"], name: "index_education_items_on_programmer_id", using: :btree
 
   create_table "github_repos", force: true do |t|
     t.integer  "programmer_id"
@@ -45,7 +48,7 @@ ActiveRecord::Schema.define(version: 20130919013542) do
     t.integer  "contributions"
   end
 
-  add_index "github_repos", ["programmer_id"], name: "index_github_repos_on_programmer_id"
+  add_index "github_repos", ["programmer_id"], name: "index_github_repos_on_programmer_id", using: :btree
 
   create_table "payment_infos", force: true do |t|
     t.integer  "user_id"
@@ -54,7 +57,7 @@ ActiveRecord::Schema.define(version: 20130919013542) do
     t.datetime "updated_at"
   end
 
-  add_index "payment_infos", ["user_id"], name: "index_payment_infos_on_user_id"
+  add_index "payment_infos", ["user_id"], name: "index_payment_infos_on_user_id", using: :btree
 
   create_table "portfolio_items", force: true do |t|
     t.string   "title"
@@ -65,7 +68,7 @@ ActiveRecord::Schema.define(version: 20130919013542) do
     t.integer  "programmer_id"
   end
 
-  add_index "portfolio_items", ["programmer_id"], name: "index_portfolio_items_on_programmer_id"
+  add_index "portfolio_items", ["programmer_id"], name: "index_portfolio_items_on_programmer_id", using: :btree
 
   create_table "programmers", force: true do |t|
     t.integer  "user_id"
@@ -82,7 +85,7 @@ ActiveRecord::Schema.define(version: 20130919013542) do
     t.boolean  "qualified"
   end
 
-  add_index "programmers", ["user_id"], name: "index_programmers_on_user_id"
+  add_index "programmers", ["user_id"], name: "index_programmers_on_user_id", using: :btree
 
   create_table "resume_items", force: true do |t|
     t.integer  "programmer_id"
@@ -93,12 +96,12 @@ ActiveRecord::Schema.define(version: 20130919013542) do
     t.text     "description"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "month_started",  limit: 255
-    t.integer  "month_finished", limit: 255
+    t.integer  "month_started"
+    t.integer  "month_finished"
     t.boolean  "is_current"
   end
 
-  add_index "resume_items", ["programmer_id"], name: "index_resume_items_on_programmer_id"
+  add_index "resume_items", ["programmer_id"], name: "index_resume_items_on_programmer_id", using: :btree
 
   create_table "user_accounts", force: true do |t|
     t.string   "account_id"
@@ -110,7 +113,7 @@ ActiveRecord::Schema.define(version: 20130919013542) do
     t.string   "username"
   end
 
-  add_index "user_accounts", ["user_id"], name: "index_user_accounts_on_user_id"
+  add_index "user_accounts", ["user_id"], name: "index_user_accounts_on_user_id", using: :btree
 
   create_table "users", force: true do |t|
     t.string   "email",                  default: "", null: false
@@ -132,7 +135,7 @@ ActiveRecord::Schema.define(version: 20130919013542) do
     t.string   "state"
   end
 
-  add_index "users", ["email"], name: "index_users_on_email", unique: true
-  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+  add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
+  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
 end

@@ -3,8 +3,8 @@ source 'https://rubygems.org'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.0.0'
 
-# Use sqlite3 as the database for Active Record
-gem 'sqlite3'
+# Moving over to postgresql as that is what we will be using in production
+gem 'pg', '~> 0.17.0'
 
 # Use CanCan for authorization
 gem 'cancan', '~> 1.6.10'

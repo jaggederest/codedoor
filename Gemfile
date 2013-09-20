@@ -63,7 +63,7 @@ group :test do
   gem 'factory_girl_rails'
   gem 'shoulda'
   gem 'capybara'
-  gem 'capybara-webkit'
+  gem 'poltergeist'
   gem 'database_cleaner', '~> 1.0.1'
   gem 'launchy'
   gem 'simplecov', require: false

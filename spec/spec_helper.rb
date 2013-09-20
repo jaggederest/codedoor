@@ -11,6 +11,7 @@ require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
 require 'rspec/autorun'
 require 'capybara/rails'
+require 'capybara/poltergeist'
 require 'cancan/matchers'
 require 'database_cleaner'
 
@@ -50,7 +51,7 @@ RSpec.configure do |config|
   #     --seed 1234
   config.order = "random"
 
-  Capybara.javascript_driver = :webkit
+  Capybara.javascript_driver = :poltergeist
 
   config.use_transactional_examples = false
   config.use_transactional_fixtures = false

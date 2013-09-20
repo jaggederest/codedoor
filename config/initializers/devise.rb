@@ -199,11 +199,13 @@ Devise.setup do |config|
   if Rails.env.development?
     file = File.join(Rails.root, 'config', 'application.yml')
     yaml = YAML.load_file(file)
-
-    config.omniauth :github, yaml['GITHUB_KEY'], yaml['GITHUB_SECRET'], scope: 'user:email'
+    github_key = yaml['GITHUB_KEY']
+    github_secret = yaml['GITHUB_SECRET']
   else
-    config.omniauth :github, ENV['GITHUB_KEY'], ENV['GITHUB_SECRET'], scope: 'user:email'
+    github_key = ENV['GITHUB_KEY']
+    github_secret = ENV['GITHUB_SECRET']
   end
+  config.omniauth :github, github_key, github_secret, scope: 'user:email'
 
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or

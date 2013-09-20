@@ -118,7 +118,7 @@ describe User do
       user.full_name.should eq('Test User')
       user.email.should eq(email)
 
-      user_account = GithubUserAccount.where(account_id: 'test account id').first
+      user_account = GithubUserAccount.where(account_id: '1234567').first
       user_account.user.should eq(user)
       user_account.oauth_token.should eq('oauth token')
     end

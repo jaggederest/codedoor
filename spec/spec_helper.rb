@@ -10,6 +10,7 @@ require 'rspec/rails'
 require 'rspec/autorun'
 require 'capybara/rails'
 require 'cancan/matchers'
+require 'database_cleaner'
 
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
@@ -68,7 +69,8 @@ end
 class MockGitHubAuth
   def self.test_user
     OmniAuth::AuthHash.new(
-      {uid: 'test account id',
+      {provider: "github",
+       uid: '1234567',
        credentials: {token: 'oauth token'},
        info: {email: 'email@example.com', nickname: 'test-username'},
        extra: {raw_info: {name: 'Test User'}}})

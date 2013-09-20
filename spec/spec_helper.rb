@@ -49,8 +49,11 @@ RSpec.configure do |config|
 
   Capybara.javascript_driver = :webkit
 
+  config.use_transactional_examples = false
+  config.use_transactional_fixtures = false
   config.before(:suite) do
     DatabaseCleaner.strategy = :truncation
+    DatabaseCleaner.clean_with(:truncation)
   end
 
   config.before(:each) do

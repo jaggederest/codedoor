@@ -196,7 +196,7 @@ Devise.setup do |config|
   # ==> OmniAuth
   # Add a new OmniAuth provider. Check the wiki for more information on setting
   # up on your models and hooks.
-  if RAILS_ENV='test' || RAILS_ENV="development"
+  if RAILS_ENV="development"
     file = File.join(Rails.root, 'config', 'application.yml')
     yaml = YAML.load_file(file)
 

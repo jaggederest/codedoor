@@ -102,6 +102,9 @@ feature 'Programmer settings', js: true do
     click_link 'Add'
 
     page.should have_content 'Your contributions to test-repo-owner/test-repo-name have been added.'
+    page.text.should match(/test-repo-owner\/test-repo-name.*1 star.*(fork)/)
+
+    save_and_open_page
 
     find('#shown-github-1').checked?.should be_true
     find('#shown-github-1').set(false)

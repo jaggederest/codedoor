@@ -33,8 +33,8 @@ ActiveRecord::Schema.define(version: 20130927070129) do
     t.text     "description"
     t.integer  "year_started"
     t.integer  "year_finished"
-    t.datetime "created_at"
     t.datetime "updated_at"
+    t.datetime "created_at"
     t.integer  "month_started"
     t.integer  "month_finished"
     t.boolean  "is_current"
@@ -65,6 +65,7 @@ ActiveRecord::Schema.define(version: 20130927070129) do
     t.string   "primary_payment_method"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "balanced_customer_uri"
   end
 
   add_index "payment_infos", ["user_id"], name: "index_payment_infos_on_user_id", using: :btree

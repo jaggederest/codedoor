@@ -10,7 +10,6 @@ module FeatureTestHelper
 
     def programmer_sign_up
       github_login
-      click_link 'Edit user account'
       page.should have_content 'By checking this box, I agree to abide by CodeDoor\'s Terms of Use.'
       check('user_checked_terms')
       select('United States', from: 'user_country')

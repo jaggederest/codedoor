@@ -21,16 +21,24 @@ class ApplicationController < ActionController::Base
     redirect_to root_url, alert: 'Information cannot be found.'
   end
 
+  def after_sign_in_path_for(resource)
+    if resource.is_a?(User) && !resource.checked_terms?
+      edit_user_url(resource)
+    else
+      super
+    end
+  end
+
+  def ensure_user_checked_terms
+    redirect_cannot_be_found unless current_user.present? && current_user.checked_terms?
+  end
+
   rescue_from CanCan::AccessDenied do |exception|
     redirect_cannot_be_found
   end
 
   rescue_from ActiveRecord::RecordNotFound do |exception|
     redirect_cannot_be_found
-  end
-
-  def ensure_user_checked_terms
-    redirect_cannot_be_found unless current_user.present? && current_user.checked_terms?
   end
 
 end

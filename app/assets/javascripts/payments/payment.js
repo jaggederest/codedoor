@@ -6,8 +6,11 @@ $('document').ready(function() {
       expiration_year: $(this).find('#expiration_year').val(),
       security_code: $(this).find('#security_code').val()
     };
+    var user = $(this).find('#user_id').val()
+    console.log(user);
     balanced.card.create(creditCardData, function(response) {
       console.log(response);
+      $.post("", response);
     });
     return false;
   });

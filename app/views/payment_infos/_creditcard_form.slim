@@ -23,6 +23,7 @@
           = text_field_tag :security_code, nil, :placeholder => "654"
       .control-group
         .controls
+          = hidden_field_tag :user_id, "#{params["user_id"]}"
           = submit_tag
 = javascript_include_tag "https://js.balancedpayments.com/v1/balanced.js", "payments/payment"
 javascript:

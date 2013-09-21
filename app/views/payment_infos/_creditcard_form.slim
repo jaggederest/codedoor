@@ -21,5 +21,13 @@
           = label_tag :credit_card, "Security Code"
         .controls
           = text_field_tag :credit_card, nil, :placeholder => "654"
+      .control-group
+        .controls
+          = submit_tag
+= javascript_include_tag "https://js.balancedpayments.com/v1/balanced.js", "payments/payment"
 javascript:
+  balanced.init('${#{ENV["BALANCED_MARKETPLACE"]}}')
   $('.payform').hide();
+  $('#payment_info_primary_payment_method_balanced').on('click', function() {
+    $('.payform').show();
+  });

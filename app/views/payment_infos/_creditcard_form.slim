@@ -8,19 +8,19 @@
           = text_field_tag :credit_card, nil, :placeholder => "41111111111111111"
       .control-group
         .control-label
-          = label_tag :credit_card, "Expiration Year"
+          = label_tag :expiration_year, "Expiration Year"
         .controls
-          = text_field_tag :credit_card, nil, :placeholder => "2020"
+          = text_field_tag :expiration_year, nil, :placeholder => "2020"
       .control-group
         .control-label
-          = label_tag :credit_card, "Expiration Month"
+          = label_tag :expiration_month, "Expiration Month"
         .controls
-          = text_field_tag :credit_card, nil, :placeholder => "10"
+          = text_field_tag :expiration_month, nil, :placeholder => "10"
       .control-group
         .control-label
-          = label_tag :credit_card, "Security Code"
+          = label_tag :security_code, "Security Code"
         .controls
-          = text_field_tag :credit_card, nil, :placeholder => "654"
+          = text_field_tag :security_code, nil, :placeholder => "654"
       .control-group
         .controls
           = submit_tag

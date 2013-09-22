@@ -14,5 +14,7 @@ html
       .footer-content
         | &copy; CodeDoor
         = " #{Time.now.year}"
-        span.footer-source-link
+        span.footer-link
           = link_to 'View Source', 'https://github.com/CodeDoor/codedoor', target: '_blank'
+        span.footer-link
+          = link_to 'Terms of Use', '/terms', target: '_blank'

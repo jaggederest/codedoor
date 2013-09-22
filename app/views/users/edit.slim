@@ -41,7 +41,10 @@
           = render partial: 'shared/help_inline', locals: {model: current_user, attribute: :checked_terms}
           label class='checkbox'
             = f.check_box :checked_terms
-            | By checking this box, I agree to abide by CodeDoor's Terms of Use.
+            | By checking this box, I agree to abide by CodeDoor's&nbsp;
+            a href="/terms" target="_blank"
+              | Terms of Use
+            .
     .control-group
       .controls
         = f.submit current_user.programmer.present? ? 'Edit Info' : 'Create Programmer Account', data: {disable_with: 'Submitting...'}

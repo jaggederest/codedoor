@@ -12,4 +12,6 @@ Codedoor::Application.routes.draw do
     resource :payment_info, only: [:new, :create, :edit, :update]
   end
 
+  get '/terms', to: 'legal#terms'
+
 end

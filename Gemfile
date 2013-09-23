@@ -67,7 +67,6 @@ group :test do
   gem 'database_cleaner', '~> 1.0.1'
   gem 'launchy'
   gem 'simplecov', require: false
-  gem 'codeclimate-test-reporter', require: false
   gem 'coveralls', require: false
 end
 

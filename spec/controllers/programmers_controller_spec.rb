@@ -35,7 +35,7 @@ describe ProgrammersController do
 
   describe 'GET show' do
     before :each do
-      @programmer = FactoryGirl.create(:programmer)
+      @programmer = FactoryGirl.create(:programmer, state: 'activated')
     end
 
     it 'assigns @programmer and renders template' do
@@ -52,8 +52,21 @@ describe ProgrammersController do
       response.should render_template('show')
     end
 
+    it 'redirects to programmer settings if you try to visit own profile, and it is incomplete' do
+      @programmer = FactoryGirl.create(:programmer, user: @user, state: 'incomplete')
+      get :show, id: @programmer.id
+      response.should redirect_to(edit_user_programmer_path(@user))
+    end
+
     it 'does not render the show template logged out if the programmer is not public' do
       sign_out(@user)
+      get :show, id: @programmer.id
+      response.should redirect_to(root_path)
+      flash[:alert].should eq('Information cannot be found.')
+    end
+
+    it 'does not render the show template logged out if the programmer is not activated' do
+      @programmer = FactoryGirl.create(:programmer, state: 'incomplete')
       get :show, id: @programmer.id
       response.should redirect_to(root_path)
       flash[:alert].should eq('Information cannot be found.')

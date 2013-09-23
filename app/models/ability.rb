@@ -8,10 +8,10 @@ class Ability
     else
       can :manage, [User, PaymentInfo], id: user.id
       can :read, Programmer do |programmer|
-        if programmer.private?
-          programmer.user_id == user.id
-        else
+        if programmer.activated? && !programmer.private?
           true
+        else
+          programmer.user_id == user.id
         end
       end
       can [:create, :update, :destroy], Programmer, user_id: user.id

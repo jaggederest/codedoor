@@ -9,6 +9,9 @@ class ProgrammersController < ApplicationController
 
   def show
     @programmer = Programmer.find(params[:id])
+    if current_user.present? && (@programmer.user_id == current_user.id) && @programmer.incomplete?
+      redirect_to edit_user_programmer_path(current_user)
+    end
   end
 
   # There are no new or create routes.  This way, loading the controller will load repos,

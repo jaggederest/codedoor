@@ -6,8 +6,9 @@ div class="navbar"
     - if user_signed_in?
       a class="pull-right" href="#{destroy_user_session_path}" data-method="delete"
         | Log out
-      a class="pull-left" href="#{programmer_path(current_user)}"
-        | Profile
+      - if current_user.programmer.present? && !current_user.programmer.incomplete?
+        a class="pull-left" href="#{programmer_path(current_user)}"
+          | Profile
       a class="pull-left" href="#{edit_user_path(current_user)}"
         | Settings
     - else

@@ -8,7 +8,7 @@ feature 'Programmer settings', js: true do
     page.should have_content 'Test User'
     page.should have_content 'Test Title'
     page.should have_content '$900 / day'
-    page.should have_content 'Full Time'
+    page.should have_content 'Full-time'
     page.should have_content 'Work can be done at a client\'s office if it is nearby.'
 
     click_link 'Settings'

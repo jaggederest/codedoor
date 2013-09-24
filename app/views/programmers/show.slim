@@ -10,7 +10,7 @@
     p
       = @programmer.client_rate_text
     p
-      = @programmer.availability.titleize
+      = @programmer.availability.humanize
     p
       = Programmer.onsite_status_description(@programmer.onsite_status)
     - if @programmer.contract_to_hire?
@@ -33,11 +33,14 @@
         - @programmer.github_repos.shown.each do |repo|
           p
             .row
-              .span3
+              .span4
                 - repo_text = "#{repo.repo_owner}/#{repo.repo_name}"
                 = repo_commits_link(@programmer.user.github_account.username, repo.repo_owner, repo.repo_name, repo_text)
               .span2
                 = "#{pluralize(repo.stars_count, 'star')} #{repo.is_fork? ? '(fork)' : ''}"
+            .row
+              .span6
+                = repo.description
 
       - if @programmer.show_portfolio?
         strong

@@ -5,15 +5,27 @@
   - @programmers.each do |programmer|
     .row
       .span2
-      .span5
-        p
-          strong
-            = link_to(programmer.user.full_name, programmer_path(programmer))
+      .span4
+        h4
+          = link_to(programmer.user.full_name, programmer_path(programmer))
         p
           = programmer.title
         p
           = programmer.user.location_text
-        p
-          = programmer.description.truncate(140)
-        p
+      .span2
+        .rate-badge.pull-right
           = programmer.client_rate_text
+          - if !programmer.unavailable?
+            br
+            small
+              .pull-right
+                = programmer.availability.humanize
+    .row
+      .span2
+      .span6
+        p
+          = programmer.description.truncate(500)
+    .row
+      .span2
+      .span6
+        hr

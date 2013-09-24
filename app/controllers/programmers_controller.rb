@@ -4,12 +4,17 @@ class ProgrammersController < ApplicationController
   before_filter :ensure_user_checked_terms, except: [:index, :show]
 
   def index
-    @programmers = Programmer.all
+    if user_signed_in?
+      visibility = ['codedoor', 'public']
+    else
+      visibility = ['public']
+    end
+    @programmers = Programmer.all.where(state: 'activated', visibility: visibility)
   end
 
   def show
     @programmer = Programmer.find(params[:id])
-    if current_user.present? && (@programmer.user_id == current_user.id) && @programmer.incomplete?
+    if user_signed_in? && (@programmer.user_id == current_user.id) && @programmer.incomplete?
       redirect_to edit_user_programmer_path(current_user)
     end
   end

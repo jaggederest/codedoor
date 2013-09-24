@@ -19,16 +19,24 @@ describe ProgrammersController do
   end
 
   describe 'GET index' do
+
+    before :each do
+      @public_programmer = FactoryGirl.create(:programmer, visibility: 'public', state: 'activated')
+      @codedoor_programmer = FactoryGirl.create(:programmer, visibility: 'codedoor', state: 'activated')
+      @private_programmer = FactoryGirl.create(:programmer, visibility: 'private', state: 'activated')
+      @unactivated_programmer = FactoryGirl.create(:programmer, visibility: 'public', state: 'incomplete')
+    end
+
     it 'assigns @programmers and renders template' do
-      programmer = FactoryGirl.create(:programmer)
       get :index
-      assigns(:programmers).should eq([programmer])
+      assigns(:programmers).should eq([@public_programmer, @codedoor_programmer])
       response.should render_template('index')
     end
 
-    it 'still renders the index template logged out' do
+    it 'still renders the index template logged out, but without the programmers of "codedoor" visibility' do
       sign_out(@user)
       get :index
+      assigns(:programmers).should eq([@public_programmer])
       response.should render_template('index')
     end
   end

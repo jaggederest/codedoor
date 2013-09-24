@@ -6,7 +6,7 @@
     p
       = @programmer.title
     p
-      = current_user.location_text
+      = @programmer.user.location_text
     p
       = @programmer.client_rate_text
     p
@@ -28,14 +28,14 @@
       - if @programmer.show_repos?
         strong
           | GitHub&nbsp;/&nbsp;
-        - username = current_user.github_account.username
+        - username = @programmer.user.github_account.username
         = link_to username, "https://github.com/#{username}", target: '_blank'
         - @programmer.github_repos.shown.each do |repo|
           p
             .row
               .span3
                 - repo_text = "#{repo.repo_owner}/#{repo.repo_name}"
-                = repo_commits_link(current_user.github_account.username, repo.repo_owner, repo.repo_name, repo_text)
+                = repo_commits_link(@programmer.user.github_account.username, repo.repo_owner, repo.repo_name, repo_text)
               .span2
                 = "#{pluralize(repo.stars_count, 'star')} #{repo.is_fork? ? '(fork)' : ''}"
 

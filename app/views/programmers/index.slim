@@ -1,3 +1,19 @@
-- @programmers.each do |programmer|
+- if @programmers.empty?
   p
-    = link_to(programmer.user.full_name, programmer_path(programmer))
+    | No programmers have matched your search.
+- else
+  - @programmers.each do |programmer|
+    .row
+      .span2
+      .span5
+        p
+          strong
+            = link_to(programmer.user.full_name, programmer_path(programmer))
+        p
+          = programmer.title
+        p
+          = programmer.user.location_text
+        p
+          = programmer.description.truncate(140)
+        p
+          = programmer.client_rate_text

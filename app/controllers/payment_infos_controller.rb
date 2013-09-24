@@ -13,7 +13,7 @@ class PaymentInfosController < ApplicationController
 
       render json: {redirect_to: new_user_payment_info_url(params["user_id"].to_i)}
     elsif params[:data][:security_code_check] == "failed"
-      flash[:error] = ["your security code is invalid, please try again"]
+      flash[:error] = ["Your security code is invalid, please try again."]
 
       render json: {redirect_to: new_user_payment_info_url(params["user_id"].to_i)}
     else
@@ -22,7 +22,7 @@ class PaymentInfosController < ApplicationController
                          primary_payment_method: "balanced")
       pay_info.associate_card(card_uri)
 
-      flash[:notice] = "Your payment details have been successfully saved"
+      flash[:notice] = "Your payment details have been successfully saved."
 
       render json: {redirect_to: new_user_payment_info_url(params["user_id"].to_i)}
     end

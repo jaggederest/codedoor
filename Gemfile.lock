@@ -28,6 +28,9 @@ GEM
     addressable (2.3.5)
     arel (4.0.0)
     atomic (1.1.12)
+    balanced (0.7.4)
+      faraday (>= 0.8.6)
+      faraday_middleware (~> 0.9.0)
     bcrypt-ruby (3.1.1)
     bootstrap-sass (2.3.2.1)
       sass (~> 3.2)
@@ -85,6 +88,8 @@ GEM
       railties (>= 3.0.0)
     faraday (0.8.8)
       multipart-post (~> 1.2.0)
+    faraday_middleware (0.9.0)
+      faraday (>= 0.7.4, < 0.9)
     figaro (0.7.0)
       bundler (~> 1.0)
       rails (>= 3, < 5)
@@ -244,6 +249,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  balanced (~> 0.7.4)
   bootstrap-sass (~> 2.3.2.1)
   cancan (~> 1.6.10)
   capybara

@@ -1,59 +1,60 @@
 - checked_terms = current_user.checked_terms_was
-.span3
-  = render partial: 'settings/sidebar', locals: {active: :basic}
-.span9
-  h2.span9.settings-header
-    = checked_terms ? 'Basic Info' : 'Registration'
-  = form_for [current_user], url: {action: :update}, html: {class: 'form-horizontal'} do |f|
-    .control-group class="#{model_attribute_class(current_user, :full_name)}"
-      .control-label
-        = f.label :full_name
-      .controls
-        = f.text_field :full_name, placeholder: 'Your Name'
-        = render partial: 'shared/help_inline', locals: {model: current_user, attribute: :full_name}
-    .control-group class="#{model_attribute_class(current_user, :email)}"
-      .control-label
-        = f.label :email
-      .controls
-        = f.text_field :email, placeholder: 'Email'
-        = render partial: 'shared/help_inline', locals: {model: current_user, attribute: :email}
-    .control-group class="#{model_attribute_class(current_user, :country)}"
-      .control-label
-        = f.label :country
-      .controls
-        = f.select(:country, Countries.supported_by_paypal, include_blank: true)
-        = render partial: 'shared/help_inline', locals: {model: current_user, attribute: :country}
-    .control-group class="#{model_attribute_class(current_user, :state)} #{current_user.american? ? '' : 'hidden'}" id="user_state_container"
-      .control-label
-        = f.label :state
-      .controls
-        = f.select(:state, States::HASH, include_blank: true)
-        = render partial: 'shared/help_inline', locals: {model: current_user, attribute: :state}
-    .control-group class="#{model_attribute_class(current_user, :city)}"
-      .control-label
-        = f.label :city
-      .controls
-        = f.text_field :city, placeholder: 'City'
-        = render partial: 'shared/help_inline', locals: {model: current_user, attribute: :city}
-    - unless checked_terms
-      .control-group class="#{model_attribute_class(current_user, :checked_terms)}"
+.row
+  .span3
+    = render partial: 'settings/sidebar', locals: {active: :basic}
+  .span9
+    h2.span9.settings-header
+      = checked_terms ? 'Basic Info' : 'Registration'
+    = form_for [current_user], url: {action: :update}, html: {class: 'form-horizontal'} do |f|
+      .control-group class="#{model_attribute_class(current_user, :full_name)}"
+        .control-label
+          = f.label :full_name
         .controls
-          = render partial: 'shared/help_inline', locals: {model: current_user, attribute: :checked_terms}
-          label class='checkbox'
-            = f.check_box :checked_terms
-            | By checking this box, I agree to abide by CodeDoor's&nbsp;
-            a href="/terms" target="_blank"
-              | Terms of Use
-            .
-    .control-group
-      .controls
-        = f.submit current_user.programmer.present? ? 'Edit Info' : 'Create Programmer Account', data: {disable_with: 'Submitting...'}
-javascript:
-  $('#user_country').on('change',
-                       function() {
-                         if (this.value == 'US') {
-                           $('#user_state_container').show();
-                         } else {
-                           $('#user_state_container').hide();
-                         }
-                       });
+          = f.text_field :full_name, placeholder: 'Your Name'
+          = render partial: 'shared/help_inline', locals: {model: current_user, attribute: :full_name}
+      .control-group class="#{model_attribute_class(current_user, :email)}"
+        .control-label
+          = f.label :email
+        .controls
+          = f.text_field :email, placeholder: 'Email'
+          = render partial: 'shared/help_inline', locals: {model: current_user, attribute: :email}
+      .control-group class="#{model_attribute_class(current_user, :country)}"
+        .control-label
+          = f.label :country
+        .controls
+          = f.select(:country, Countries.supported_by_paypal, include_blank: true)
+          = render partial: 'shared/help_inline', locals: {model: current_user, attribute: :country}
+      .control-group class="#{model_attribute_class(current_user, :state)} #{current_user.american? ? '' : 'hidden'}" id="user_state_container"
+        .control-label
+          = f.label :state
+        .controls
+          = f.select(:state, States::HASH, include_blank: true)
+          = render partial: 'shared/help_inline', locals: {model: current_user, attribute: :state}
+      .control-group class="#{model_attribute_class(current_user, :city)}"
+        .control-label
+          = f.label :city
+        .controls
+          = f.text_field :city, placeholder: 'City'
+          = render partial: 'shared/help_inline', locals: {model: current_user, attribute: :city}
+      - unless checked_terms
+        .control-group class="#{model_attribute_class(current_user, :checked_terms)}"
+          .controls
+            = render partial: 'shared/help_inline', locals: {model: current_user, attribute: :checked_terms}
+            label class='checkbox'
+              = f.check_box :checked_terms
+              | By checking this box, I agree to abide by CodeDoor's&nbsp;
+              a href="/terms" target="_blank"
+                | Terms of Use
+              .
+      .control-group
+        .controls
+          = f.submit current_user.programmer.present? ? 'Edit Info' : 'Create Programmer Account', data: {disable_with: 'Submitting...'}
+  javascript:
+    $('#user_country').on('change',
+                         function() {
+                           if (this.value == 'US') {
+                             $('#user_state_container').show();
+                           } else {
+                             $('#user_state_container').hide();
+                           }
+                         });

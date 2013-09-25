@@ -8,296 +8,297 @@
   - elsif !@programmer.qualified?
     p
     = render partial: 'shared/notice_message', locals: {message: 'Contractors on CodeDoor need at least one open-source contribution to a GitHub repository with at least 25 stars, or another popular repository elsewhere.'}
-.span3
-  = render partial: 'settings/sidebar', locals: {active: :programmer}
-.span9
-  h2.span9.settings-header
-    | Programmer Info
-  = nested_form_for [current_user, @programmer], url: {action: :update}, html: {class: 'form-horizontal'} do |f|
-    = f.hidden_field :user_id
-    .control-group class="#{model_attribute_class(@programmer, :title)}"
-      .control-label
-        = f.label :title
-      .controls
-        = f.text_field :title, placeholder: 'Short Description'
-        = render partial: 'shared/help_inline', locals: {model: @programmer, attribute: :title}
+.row
+  .span3
+    = render partial: 'settings/sidebar', locals: {active: :programmer}
+  .span9
+    h2.span8.settings-header
+      | Programmer Info
+    = nested_form_for [current_user, @programmer], url: {action: :update}, html: {class: 'form-horizontal'} do |f|
+      = f.hidden_field :user_id
+      .control-group class="#{model_attribute_class(@programmer, :title)}"
+        .control-label
+          = f.label :title
+        .controls
+          = f.text_field :title, placeholder: 'Short Description'
+          = render partial: 'shared/help_inline', locals: {model: @programmer, attribute: :title}
 
-    .control-group class="#{model_attribute_class(@programmer, :description)}"
-      .control-label
-        = f.label :description
-      .controls
-        = f.text_area :description, placeholder: 'Describe why you a great hire.', class: 'span6'
-        = render partial: 'shared/help_inline', locals: {model: @programmer, attribute: :description}
+      .control-group class="#{model_attribute_class(@programmer, :description)}"
+        .control-label
+          = f.label :description
+        .controls
+          = f.text_area :description, placeholder: 'Describe why you a great hire.', class: 'span6'
+          = render partial: 'shared/help_inline', locals: {model: @programmer, attribute: :description}
 
-    .control-group class="#{model_attribute_class(@programmer, :availability)}"
-      .control-label
-        = f.label :availability
-      .controls
-        = render partial: 'shared/help_block', locals: {model: @programmer, attribute: :availability}
-        label class='radio'
-          = f.radio_button :availability, :'full-time'
-          | Full-time
-        label class='radio'
-          = f.radio_button :availability, :'part-time'
-          | Part-time
-        label class='radio'
-          = f.radio_button :availability, :unavailable
-          | Unavailable
+      .control-group class="#{model_attribute_class(@programmer, :availability)}"
+        .control-label
+          = f.label :availability
+        .controls
+          = render partial: 'shared/help_block', locals: {model: @programmer, attribute: :availability}
+          label class='radio'
+            = f.radio_button :availability, :'full-time'
+            | Full-time
+          label class='radio'
+            = f.radio_button :availability, :'part-time'
+            | Part-time
+          label class='radio'
+            = f.radio_button :availability, :unavailable
+            | Unavailable
 
-    .control-group class="#{model_attribute_class(current_user, :contract_to_hire)}"
-      .control-label
-      .controls
-        = render partial: 'shared/help_block', locals: {model: @programmer, attribute: :contract_to_hire}
-        label class='checkbox'
-          = f.check_box :contract_to_hire
-          | I will consider contract to hire positions.
+      .control-group class="#{model_attribute_class(current_user, :contract_to_hire)}"
+        .control-label
+        .controls
+          = render partial: 'shared/help_block', locals: {model: @programmer, attribute: :contract_to_hire}
+          label class='checkbox'
+            = f.check_box :contract_to_hire
+            | I will consider contract to hire positions.
 
-    .control-group class="#{model_attribute_class(@programmer, :rate)}"
-      .control-label
-        = f.label :rate, 'Rate (USD)'
-      .controls
-        = render partial: 'shared/help_block', locals: {model: @programmer, attribute: :rate}
-        .row#full-time-explanation
-          p.span5
-            | As a full-time programmer, billing is generally done a daily basis.  The hourly rate is used when you spend an hour or two with a client.
-        .row
-          .span5
-            .row
-              .span2
-                strong
-                  | Paid to You:
-        .row
-          .span5
-            .row
-              .span2
-                | $
-                = f.text_field(:rate, class: 'rate-field', id: 'hourly_rate_to_programmer')
-                | /hour
-              .span2
-                strong
-                  span#daily_rate_to_programmer
+      .control-group class="#{model_attribute_class(@programmer, :rate)}"
+        .control-label
+          = f.label :rate, 'Rate (USD)'
+        .controls
+          = render partial: 'shared/help_block', locals: {model: @programmer, attribute: :rate}
+          .row#full-time-explanation
+            p.span5
+              | As a full-time programmer, billing is generally done a daily basis.  The hourly rate is used when you spend an hour or two with a client.
+          .row
+            .span5
+              .row
+                .span2
+                  strong
+                    | Paid to You:
+          .row
+            .span5
+              .row
+                .span2
+                  | $
+                  = f.text_field(:rate, class: 'rate-field', id: 'hourly_rate_to_programmer')
+                  | /hour
+                .span2
+                  strong
+                    span#daily_rate_to_programmer
+                      | $
+                      span#daily_rate_to_programmer_value
+                        = @programmer.daily_rate_to_programmer
+                      | /day
+          .row
+            .span5
+              | Plus CodeDoor Fee:
+          .row
+            .span5
+              .row
+                .span2
+                  span#hourly_fee_to_codedoor
                     | $
-                    span#daily_rate_to_programmer_value
-                      = @programmer.daily_rate_to_programmer
+                    span#hourly_fee_to_codedoor_value
+                      = number_with_precision(@programmer.hourly_fee_to_codedoor, precision: 2)
+                    | /hour
+                .span2
+                  span#daily_fee_to_codedoor
+                    | $
+                    span#daily_fee_to_codedoor_value
+                      = @programmer.daily_fee_to_codedoor
                     | /day
-        .row
-          .span5
-            | Plus CodeDoor Fee:
-        .row
-          .span5
-            .row
-              .span2
-                span#hourly_fee_to_codedoor
-                  | $
-                  span#hourly_fee_to_codedoor_value
-                    = number_with_precision(@programmer.hourly_fee_to_codedoor, precision: 2)
-                  | /hour
-              .span2
-                span#daily_fee_to_codedoor
-                  | $
-                  span#daily_fee_to_codedoor_value
-                    = @programmer.daily_fee_to_codedoor
-                  | /day
-        .row
-          .span5
-            | Charged to Client:
-        .row
-          .span5
-            .row
-              .span2
-                span#hourly_rate_to_client
-                  | $
-                  span#hourly_rate_to_client_value
-                    = number_with_precision(@programmer.hourly_rate_to_client, precision: 2)
-                  | /hour
-              .span2
-                span#daily_rate_to_client
-                  | $
-                  span#daily_rate_to_client_value
-                    = @programmer.daily_rate_to_client
-                  | /day
+          .row
+            .span5
+              | Charged to Client:
+          .row
+            .span5
+              .row
+                .span2
+                  span#hourly_rate_to_client
+                    | $
+                    span#hourly_rate_to_client_value
+                      = number_with_precision(@programmer.hourly_rate_to_client, precision: 2)
+                    | /hour
+                .span2
+                  span#daily_rate_to_client
+                    | $
+                    span#daily_rate_to_client_value
+                      = @programmer.daily_rate_to_client
+                    | /day
 
-    .control-group class="#{model_attribute_class(@programmer, :onsite_status)}"
-      .control-label
-        = f.label :onsite_status
-
-      .controls
-        = render partial: 'shared/help_block', locals: {model: @programmer, attribute: :onsite_status}
-        label class='radio'
-          = f.radio_button :onsite_status, :onsite
-          = Programmer.onsite_status_description(:onsite)
-        label class='radio'
-          = f.radio_button :onsite_status, :occasional
-          = Programmer.onsite_status_description(:occasional)
-        label class='radio'
-          = f.radio_button :onsite_status, :visits_allowed
-          = Programmer.onsite_status_description(:visits_allowed)
-        label class='radio'
-          = f.radio_button :onsite_status, :offsite
-          = Programmer.onsite_status_description(:offsite)
-
-    .control-group class="#{model_attribute_class(@programmer, :visibility)}"
-      .control-label
-        = f.label :visibility
-
-      .controls
-        = render partial: 'shared/help_block', locals: {model: @programmer, attribute: :visibility}
-        label class='radio'
-          = f.radio_button :visibility, :public
-          | Public (Visible to search engines)
-        label class='radio'
-          = f.radio_button :visibility, :codedoor
-          | Visible to other CodeDoor users
-        label class='radio'
-          = f.radio_button :visibility, :disabled
-          | Private (Visible to only myself)
-
-    h2.span9
-      | Portfolio
-
-    .control-group.without-margin
-      .control-label
-      .controls
-        - if @programmer.qualified?
-          p
-            | You have contributed to popular open-source repositories.
-        - else
-          p
-            | Contractors on CodeDoor need at least one open-source contribution to a public repository with at least 25 stars.
-          p
-            | If you've contributed to a major open-source project that isn't on GitHub, please send an email to:&nbsp;
-            a href="mailto:codedoor@codedoor.com"
-              | codedoor@codedoor.com
-
-    h4.span9.settings-header
-      | Repositories
-
-    .control-group.show-row
-      .control-label
-      .controls.show-label
-        | Show
-
-    span#github-repos
-      / TODO: A hack is used instead of using the actual form,
-      / since we need to render the github repo partial server-side (for AJAX).
-      - index = 0
-      = f.fields_for :github_repos do |github_form|
-        - repo = github_form.object
-        = render partial: 'programmers/github_repo', locals: {repo: repo, index: index, serverside: false}
-        - index += 1
-
-    .control-group
-      .control-label
-      .controls
-        .row
-          .span1
-          = text_field_tag :repo_owner, nil, placeholder: 'User', class: 'repo-owner-field', id: 'repo-owner'
-          | /
-          = text_field_tag :repo_name, nil, placeholder: 'Repository', class: 'repo-name-field', id: 'repo-name'
-          = link_to 'Add', verify_contribution_user_programmer_path(@programmer), method: :post, remote: true, id: 'verify-contribution', class: 'btn'
-          span.ajax-load.hidden
-            = image_tag('ajax-load.gif')
-          javascript:
-            $('#verify-contribution').bind('ajax:before', function() {
-              $(this).data('params', {repo_owner: $('#repo-owner').val(), repo_name: $('#repo-name').val()});
-            });
-            $('#verify-contribution').bind('ajax:success', function(evt, data, status, xhr) {
-              var responseObject = $.parseJSON(xhr.responseText);
-              $('#contribution-message').text(responseObject.success).removeClass('alert-error').addClass('alert verify-contribution-message');
-              $('#github-repos').append(responseObject.html);
-            });
-            $('#verify-contribution').bind('ajax:error', function(evt, xhr, status, error) {
-              var responseObject = $.parseJSON(xhr.responseText);
-              $('#contribution-message').text(responseObject.error).addClass('alert alert-error verify-contribution-message');
-            });
-        .row
-          .span1
-          div id='contribution-message' class='verify-contribution-message'
-
-    h4.span9.settings-header
-      | Projects
-
-    = f.fields_for :portfolio_items do |portfolio_form|
-      .control-group class="#{model_attribute_class(portfolio_form.object, :title)}"
+      .control-group class="#{model_attribute_class(@programmer, :onsite_status)}"
         .control-label
-          | Title
+          = f.label :onsite_status
+
         .controls
-          = portfolio_form.text_field :title
-          = render partial: 'shared/help_inline', locals: {model: portfolio_form.object, attribute: :title}
-      .control-group class="#{model_attribute_class(portfolio_form.object, :url)}"
+          = render partial: 'shared/help_block', locals: {model: @programmer, attribute: :onsite_status}
+          label class='radio'
+            = f.radio_button :onsite_status, :onsite
+            = Programmer.onsite_status_description(:onsite)
+          label class='radio'
+            = f.radio_button :onsite_status, :occasional
+            = Programmer.onsite_status_description(:occasional)
+          label class='radio'
+            = f.radio_button :onsite_status, :visits_allowed
+            = Programmer.onsite_status_description(:visits_allowed)
+          label class='radio'
+            = f.radio_button :onsite_status, :offsite
+            = Programmer.onsite_status_description(:offsite)
+
+      .control-group class="#{model_attribute_class(@programmer, :visibility)}"
         .control-label
-          | Link
+          = f.label :visibility
+
         .controls
-          = portfolio_form.text_field :url
-          = render partial: 'shared/help_inline', locals: {model: portfolio_form.object, attribute: :url}
-      .control-group class="#{model_attribute_class(portfolio_form.object, :description)}"
+          = render partial: 'shared/help_block', locals: {model: @programmer, attribute: :visibility}
+          label class='radio'
+            = f.radio_button :visibility, :public
+            | Public (Visible to search engines)
+          label class='radio'
+            = f.radio_button :visibility, :codedoor
+            | Visible to other CodeDoor users
+          label class='radio'
+            = f.radio_button :visibility, :disabled
+            | Private (Visible to only myself)
+
+      h2.span9
+        | Portfolio
+
+      .control-group.without-margin
         .control-label
-          | Description
         .controls
-          = portfolio_form.text_area :description
-          = render partial: 'shared/help_inline', locals: {model: portfolio_form.object, attribute: :description}
+          - if @programmer.qualified?
+            p
+              | You have contributed to popular open-source repositories.
+          - else
+            p
+              | Contractors on CodeDoor need at least one open-source contribution to a public repository with at least 25 stars.
+            p
+              | If you've contributed to a major open-source project that isn't on GitHub, please send an email to:&nbsp;
+              a href="mailto:codedoor@codedoor.com"
+                | codedoor@codedoor.com
 
-      = portfolio_form.link_to_remove 'Remove project'
+      h4.span9.settings-header
+        | Repositories
 
-    = f.link_to_add 'Add project', :portfolio_items
-
-    h2.span9.settings-header
-      | Résumé
-
-    = f.fields_for :resume_items do |resume_form|
-      .control-group class="#{model_attribute_class(resume_form.object, :company_name)}"
+      .control-group.show-row
         .control-label
-          | Company
-        .controls
-          = resume_form.text_field :company_name
-          = render partial: 'shared/help_inline', locals: {model: resume_form.object, attribute: :company_name}
-      .control-group class="#{model_attribute_class(resume_form.object, :title)}"
-        .control-label
-          | Title
-        .controls
-          = resume_form.text_field :title
-          = render partial: 'shared/help_inline', locals: {model: resume_form.object, attribute: :title}
-      .control-group class="#{model_attribute_class(resume_form.object, :description)}"
-        .control-label
-          | Description
-        .controls
-          = resume_form.text_area :description
-          = render partial: 'shared/help_inline', locals: {model: resume_form.object, attribute: :description}
-      = render partial: 'programmers/date', locals: {form: resume_form, type: :resume}
+        .controls.show-label
+          | Show
 
-      = resume_form.link_to_remove 'Remove from résumé'
+      span#github-repos
+        / TODO: A hack is used instead of using the actual form,
+        / since we need to render the github repo partial server-side (for AJAX).
+        - index = 0
+        = f.fields_for :github_repos do |github_form|
+          - repo = github_form.object
+          = render partial: 'programmers/github_repo', locals: {repo: repo, index: index, serverside: false}
+          - index += 1
 
-    = f.link_to_add 'Add to résumé', :resume_items
-
-    h2.span9.settings-header
-      | Education
-
-    = f.fields_for :education_items do |edu_form|
       .control-group
         .control-label
-          | School Name
         .controls
-          = edu_form.text_field :school_name
-          = render partial: 'shared/help_inline', locals: {model: edu_form.object, attribute: :company_name}
+          .row
+            .span1
+            = text_field_tag :repo_owner, nil, placeholder: 'User', class: 'repo-owner-field', id: 'repo-owner'
+            | /
+            = text_field_tag :repo_name, nil, placeholder: 'Repository', class: 'repo-name-field', id: 'repo-name'
+            = link_to 'Add', verify_contribution_user_programmer_path(@programmer), method: :post, remote: true, id: 'verify-contribution', class: 'btn'
+            span.ajax-load.hidden
+              = image_tag('ajax-load.gif')
+            javascript:
+              $('#verify-contribution').bind('ajax:before', function() {
+                $(this).data('params', {repo_owner: $('#repo-owner').val(), repo_name: $('#repo-name').val()});
+              });
+              $('#verify-contribution').bind('ajax:success', function(evt, data, status, xhr) {
+                var responseObject = $.parseJSON(xhr.responseText);
+                $('#contribution-message').text(responseObject.success).removeClass('alert-error').addClass('alert verify-contribution-message');
+                $('#github-repos').append(responseObject.html);
+              });
+              $('#verify-contribution').bind('ajax:error', function(evt, xhr, status, error) {
+                var responseObject = $.parseJSON(xhr.responseText);
+                $('#contribution-message').text(responseObject.error).addClass('alert alert-error verify-contribution-message');
+              });
+          .row
+            .span1
+            div id='contribution-message' class='verify-contribution-message'
+
+      h4.span9.settings-header
+        | Projects
+
+      = f.fields_for :portfolio_items do |portfolio_form|
+        .control-group class="#{model_attribute_class(portfolio_form.object, :title)}"
+          .control-label
+            | Title
+          .controls
+            = portfolio_form.text_field :title
+            = render partial: 'shared/help_inline', locals: {model: portfolio_form.object, attribute: :title}
+        .control-group class="#{model_attribute_class(portfolio_form.object, :url)}"
+          .control-label
+            | Link
+          .controls
+            = portfolio_form.text_field :url
+            = render partial: 'shared/help_inline', locals: {model: portfolio_form.object, attribute: :url}
+        .control-group class="#{model_attribute_class(portfolio_form.object, :description)}"
+          .control-label
+            | Description
+          .controls
+            = portfolio_form.text_area :description
+            = render partial: 'shared/help_inline', locals: {model: portfolio_form.object, attribute: :description}
+
+        = portfolio_form.link_to_remove 'Remove project'
+
+      = f.link_to_add 'Add project', :portfolio_items
+
+      h2.span9.settings-header
+        | Résumé
+
+      = f.fields_for :resume_items do |resume_form|
+        .control-group class="#{model_attribute_class(resume_form.object, :company_name)}"
+          .control-label
+            | Company
+          .controls
+            = resume_form.text_field :company_name
+            = render partial: 'shared/help_inline', locals: {model: resume_form.object, attribute: :company_name}
+        .control-group class="#{model_attribute_class(resume_form.object, :title)}"
+          .control-label
+            | Title
+          .controls
+            = resume_form.text_field :title
+            = render partial: 'shared/help_inline', locals: {model: resume_form.object, attribute: :title}
+        .control-group class="#{model_attribute_class(resume_form.object, :description)}"
+          .control-label
+            | Description
+          .controls
+            = resume_form.text_area :description
+            = render partial: 'shared/help_inline', locals: {model: resume_form.object, attribute: :description}
+        = render partial: 'programmers/date', locals: {form: resume_form, type: :resume}
+
+        = resume_form.link_to_remove 'Remove from résumé'
+
+      = f.link_to_add 'Add to résumé', :resume_items
+
+      h2.span9.settings-header
+        | Education
+
+      = f.fields_for :education_items do |edu_form|
+        .control-group
+          .control-label
+            | School Name
+          .controls
+            = edu_form.text_field :school_name
+            = render partial: 'shared/help_inline', locals: {model: edu_form.object, attribute: :company_name}
+        .control-group
+          .control-label
+            | Degree and Major
+          .controls
+            = edu_form.text_field :degree_and_major
+            = render partial: 'shared/help_inline', locals: {model: edu_form.object, attribute: :degree_and_major}
+        .control-group
+          .control-label
+            | Description
+          .controls
+            = edu_form.text_area :description
+            = render partial: 'shared/help_inline', locals: {model: edu_form.object, attribute: :description}
+        = render partial: 'programmers/date', locals: {form: edu_form, type: :education}
+
+        = edu_form.link_to_remove 'Remove from education'
+
+      = f.link_to_add 'Add to education', :education_items
+
       .control-group
-        .control-label
-          | Degree and Major
         .controls
-          = edu_form.text_field :degree_and_major
-          = render partial: 'shared/help_inline', locals: {model: edu_form.object, attribute: :degree_and_major}
-      .control-group
-        .control-label
-          | Description
-        .controls
-          = edu_form.text_area :description
-          = render partial: 'shared/help_inline', locals: {model: edu_form.object, attribute: :description}
-      = render partial: 'programmers/date', locals: {form: edu_form, type: :education}
-
-      = edu_form.link_to_remove 'Remove from education'
-
-    = f.link_to_add 'Add to education', :education_items
-
-    .control-group
-      .controls
-        = f.submit (@programmer.incomplete? ? 'Add Info' : 'Edit Info'), data: {disable_with: 'Submitting...'}
-= render partial: 'programmers/rates.js'
+          = f.submit (@programmer.incomplete? ? 'Add Info' : 'Edit Info'), data: {disable_with: 'Submitting...'}
+  = render partial: 'programmers/rates.js'

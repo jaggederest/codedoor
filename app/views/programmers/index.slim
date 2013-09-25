@@ -13,13 +13,7 @@
         p
           = programmer.user.location_text
       .span2
-        .rate-badge.pull-right
-          = programmer.client_rate_text
-          - if !programmer.unavailable?
-            br
-            small
-              .pull-right
-                = programmer.availability.humanize
+        = render partial: 'shared/rate_badge', locals: {programmer: programmer}
     .row
       .span2
       .span6

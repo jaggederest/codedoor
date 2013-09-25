@@ -1,0 +1,7 @@
+.rate-badge.pull-right
+  = programmer.client_rate_text
+  - if !programmer.unavailable?
+    br
+    small
+      .pull-right
+        = programmer.availability.humanize

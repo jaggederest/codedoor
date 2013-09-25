@@ -7,9 +7,10 @@ html
     = csrf_meta_tags
   body
     = render partial: 'shared/navbar'
-    = render partial: 'shared/flash_messages'
-    = yield
-    .footer-clear
+    .main-content
+      = render partial: 'shared/flash_messages'
+      = yield
+      .footer-clear
     .navbar.navbar-fixed-bottom
       .footer-content
         | &copy; CodeDoor

@@ -1,5 +1,6 @@
 require 'simplecov'
 SimpleCov.start 'rails'
+# Comment the following two lines if you want to check the test coverage of your local copy
 require 'coveralls'
 Coveralls.wear!
 

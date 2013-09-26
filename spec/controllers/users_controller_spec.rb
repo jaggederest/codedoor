@@ -28,13 +28,23 @@ describe UsersController do
   end
 
   describe 'POST update' do
-    it 'should pass with correct inputs, redirect to programmer page' do
+    it 'should pass with correct inputs' do
       post :update, id: @user.id, user: {full_name: 'New Name', email: 'newemail@example.com', checked_terms: '1', country: 'US', state: 'CA', city: 'Burlingame'}
-      response.should redirect_to(edit_user_programmer_path(@user))
+      response.should render_template('edit')
       @user.reload
       flash[:notice].should eq('Your information has been updated.')
       @user.full_name.should eq('New Name')
       @user.email.should eq('newemail@example.com')
+    end
+
+    it 'should redirect to edit programmer path if button is clicked' do
+      post :update, id: @user.id, user: {full_name: 'New Name', email: 'newemail@example.com', checked_terms: '1', country: 'US', state: 'CA', city: 'Burlingame'}, create_programmer: 'Create Programmer Account'
+      response.should redirect_to(edit_user_programmer_path(@user))
+    end
+
+    it 'should redirect to new client path if button is clicked' do
+      post :update, id: @user.id, user: {full_name: 'New Name', email: 'newemail@example.com', checked_terms: '1', country: 'US', state: 'CA', city: 'Burlingame'}, create_client: 'Create Client Account'
+      response.should redirect_to(new_user_client_path(@user))
     end
 
     it 'should not be allowed when logged out' do

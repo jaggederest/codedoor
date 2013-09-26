@@ -7,8 +7,13 @@ class UsersController < ApplicationController
   def update
     if current_user.update(user_params)
       flash[:notice] = 'Your information has been updated.'
-      # TODO: redirect should depend on the button pressed.
-      redirect_to edit_user_programmer_path(@user)
+      if params[:create_programmer].present?
+        redirect_to edit_user_programmer_path(@user)
+      elsif params[:create_client].present?
+        redirect_to new_user_client_path(@user)
+      else
+        render :edit
+      end
     else
       flash[:alert] = 'Your information could not be updated.'
       render :edit

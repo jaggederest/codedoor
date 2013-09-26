@@ -1,6 +1,6 @@
 .row
   .span3
-    = render partial: 'settings/sidebar', locals: {active: :payments}
+    = render partial: 'settings/sidebar', locals: {active: :payment}
   .span9
     h2.span9.settings-header
       | Payments
@@ -19,4 +19,4 @@
             | Credit Card
       .control-group
         .controls
-          = f.submit ((action == :new) ? 'Add Payment Info' : 'Edit Payment Info'), data: {disable_with: 'Submitting...'}
+          = f.submit ((action == :create) ? 'Add Payment Info' : 'Edit Payment Info'), data: {disable_with: 'Submitting...'}

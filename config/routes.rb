@@ -9,6 +9,7 @@ Codedoor::Application.routes.draw do
     resource :programmer, only: [:edit, :update] do
       post :verify_contribution, defaults: { format: :json }
     end
+    resource :client, only: [:new, :create, :edit, :update]
     resource :payment_info, only: [:new, :create, :edit, :update]
   end
 

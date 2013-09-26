@@ -1,0 +1,25 @@
+.row
+  .span3
+    = render partial: 'settings/sidebar', locals: {active: :client}
+  .span9
+    h2.span9.settings-header
+      | Client Info
+    = form_for [current_user, @client], url: {action: action}, html: {class: 'form-horizontal'} do |f|
+      = f.hidden_field :user_id
+      .control-group class="#{model_attribute_class(@client, :company)}"
+        .control-label
+          = f.label :company
+        .controls
+          = f.text_field :company, placeholder: 'Company Name'
+          = render partial: 'shared/help_inline', locals: {model: @client, attribute: :company}
+
+      .control-group class="#{model_attribute_class(@client, :description)}"
+        .control-label
+          = f.label :description
+        .controls
+          = render partial: 'shared/help_block', locals: {model: @client, attribute: :description}
+          = f.text_area :description, placeholder: 'Describe your company.', class: 'span6'
+
+      .control-group
+        .controls
+          = f.submit ((action == :create) ? 'Add Info' : 'Edit Info'), data: {disable_with: 'Submitting...'}

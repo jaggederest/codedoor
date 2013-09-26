@@ -46,9 +46,17 @@
               a href="/terms" target="_blank"
                 | Terms of Use
               .
-      .control-group
-        .controls
-          = f.submit current_user.programmer.present? ? 'Edit Info' : 'Create Programmer Account', data: {disable_with: 'Submitting...'}
+      - if !current_user.programmer.present? && !current_user.client.present?
+        .row
+          .span1
+          .span3
+            = f.submit 'Create Programmer Account', data: {disable_with: 'Submitting...'}, name: :create_programmer
+          .span3
+            = f.submit 'Create Client Account', data: {disable_with: 'Submitting...'}, name: :create_client
+      - else
+        .control-group
+          .controls
+            = f.submit 'Edit Info', data: {disable_with: 'Submitting...'}
   javascript:
     $('#user_country').on('change',
                          function() {

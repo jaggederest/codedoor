@@ -7,6 +7,7 @@ class User < ActiveRecord::Base
   has_many :github_user_accounts
   has_many :github_repos
   has_one  :programmer
+  has_one  :client
   has_one  :payment_info
 
   validates :full_name, presence: true

@@ -13,9 +13,19 @@ feature 'Programmer settings', js: true do
 
     click_link 'Settings'
     page.should_not have_content 'By checking this box, I agree to abide by CodeDoor\'s Terms of Use.'
-    click_button 'Edit Info'
+    click_link 'Programmer Info'
 
-    choose('Full-time')
+    choose('Part-time')
+
+    fill_in 'hourly_rate_to_programmer', with: 50
+    click_button 'Edit Info'
+    page.should have_content 'Your programmer account has been updated.'
+    page.should have_content '$450 / 8 hours'
+  end
+
+  scenario 'Modifying rates', js: true do
+    programmer_sign_up
+    go_to_programmer_settings
 
     page.should have_content('As a full-time programmer, billing is generally done a daily basis. The hourly rate is used when you spend an hour or two with a client.')
 
@@ -26,11 +36,6 @@ feature 'Programmer settings', js: true do
 
     page.should_not have_content('As a full-time programmer, billing is generally done a daily basis. The hourly rate is used when you spend an hour or two with a client.')
     page.should_not have_content('$800/day')
-
-    fill_in 'hourly_rate_to_programmer', with: 50
-    click_button 'Edit Info'
-    page.should have_content 'Your programmer account has been updated.'
-    page.should have_content '$450 / 8 hours'
   end
 
   scenario 'Add project, resume, and education', js: true do

@@ -14,7 +14,8 @@ class Ability
           programmer.user_id == user.id
         end
       end
-      can [:create, :update, :destroy], Programmer, user_id: user.id
+      can :read, Client
+      can [:create, :update, :destroy], [Programmer, Client], user_id: user.id
       can :read, [ResumeItem, EducationItem, PortfolioItem]
       can [:create, :update, :destroy], [ResumeItem, EducationItem, PortfolioItem] do |item|
         if user.programmer.present?

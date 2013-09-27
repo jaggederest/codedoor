@@ -21,3 +21,6 @@ logfile
 
 # Ignore code coverage stuff
 coverage
+
+# Mac OSX DS_Store
+*.DS_Store

@@ -51,6 +51,7 @@ RSpec.configure do |config|
   config.order = "random"
 
   Capybara.javascript_driver = :poltergeist
+  Capybara.default_wait_time = 5
 
   config.use_transactional_examples = false
   config.use_transactional_fixtures = false

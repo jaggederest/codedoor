@@ -2,47 +2,30 @@ class PaymentInfosController < ApplicationController
   load_and_authorize_resource
 
   before_filter :ensure_user_checked_terms
-  before_filter :ensure_no_payment, only: [:new, :create]
 
   def new
-    @payment_info = PaymentInfo.new(user_id: current_user.id)
+    @cards = PaymentInfo.find_or_create_by(user_id: current_user.id).get_cards
   end
 
   def create
-    @payment_info = PaymentInfo.new(payment_info_params)
-    @payment_info.user_id = current_user.id
+    if params[:error]
+      error_array = []
+      params[:error].each_value { |value| error_array << value.to_s unless value.blank? }
 
-    if @payment_info.save
-      flash[:notice] = 'Your payment information has been created.'
-      render :edit
+      flash[:error] = error_array
+
+      render json: {redirect_to: new_user_payment_info_url(params["user_id"].to_i)}
+    elsif params[:data][:security_code_check] == "failed"
+      flash[:error] = ["Your security code is invalid, please try again."]
+
+      render json: {redirect_to: new_user_payment_info_url(params["user_id"].to_i)}
     else
-      flash[:alert] = 'Your payment information could not be created.'
-      render :new
+      card_uri = params[:data][:uri]
+      PaymentInfo.find_or_create_by(user_id: current_user.id).associate_card(card_uri)
+
+      flash[:notice] = "Your payment details have been successfully saved."
+
+      render json: {redirect_to: new_user_payment_info_url(params["user_id"].to_i)}
     end
   end
-
-  def edit
-    @payment_info = current_user.payment_info
-  end
-
-  def update
-    @payment_info = PaymentInfo.find(current_user.payment_info.id)
-    if @payment_info.update(payment_info_params)
-      flash[:notice] = 'Your payment information has been updated.'
-    else
-      flash[:alert] = 'Your payment information could not be updated.'
-    end
-    render :edit
-  end
-
-  private
-
-  def payment_info_params
-    params.require(:payment_info).permit(:primary_payment_method)
-  end
-
-  def ensure_no_payment
-    redirect_to action: :edit if current_user.payment_info.present?
-  end
-
 end

@@ -1,0 +1,34 @@
+.payform
+  .form-horizontal
+    = form_tag
+      .control-group
+        .control-label
+          = label_tag :credit_card, "Credit Card Number"
+        .controls
+          = text_field_tag :credit_card, nil, placeholder: "41111111111111111"
+      .control-group
+        .control-label
+          = label_tag :expiration_year, "Expiration Year"
+        .controls
+          = text_field_tag :expiration_year, nil, placeholder: "2020"
+      .control-group
+        .control-label
+          = label_tag :expiration_month, "Expiration Month"
+        .controls
+          = text_field_tag :expiration_month, nil, placeholder: "10"
+      .control-group
+        .control-label
+          = label_tag :security_code, "Security Code"
+        .controls
+          = text_field_tag :security_code, nil, placeholder: "654"
+      .control-group
+        .controls
+          = hidden_field_tag :user_id, "#{params["user_id"]}"
+          = submit_tag
+= javascript_include_tag "https://js.balancedpayments.com/v1/balanced.js", "payments/payment"
+javascript:
+  balanced.init('${#{ENV["BALANCED_MARKETPLACE"]}}');
+  $('.payform').hide();
+  $('#payment_info_balanced').on('click', function() {
+    $('.payform').show();
+  });

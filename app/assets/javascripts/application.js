@@ -13,6 +13,6 @@
 //= require jquery
 //= require jquery_ujs
 //= require turbolinks
-//= require_tree .
+//= require_directory
 //= require bootstrap-alert
 //= require jquery_nested_form

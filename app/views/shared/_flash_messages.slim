@@ -7,3 +7,6 @@
 - if flash[:notice]
   = render partial: 'shared/notice_message', locals: {message: flash[:notice]}
   - flash[:notice] = nil
+- if flash[:error]
+  = render partial: 'shared/error_messages', locals: {messages: flash[:error]}
+  - flash[:error] = nil

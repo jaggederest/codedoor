@@ -62,7 +62,6 @@ ActiveRecord::Schema.define(version: 20130927070129) do
 
   create_table "payment_infos", force: true do |t|
     t.integer  "user_id"
-    t.string   "primary_payment_method"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "balanced_customer_uri"

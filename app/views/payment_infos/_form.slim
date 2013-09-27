@@ -1,18 +1,16 @@
-.span3
-  = render partial: 'settings/sidebar', locals: {active: :payments}
-.span9
+.span9.offset3
   h2.span9.settings-header
-    | Payments
+    | Add a Payment Source
     = form_tag "", remote: true
     .control-group
       .control-label
         = label_tag :primary_payment_method
       .controls
-        = render partial: 'shared/help_block', locals: {model: @payment_info, attribute: :primary_payment_method}
+        = render partial: 'shared/help_block', locals: {model: @payment_info, attribute: :balanced_customer_uri}
         label class='radio'
-          = radio_button :payment_info, :primary_payment_method, :paypal
+          = radio_button_tag :payment_info, :paypal
           | PayPal
         label class='radio'
-          = radio_button :payment_info, :primary_payment_method, :balanced
+          = radio_button_tag :payment_info, :balanced
           | Credit Card
           = render partial: 'creditcard_form'

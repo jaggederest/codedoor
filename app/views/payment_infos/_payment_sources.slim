@@ -1,0 +1,19 @@
+.span3
+  = render partial: 'settings/sidebar', locals: {active: :payments}
+.span9
+  h2.span9.settings-header
+    | Payments Sources
+  .span12
+    - if @cards
+      - @cards.each do |card|
+        .span3
+          .well
+            | Card Type: 
+            = card.attributes[:card_type]
+            br
+            | Last Four: 
+            = card.attributes[:last_four]
+            br
+            | Expiration Date: 
+            = "#{card.attributes[:expiration_month]} / #{card.attributes[:expiration_year]}"
+

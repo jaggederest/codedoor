@@ -6,7 +6,7 @@ div.well
       li class="#{active == :programmer ? 'active' : ''}"
         = link_to(current_user.programmer.present? ? 'Programmer Info' : 'Create Programmer Account', edit_user_programmer_path(current_user))
       li class="#{active == :payment ? 'active' : ''}"
-        = link_to('Payments', current_user.payment_info.present? ? edit_user_payment_info_path(current_user) : new_user_payment_info_path(current_user))
+        = link_to('Payments', new_user_payment_info_path(current_user))
       li class="#{active == :client ? 'active' : ''}"
         - if current_user.client.present?
           = link_to('Client Info', edit_user_client_path(current_user))

@@ -4,14 +4,13 @@ class PaymentInfosController < ApplicationController
   before_filter :ensure_user_checked_terms
 
   def new
-    pay_info = PaymentInfo.find_or_create_by(user_id: current_user.id)
-    @cards = pay_info.get_cards
+    @cards = PaymentInfo.find_or_create_by(user_id: current_user.id).get_cards
   end
 
   def create
     if params[:error]
       error_array = []
-      params[:error].each_value { |value| error_array << value.to_s }
+      params[:error].each_value { |value| error_array << value.to_s unless value.blank? }
 
       flash[:error] = error_array
 
@@ -22,8 +21,7 @@ class PaymentInfosController < ApplicationController
       render json: {redirect_to: new_user_payment_info_url(params["user_id"].to_i)}
     else
       card_uri = params[:data][:uri]
-      pay_info = PaymentInfo.find_or_create_by(user_id: current_user.id)
-      pay_info.associate_card(card_uri)
+      PaymentInfo.find_or_create_by(user_id: current_user.id).associate_card(card_uri)
 
       flash[:notice] = "Your payment details have been successfully saved."
 

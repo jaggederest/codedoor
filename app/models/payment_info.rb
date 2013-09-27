@@ -14,7 +14,7 @@ class PaymentInfo < ActiveRecord::Base
       customer = Balanced::Customer.new(name: user.full_name,
                                         email: user.email).save
       self.balanced_customer_uri = customer.attributes["uri"]
-      self.save
+      self.save!
     end
     Balanced::Customer.find(self.balanced_customer_uri)
   end

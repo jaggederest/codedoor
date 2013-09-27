@@ -14,6 +14,6 @@
             | Last Four Digits: 
             = card.attributes[:last_four]
             br
-            | Expiration Date: 
-            = "#{card.attributes[:expiration_month]} / #{card.attributes[:expiration_year]}"
+            | Exp Date: 
+            = "#{Months::Months::HASH[card.attributes[:expiration_month]]} / #{card.attributes[:expiration_year]}"
 

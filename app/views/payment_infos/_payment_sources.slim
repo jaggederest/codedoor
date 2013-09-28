@@ -8,12 +8,11 @@
       - @cards.each do |card|
         .span3
           .well
-            | Card Type: 
-            = card.attributes[:card_type]
+            | Card Type:&nbsp;
+            = card.attributes[:card_type].humanize
             br
-            | Last Four Digits: 
+            | Last Four Digits:&nbsp;
             = card.attributes[:last_four]
             br
-            | Exp Date: 
-            = "#{Months::Months::HASH[card.attributes[:expiration_month]]} / #{card.attributes[:expiration_year]}"
-
+            | Exp Date:&nbsp;
+            = "#{Months::HASH[card.attributes[:expiration_month]]} / #{card.attributes[:expiration_year]}"

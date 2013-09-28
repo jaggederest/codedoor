@@ -5,4 +5,7 @@ GITHUB_KEY: PleaseInsert
 GITHUB_SECRET: PleaseInsert
 # Create a Personal Access Token
 TEST_OAUTH_TOKEN: PleaseInsert
-CODECLIMATE_REPO_TOKEN: PleaseInsert
+# The marketplace URI on the settings page
+BALANCED_MARKETPLACE: PleaseInsert
+# API key secret on the settings page
+BALANCED_SECRET: PleaseInsert

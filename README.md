@@ -3,7 +3,7 @@ CodeDoor
 
 CodeDoor is a marketplace for freelance programmers to find work.  To qualify as a freelancer, you need at least one commit in a public repository with at least 25 stars.
 
-The CodeDoor platform is open source.  See the LICENSE file for more details.
+The CodeDoor platform is open source (MIT and BSD license).  See the LICENSE file for more details.
 
 ---------------
 

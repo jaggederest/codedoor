@@ -13,12 +13,16 @@ class ApplicationController < ActionController::Base
     params[resource] &&= send(method) if respond_to?(method, true)
   end
 
-  def main
-    render('loggedout') unless current_user.present?
+  rescue_from CanCan::AccessDenied do |exception|
+    redirect_cannot_be_found
   end
 
-  def redirect_cannot_be_found
-    redirect_to root_url, alert: 'Information cannot be found.'
+  rescue_from ActiveRecord::RecordNotFound do |exception|
+    redirect_cannot_be_found
+  end
+
+  def main
+    render('loggedout') unless current_user.present?
   end
 
   def after_sign_in_path_for(resource)
@@ -29,16 +33,14 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  protected
+
+  def redirect_cannot_be_found
+    redirect_to root_url, alert: 'Information cannot be found.'
+  end
+
   def ensure_user_checked_terms
     redirect_cannot_be_found unless current_user.present? && current_user.checked_terms?
-  end
-
-  rescue_from CanCan::AccessDenied do |exception|
-    redirect_cannot_be_found
-  end
-
-  rescue_from ActiveRecord::RecordNotFound do |exception|
-    redirect_cannot_be_found
   end
 
 end

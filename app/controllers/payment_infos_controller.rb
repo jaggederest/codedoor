@@ -9,23 +9,17 @@ class PaymentInfosController < ApplicationController
 
   def create
     if params[:error]
-      error_array = []
-      params[:error].each { |value| error_array << value.to_s unless value.blank? }
+      # TODO: If the key refers to one of the fields, the error should be displayed inline.
+      flash[:errors] = params[:error].map{ |key, value| "#{key}: #{value}" }
+    elsif params[:data] && params[:data][:security_code_check] == 'failed'
+      flash[:alert] = 'Your security code is invalid, please try again.'
+    elsif params[:data] && params[:data][:uri]
+      PaymentInfo.find_or_create_by(user_id: current_user.id).associate_card(params[:data][:uri])
 
-      flash[:error] = error_array
-
-      render json: {redirect_to: new_user_payment_info_url(params[:user_id].to_i)}
-    elsif params[:data][:security_code_check] == "failed"
-      flash[:error] = ["Your security code is invalid, please try again."]
-
-      render json: {redirect_to: new_user_payment_info_url(params[:user_id].to_i)}
+      flash[:notice] = 'Your payment details have been successfully saved.'
     else
-      card_uri = params[:data][:uri]
-      PaymentInfo.find_or_create_by(user_id: current_user.id).associate_card(card_uri)
-
-      flash[:notice] = "Your payment details have been successfully saved."
-
-      render json: {redirect_to: new_user_payment_info_url(params[:user_id].to_i)}
+      flash[:notice] = 'There was something wrong with processing the payment details.'
     end
+    render json: {redirect_to: new_user_payment_info_url(params[:user_id].to_i)}
   end
 end

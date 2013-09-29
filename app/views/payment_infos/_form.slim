@@ -4,7 +4,6 @@
     = form_tag "", remote: true
     .control-group
       .control-label
-        = label_tag :primary_payment_method
       .controls
         = render partial: 'shared/help_block', locals: {model: @payment_info, attribute: :balanced_customer_uri}
         label class='radio'

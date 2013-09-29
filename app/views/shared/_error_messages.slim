@@ -1,3 +1,6 @@
-- messages.each do |message|
-  = render partial: 'shared/alert_message', locals: {message: message}
-br
+p class='alert alert-error'
+  button type='button' class='close' data-dismiss='alert'
+    | &times;
+  - messages.each do |error_message|
+    = error_message
+    br

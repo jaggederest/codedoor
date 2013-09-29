@@ -5,13 +5,17 @@
     | Payment Sources
   - if @cards
     - @cards.each do |card|
-      .span3
+      .span4
         .well
-          | Card Type:&nbsp;
-          = card.attributes[:card_type].humanize
-          br
-          | Last Four Digits:&nbsp;
-          = card.attributes[:last_four]
-          br
-          | Exp Date:&nbsp;
-          = "#{Months::HASH[card.attributes[:expiration_month]]} #{card.attributes[:expiration_year]}"
+          .row
+            .span2
+              | Card Type:
+            = card.attributes[:card_type].humanize
+          .row
+            .span2
+              | Last Four Digits:
+            = card.attributes[:last_four]
+          .row
+            .span2
+              | Expiration Date:
+            = "#{Months::HASH[card.attributes[:expiration_month]]} #{card.attributes[:expiration_year]}"

@@ -1,4 +1,4 @@
-.payform class="hidden"
+div id="payform" class="hidden"
   .form-horizontal
     = form_tag
       .control-group
@@ -28,7 +28,7 @@
 = javascript_include_tag "https://js.balancedpayments.com/v1/balanced.js", "payments/payment"
 javascript:
   balanced.init('${#{ENV["BALANCED_MARKETPLACE"]}}');
-  $('.payform').hide();
+  $('#payform').hide();
   $('#payment_info_balanced').on('click', function() {
-    $('.payform').show();
+    $('#payform').show();
   });

@@ -58,5 +58,9 @@ a.add_nested_fields, a.remove_nested_fields {
 }
 
 #payform {
-  margin-top: 10px;
+  margin-top: 15px;
+}
+
+input#security_code {
+  width: 30px;
 }

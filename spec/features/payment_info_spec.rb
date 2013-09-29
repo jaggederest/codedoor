@@ -15,7 +15,7 @@ feature 'Payment info', js: true do
 
     fill_in 'credit_card', with: '4111111111111111'
     fill_in 'expiration_year', with: '2040'
-    fill_in 'expiration_month', with: '10'
+    select 'October'
     fill_in 'security_code', with: '123'
 
     click_button 'Save changes'

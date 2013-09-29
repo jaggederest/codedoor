@@ -8,14 +8,10 @@ div id="payform" class="hidden"
           = text_field_tag :credit_card, nil, placeholder: "41111111111111111"
       .control-group
         .control-label
-          = label_tag :expiration_year, "Expiration Year"
+          | Expiration Date
         .controls
-          = text_field_tag :expiration_year, nil, placeholder: "2020"
-      .control-group
-        .control-label
-          = label_tag :expiration_month, "Expiration Month"
-        .controls
-          = text_field_tag :expiration_month, nil, placeholder: "10"
+          = select_tag :expiration_month, options_for_select(Months::HASH.invert), class: 'month-field'
+          = text_field_tag :expiration_year, nil, class: 'year-field', placeholder: 'Year'
       .control-group
         .control-label
           = label_tag :security_code, "Security Code"

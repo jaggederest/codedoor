@@ -85,7 +85,7 @@ describe User do
     let(:user) { FactoryGirl.create(:user) }
     let(:ability) { Ability.new(user) }
 
-    it 'show allow a user to manage him or herself' do
+    it 'should allow a user to manage him or herself' do
       ability.should be_able_to(:read,    user)
       ability.should be_able_to(:create,  user)
       ability.should be_able_to(:update,  user)

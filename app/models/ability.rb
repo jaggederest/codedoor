@@ -6,7 +6,8 @@ class Ability
       can :read, Programmer, visibility: 'public'
       can :read, [ResumeItem, EducationItem, PortfolioItem]
     else
-      can :manage, [User, PaymentInfo], id: user.id
+      can :manage, User, id: user.id
+      can :manage, PaymentInfo, user_id: user.id
       can :read, Programmer do |programmer|
         if programmer.activated? && !programmer.private?
           true

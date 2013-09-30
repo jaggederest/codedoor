@@ -20,8 +20,9 @@ feature 'Payment info', js: true do
 
     click_button 'Save changes'
 
-    page.should have_content("Card Type:Visa")
-    page.should have_content("Last Four Digits:1111")
-    page.should have_content("Expiration Date:October 2040")
+    page.should have_content('Card Type:Visa')
+    page.should have_content('Last Four Digits:1111')
+    page.should have_content('Expiration Date:October 2040')
+    page.should_not have_content('123')
   end
 end

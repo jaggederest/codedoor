@@ -9,6 +9,7 @@ class PaymentInfo < ActiveRecord::Base
   validates :user_id, presence: true, uniqueness: true
 
   def associate_card(card_uri)
+
     balanced_customer.add_card(card_uri)
   end
 

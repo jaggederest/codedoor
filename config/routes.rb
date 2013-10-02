@@ -10,7 +10,10 @@ Codedoor::Application.routes.draw do
       post :verify_contribution, defaults: { format: :json }
     end
     resource :client, only: [:new, :create, :edit, :update]
-    resource :payment_info, only: [:new, :create, :edit, :update]
+    resource :payment_info, only: [:edit] do
+      # The balanced payments API scrubs _method, so :update must be a POST
+      post :update, defaults: { format: :json }
+    end
   end
 
   get '/terms', to: 'legal#terms'

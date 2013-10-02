@@ -18,7 +18,7 @@ feature 'Payment info', js: true do
     select 'October'
     fill_in 'security_code', with: '123'
 
-    click_button 'Save changes'
+    click_button 'Add Card'
 
     page.should have_content('Card Type:Visa')
     page.should have_content('Last Four Digits:1111')

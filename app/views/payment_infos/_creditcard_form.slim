@@ -1,11 +1,11 @@
-div id="payform" class="hidden"
+div id='payform' class='hidden'
   .form-horizontal
-    = form_tag
+    = form_tag user_payment_info_path(current_user), remote: true
       .control-group
         .control-label
-          = label_tag :credit_card, "Credit Card Number"
+          = label_tag :credit_card, 'Credit Card Number'
         .controls
-          = text_field_tag :credit_card, nil, placeholder: "41111111111111111"
+          = text_field_tag :credit_card, nil, placeholder: '41111111111111111'
       .control-group
         .control-label
           | Expiration Date
@@ -14,17 +14,20 @@ div id="payform" class="hidden"
           = text_field_tag :expiration_year, nil, class: 'year-field', placeholder: 'Year'
       .control-group
         .control-label
-          = label_tag :security_code, "Security Code"
+          = label_tag :security_code, 'Security Code'
         .controls
-          = text_field_tag :security_code, nil, placeholder: "654"
+          = text_field_tag :security_code, nil, placeholder: '654'
       .control-group
         .controls
-          = hidden_field_tag :user_id, "#{current_user.id}"
-          = submit_tag
+          = hidden_field_tag :user_id, current_user.id.to_s
+          = hidden_field_tag :id, @payment_info.id.to_s
+          = submit_tag 'Add Card', data: {disable_with: 'Submitting...'}
 = javascript_include_tag "https://js.balancedpayments.com/v1/balanced.js", "payments/payment"
 javascript:
   balanced.init('${#{ENV["BALANCED_MARKETPLACE"]}}');
-  $('#payform').hide();
+  $('#payment_info_paypal').on('click', function() {
+    $('#payform').hide();
+  });
   $('#payment_info_balanced').on('click', function() {
     $('#payform').show();
   });

@@ -11,4 +11,4 @@ div.well
         - else
           = link_to('Create Client Account', new_user_client_path(current_user))
       li class="#{active == :payment ? 'active' : ''}"
-        = link_to('Payments', new_user_payment_info_path(current_user))
+        = link_to('Payments', edit_user_payment_info_path(current_user))

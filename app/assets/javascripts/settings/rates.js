@@ -1,5 +1,4 @@
-/ TODO: Use JavaScript framework like Backbone, and not use DOM as data store
-javascript:
+$('document').ready(function() {
   var refreshProgrammerRates = function() {
     var rate = $('#hourly_rate_to_programmer').val();
     var isInteger = parseInt(rate, '10').toString() == rate;
@@ -33,3 +32,4 @@ javascript:
   $('#hourly_rate_to_programmer').on('blur', refreshProgrammerRates);
   $('[name="programmer[availability]"]').on('change', refreshProgrammerRates);
   refreshProgrammerRates();
+});

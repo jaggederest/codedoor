@@ -16,5 +16,10 @@ $('document').ready(function() {
     });
     return false;
   });
+  $('#payment_info_paypal').on('click', function() {
+    $('#payform').hide();
+  });
+  $('#payment_info_balanced').on('click', function() {
+    $('#payform').show();
+  });
 });
-

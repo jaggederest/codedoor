@@ -57,12 +57,4 @@
         .control-group
           .controls
             = f.submit 'Edit Info', data: {disable_with: 'Submitting...'}
-  javascript:
-    $('#user_country').on('change',
-                         function() {
-                           if (this.value == 'US') {
-                             $('#user_state_container').show();
-                           } else {
-                             $('#user_state_container').hide();
-                           }
-                         });
+  = javascript_include_tag 'settings/user_country'

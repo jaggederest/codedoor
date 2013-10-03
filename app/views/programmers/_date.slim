@@ -23,11 +23,13 @@
       = form.check_box :is_current, id: "is-current-#{id}"
       = (type == :education) ? 'Currently Studying' : 'Current Position'
 javascript:
-  $("#is-current-#{id}").on('change',
-                            function() {
-                              if (this.checked) {
-                                $("#year-finished-#{id}").hide();
-                              } else {
-                                $("#year-finished-#{id}").show();
-                              }
-                            });
+  $('document').ready(function() {
+    $("#is-current-#{id}").on('change',
+                              function() {
+                                if (this.checked) {
+                                  $("#year-finished-#{id}").hide();
+                                } else {
+                                  $("#year-finished-#{id}").show();
+                                }
+                              });
+  });

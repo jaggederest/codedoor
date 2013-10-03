@@ -22,12 +22,6 @@ div id='payform' class='hidden'
           = hidden_field_tag :user_id, current_user.id.to_s
           = hidden_field_tag :id, @payment_info.id.to_s
           = submit_tag 'Add Card', data: {disable_with: 'Submitting...'}
-= javascript_include_tag "https://js.balancedpayments.com/v1/balanced.js", "payments/payment"
+= javascript_include_tag 'https://js.balancedpayments.com/v1/balanced.js', 'payments/payment'
 javascript:
   balanced.init('${#{ENV["BALANCED_MARKETPLACE"]}}');
-  $('#payment_info_paypal').on('click', function() {
-    $('#payform').hide();
-  });
-  $('#payment_info_balanced').on('click', function() {
-    $('#payform').show();
-  });

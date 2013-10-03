@@ -1,22 +1,54 @@
 .splashlogo
   = image_tag('logo.png')
 
-.introbox_container
-  span class="introbox pull-right"
-    h2
-      | Programmers
-    p
-      | Work for clients who recognize top open source contributors.
-    p
-      | Bill by the day.
+.row
+  .introbox_container
+    span class="introbox pull-right"
+      h2
+        | Programmers
+      p
+        | Work for clients who recognize top open source contributors.
+      p
+        | Bill by the day.
+      a class="btn-auth btn-github" href="#{user_omniauth_authorize_path(:github)}"
+        | Sign up with GitHub
+    span class="introbox pull-left"
+      h2
+        | Clients
+      p
+        | Find freelance coders who have contributed to meaningful projects.
+      p
+        | See their code before hiring.
+      a class="btn-auth btn-blank" href="#{programmers_path}"
+        | Find Programmers
+
+.row
+  .intro-explanation-header
+    h3
+      | How It Works
+.row
+  .span4
+    .intro-workflow-img
+      = image_tag('profile.png')
+  .span4
+    .intro-workflow-img
+      = image_tag('list.png')
+  .span4
+    .intro-workflow-img
+      = image_tag('exchange.png')
+
+.row
+  .span4
+    .intro-workflow-desc
+      | Talented coders build a portfolio, connecting their code on GitHub
+  .span4
+    .intro-workflow-desc
+      | Savvy clients search for coders with the skills for their projects
+  .span4
+    .intro-workflow-desc
+      | Clients get high quality work, coders get high quality pay
+
+.row
+  .intro-workflow-signup
     a class="btn-auth btn-github" href="#{user_omniauth_authorize_path(:github)}"
       | Sign up with GitHub
-  span class="introbox pull-left"
-    h2
-      | Clients
-    p
-      | Find freelance coders who have contributed to meaningful projects.
-    p
-      | See their code before hiring.
-    a class="btn" href="#{programmers_path}"
-      | Find Programmers

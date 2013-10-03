@@ -55,6 +55,22 @@
     background: url(auth-icons.png) no-repeat 99px 99px;
 }
 
+.btn-blank {
+    border-color: #d4d4d4;
+    background: #ececec;
+}
+
+.btn-blank:before {
+    width: auto;
+}
+
+.btn-blank:hover {
+    border-color: #518cc6;
+    border-bottom-color: #2a65a0;
+    color: #fff;
+    background-color: #599bdc;
+}
+
 /**
  * 36px
  */

@@ -1,5 +1,5 @@
 .splashlogo {
-  padding-top: 30px;
+  padding-top: 12px;
   text-align: center;
 }
 
@@ -13,17 +13,40 @@
   background-color: #C9D6C2;
   border-radius: 10px;
   font-size: 19px;
-  padding: 20px;
+  padding: 7px 20px 20px 20px;
   width: 300px;
   h2 {
     text-align: center;
   }
-  .btn {
-    margin-top: 8px;
-    margin-left: 80px;
+  p {
+    padding: 3px 0;
   }
-  .btn-auth {
+  .btn-blank {
+    margin-top: 8px;
+    margin-left: 75px;
+  }
+  .btn-github {
     margin-top: 8px;
     margin-left: 60px;
   }
+}
+
+.intro-explanation-header {
+  padding-top: 20px;
+  text-align: center;
+}
+
+.intro-workflow-img {
+  padding-left: 30px;
+}
+
+.intro-workflow-desc {
+  margin: auto;
+  width: 210px;
+  text-align: center;
+}
+
+.intro-workflow-signup {
+  padding: 50px;
+  text-align: center;
 }

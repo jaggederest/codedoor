@@ -224,7 +224,7 @@
             | Description
           .controls
             = render partial: 'shared/help_block', locals: {model: portfolio_form.object, attribute: :description}
-            = f.text_area :description, class: 'span6'
+            = portfolio_form.text_area :description, class: 'span6'
 
         = portfolio_form.link_to_remove 'Remove project'
 
@@ -251,7 +251,7 @@
             | Description
           .controls
             = render partial: 'shared/help_block', locals: {model: resume_form.object, attribute: :description}
-            = f.text_area :description, class: 'span6'
+            = resume_form.text_area :description, class: 'span6'
         = render partial: 'programmers/date', locals: {form: resume_form, type: :resume}
 
         = resume_form.link_to_remove 'Remove from résumé'
@@ -279,7 +279,7 @@
             | Description
           .controls
             = render partial: 'shared/help_block', locals: {model: edu_form.object, attribute: :description}
-            = f.text_area :description, class: 'span6'
+            = edu_form.text_area :description, class: 'span6'
         = render partial: 'programmers/date', locals: {form: edu_form, type: :education}
 
         = edu_form.link_to_remove 'Remove from education'

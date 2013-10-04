@@ -58,26 +58,26 @@
       h4
         | Résumé
       - @programmer.resume_items.each do |resume|
-        strong
-          = resume.title
-        br
-        = resume.company_name
-        br
-        = resume.duration_text
-        br
-        = resume.description
-        br
+        p
+          strong
+            = resume.title
+          br
+          = resume.company_name
+          br
+          = resume.duration_text
+          br
+          = resume.description
 
     - if @programmer.show_education?
       h4
         | Education
       - @programmer.education_items.each do |education|
-        strong
-          = education.school_name
-        br
-        = education.degree_and_major
-        br
-        = education.duration_text
-        br
-        = education.description
-        br
+        p
+          strong
+            = education.school_name
+          br
+          = education.degree_and_major
+          br
+          = education.duration_text
+          br
+          = education.description

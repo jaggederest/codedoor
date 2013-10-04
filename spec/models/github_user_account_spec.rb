@@ -78,6 +78,15 @@ describe GithubUserAccount do
       end
     end
 
+    it 'should make repo default branch master if it is blank' do
+      repo_data = example_repo_data
+      repo_data.default_branch = ''
+      @user_account.should_receive(:fetch_user_repos).at_least(:once) { [repo_data] }
+      @user_account.load_repos
+
+      @programmer.reload.github_repos.first.default_branch.should eq('master')
+    end
+
     it 'should not add private repos' do
       repo_data = example_repo_data
       repo_data.private = true

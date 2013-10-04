@@ -9,7 +9,7 @@ class ProgrammersController < ApplicationController
     else
       visibility = ['public']
     end
-    @programmers = Programmer.all.where(state: 'activated', visibility: visibility)
+    @programmers = Programmer.all.where(state: 'activated', qualified: true, visibility: visibility)
   end
 
   def show

@@ -21,10 +21,11 @@ describe ProgrammersController do
   describe 'GET index' do
 
     before :each do
-      @public_programmer = FactoryGirl.create(:programmer, visibility: 'public', state: 'activated')
-      @codedoor_programmer = FactoryGirl.create(:programmer, visibility: 'codedoor', state: 'activated')
-      @private_programmer = FactoryGirl.create(:programmer, visibility: 'private', state: 'activated')
-      @unactivated_programmer = FactoryGirl.create(:programmer, visibility: 'public', state: 'incomplete')
+      @public_programmer = FactoryGirl.create(:programmer, visibility: 'public', state: 'activated', qualified: true)
+      @codedoor_programmer = FactoryGirl.create(:programmer, visibility: 'codedoor', state: 'activated', qualified: true)
+      @private_programmer = FactoryGirl.create(:programmer, visibility: 'private', state: 'activated', qualified: true)
+      @unactivated_programmer = FactoryGirl.create(:programmer, visibility: 'public', state: 'incomplete', qualified: true)
+      @unqualified_programmer = FactoryGirl.create(:programmer, visibility: 'public', state: 'activated', qualified: false)
     end
 
     it 'assigns @programmers and renders template' do

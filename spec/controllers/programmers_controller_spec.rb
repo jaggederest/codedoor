@@ -44,7 +44,7 @@ describe ProgrammersController do
 
   describe 'GET show' do
     before :each do
-      @programmer = FactoryGirl.create(:programmer, state: 'activated', qualified: true)
+      @programmer = FactoryGirl.create(:programmer, visibility: 'codedoor', state: 'activated', qualified: true)
     end
 
     it 'assigns @programmer and renders template' do
@@ -76,6 +76,13 @@ describe ProgrammersController do
 
     it 'does not render the show template logged out if the programmer is not activated' do
       @programmer = FactoryGirl.create(:programmer, state: 'incomplete')
+      get :show, id: @programmer.id
+      response.should redirect_to(root_path)
+      flash[:alert].should eq('Information cannot be found.')
+    end
+
+    it 'does not render the show template logged out if the programmer is not qualified' do
+      @programmer = FactoryGirl.create(:programmer, state: 'activated', qualified: false)
       get :show, id: @programmer.id
       response.should redirect_to(root_path)
       flash[:alert].should eq('Information cannot be found.')

@@ -43,7 +43,7 @@ class GithubUserAccount < UserAccount
   end
 
   def assign_repo_info_to_repo_model(repo_object, repo_info)
-    repo_object.default_branch = repo_info.default_branch
+    repo_object.default_branch = repo_info.default_branch || 'master'
     repo_object.forks_count = repo_info.forks_count
     # NOTE: Watching and starring used to be the same, hence the naming discrepancy
     repo_object.stars_count = repo_info.watchers_count

@@ -123,6 +123,14 @@ describe User do
       user_account.oauth_token.should eq('oauth token')
     end
 
+    it 'should still create a new user if the user does not validate (they would just have to add it upon registration)' do
+      auth = MockGitHubAuth.test_user
+      auth[:info][:email] = ''
+      user = User.find_for_github_oauth(auth)
+      user.email.should eq('')
+      user.valid?.should be_false
+    end
+
     it 'should return user if the there is a UserAccount that matches' do
       user_account = FactoryGirl.create(:user_account, type: 'GithubUserAccount', account_id: 'existing account id')
       auth = OmniAuth::AuthHash.new({uid: 'existing account id'})

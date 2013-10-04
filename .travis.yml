@@ -1,3 +1,5 @@
+rvm:
+  - 2.0.0
 env:
   global:
   - secure: F9gNp9Zt4Jd8ni/dpIhulcqVzM80VT+KrYoEMeJB2RmF5QGShdp9IPBZYkftu//FCa4ABbGzK3Bk8vtqOBWLeyCXdoeVa4bpPVMU3lnW8JjDr1ucpgM5tDWoyBZ7kEEfwhARs8cn/pkQ+q+Ey7HS91ugnO5kZObbfjlkm53JYdM=

@@ -45,7 +45,8 @@
               | By checking this box, I agree to abide by CodeDoor's&nbsp;
               a href="/terms" target="_blank"
                 | Terms of Use
-              .
+              span
+              | .
       - if !current_user.programmer.present? && !current_user.client.present?
         .row
           .span1

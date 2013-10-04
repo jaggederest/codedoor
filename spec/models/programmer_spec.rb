@@ -67,12 +67,14 @@ describe Programmer do
     end
 
     it 'should only allow a user to read a non-private programmer that belongs to someone else' do
-      programmer = FactoryGirl.create(:programmer, user: FactoryGirl.create(:user), visibility: 'codedoor', state: 'activated')
-      private_programmer = FactoryGirl.create(:programmer, user: FactoryGirl.create(:user), visibility: 'private')
+      programmer = FactoryGirl.create(:programmer, user: FactoryGirl.create(:user), visibility: 'codedoor', state: 'activated', qualified: true)
+      private_programmer = FactoryGirl.create(:programmer, user: FactoryGirl.create(:user), visibility: 'private', qualified: true)
       unactivated_programmer = FactoryGirl.create(:programmer, user: FactoryGirl.create(:user), visibility: 'codedoor', state: 'incomplete')
+      unqualified_programmer = FactoryGirl.create(:programmer, user: FactoryGirl.create(:user), visibility: 'codedoor', state: 'activated', qualified: false)
       ability.should be_able_to(:read, programmer)
       ability.should_not be_able_to(:read, private_programmer)
       ability.should_not be_able_to(:read, unactivated_programmer)
+      ability.should_not be_able_to(:read, unqualified_programmer)
       ability.should_not be_able_to(:create, programmer)
       ability.should_not be_able_to(:update, programmer)
       ability.should_not be_able_to(:destroy, programmer)

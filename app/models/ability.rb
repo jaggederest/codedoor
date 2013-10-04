@@ -9,7 +9,7 @@ class Ability
       can :manage, User, id: user.id
       can :manage, PaymentInfo, user_id: user.id
       can :read, Programmer do |programmer|
-        if programmer.activated? && !programmer.private?
+        if programmer.activated? && !programmer.private? && programmer.qualified?
           true
         else
           programmer.user_id == user.id

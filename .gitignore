@@ -22,5 +22,8 @@ logfile
 # Ignore code coverage stuff
 coverage
 
-# Mac OSX DS_Store
+# Ignore Mac OSX DS_Store
 *.DS_Store
+
+# Ignore manifest files
+public/assets/manifest*

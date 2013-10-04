@@ -44,7 +44,7 @@ describe ProgrammersController do
 
   describe 'GET show' do
     before :each do
-      @programmer = FactoryGirl.create(:programmer, state: 'activated')
+      @programmer = FactoryGirl.create(:programmer, state: 'activated', qualified: true)
     end
 
     it 'assigns @programmer and renders template' do

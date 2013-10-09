@@ -9,6 +9,9 @@ div class="navbar"
       - if current_user.programmer.present? && !current_user.programmer.incomplete?
         a class="pull-left" href="#{programmer_path(current_user)}"
           | Profile
+      - if current_user.client.present?
+        a class="pull-left" href="#{programmers_path}"
+          | Search
       a class="pull-left" href="#{edit_user_path(current_user)}"
         | Settings
     - else

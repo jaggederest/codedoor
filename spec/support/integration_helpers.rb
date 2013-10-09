@@ -33,6 +33,8 @@ module FeatureTestHelper
       fill_in 'Description', with: 'Test Description'
       fill_in 'hourly_rate_to_programmer', with: 100
 
+      check('Android')
+
       choose('Full-time')
       choose('programmer_onsite_status_onsite')
       click_button 'Add Info'

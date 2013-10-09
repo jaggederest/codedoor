@@ -62,6 +62,7 @@ RSpec.configure do |config|
 
   config.before(:each) do
     DatabaseCleaner.start
+    DbUpdate.update_skills
   end
 
   config.after(:each) do

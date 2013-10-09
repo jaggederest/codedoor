@@ -10,6 +10,7 @@ describe ProgrammersController do
      availability: 'full-time',
      onsite_status: 'occasional',
      visibility: 'public',
+     skill_ids: [Skill.find_by_name('Android').id],
      contract_to_hire: true}
   end
 
@@ -167,6 +168,14 @@ describe ProgrammersController do
       programmer.rate.should eq(500)
     end
 
+    it 'should update skills' do
+      @programmer.reload.skills.should eq([Skill.find_by_name('Android')])
+      programmer_params = valid_programmer('user-id-ignored')
+      programmer_params[:skill_ids] = [Skill.find_by_name('C++').id]
+      post :update, user_id: @user.id, id: @programmer.id, programmer: programmer_params
+      @programmer.reload.skills.should eq([Skill.find_by_name('C++')])
+    end
+
     it 'should update resume' do
       programmer_params = valid_programmer('user-id-ignored')
       @programmer.resume_items.count.should be(0)
@@ -212,7 +221,6 @@ describe ProgrammersController do
        }
       post :update, user_id: @user.id, id: @programmer.id, programmer: programmer_params
       @programmer.reload.portfolio_items.count.should be(1)
-
     end
 
     it 'should update visibility of github repos' do

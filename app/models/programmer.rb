@@ -11,6 +11,8 @@ class Programmer < ActiveRecord::Base
   accepts_nested_attributes_for :resume_items, allow_destroy: true
   accepts_nested_attributes_for :education_items, allow_destroy: true
 
+  has_and_belongs_to_many :skills
+
   scope :not_private, -> { where(:visibility != 'private') }
 
   validates :user_id, presence: true, uniqueness: true
@@ -19,6 +21,8 @@ class Programmer < ActiveRecord::Base
   validates :availability, inclusion: { in: ['part-time', 'full-time', 'unavailable'], message: 'must be selected' }
   validates :onsite_status, inclusion: { in: ['offsite', 'visits_allowed', 'occasional', 'onsite'], message: 'must be selected' }
   validates :visibility, inclusion: { in: ['public', 'codedoor', 'private'], message: 'must be selected' }
+
+  validate :has_skills?
 
   before_update {|programmer| programmer.activate! if programmer.incomplete? && programmer.valid? }
 
@@ -79,11 +83,15 @@ class Programmer < ActiveRecord::Base
   end
 
   def unavailable?
-    self.availability == 'unavailable'
+    availability == 'unavailable'
   end
 
   def private?
-    self.visibility == 'private'
+    visibility == 'private'
+  end
+
+  def visible_to_others?
+    activated? && !private? && qualified?
   end
 
   def show_repos?
@@ -100,6 +108,12 @@ class Programmer < ActiveRecord::Base
 
   def show_education?
     education_items.count > 0
+  end
+
+  private
+
+  def has_skills?
+    errors.add(:skills, 'have not been selected') if skills.blank?
   end
 
 end

@@ -23,6 +23,11 @@ describe Programmer do
       FactoryGirl.build(:programmer, rate: nil).should_not be_valid
     end
 
+    it 'should require at least one skill' do
+      FactoryGirl.build(:programmer, skills: [Skill.find_by_name('C++')]).should be_valid
+      FactoryGirl.build(:programmer, skills: []).should_not be_valid
+    end
+
   end
 
   context 'associations' do

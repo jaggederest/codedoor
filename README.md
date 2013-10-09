@@ -13,11 +13,13 @@ When it is ready, CodeDoor will be available on codedoor.com.  Right now, it is 
 
 ---------------
 
-CodeDoor is intended to run on Heroku, although that is not supported yet.
+CodeDoor is currently intended to run on Heroku.
 
 Copy config/application.yml.sample to config/application.yml, and add the relevant keys to your sandbox.
 
 The oAuth callback should be ROOT_URL/users/auth/github
+
+Make sure you run db:seed.  If you do not want test data, run db:update_skills instead.
 
 [![Code Climate](https://codeclimate.com/github/CodeDoor/codedoor.png)](https://codeclimate.com/github/CodeDoor/codedoor)
 

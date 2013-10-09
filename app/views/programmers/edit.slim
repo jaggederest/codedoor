@@ -53,6 +53,17 @@
             = f.check_box :contract_to_hire
             | I will consider contract to hire positions.
 
+      .control-group class="#{model_attribute_class(@programmer, :skills)}"
+        .control-label
+          | Skills
+        .controls
+          = render partial: 'shared/help_block', locals: {model: @programmer, attribute: :skills}
+          = hidden_field_tag 'programmer[skill_ids][]', ''
+          - Skill.all.each do |skill|
+            .span2.skill-checkbox
+              label class='checkbox'
+                = check_box_tag 'programmer[skill_ids][]', skill.id, @programmer.skills.include?(skill)
+                = skill.name
       .control-group class="#{model_attribute_class(@programmer, :rate)}"
         .control-label
           = f.label :rate, 'Rate (USD)'

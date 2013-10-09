@@ -100,7 +100,8 @@ class ProgrammersController < ApplicationController
         [:company_name, :description, :title, :year_started, :year_finished, :month_started, :month_finished, :is_current, :_destroy, :id],
        education_items_attributes:
         [:school_name, :degree_and_major, :description, :year_started, :year_finished, :month_started, :month_finished, :is_current, :_destroy, :id],
-       github_repos_attributes: [:shown, :id]})
+       github_repos_attributes: [:shown, :id],
+       skill_ids: []})
   end
 
 end

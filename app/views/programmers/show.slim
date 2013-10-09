@@ -8,6 +8,9 @@
     p
       = @programmer.user.location_text
     p
+      | Skills:&nbsp;
+      = @programmer.skills.map(&:name).join(', ')
+    p
       = @programmer.client_rate_text
     p
       = @programmer.availability.humanize

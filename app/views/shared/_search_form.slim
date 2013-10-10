@@ -1,0 +1,4 @@
+= form_tag(programmers_path, method: :get)
+  select id='skill_name' name='skill_name'
+    = options_for_select(Skill.all.map{|skill| [skill.name, skill.name]}.insert(0, 'Select Skill:'), params[:skill_name])
+  = submit_tag 'Search'

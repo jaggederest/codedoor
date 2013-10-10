@@ -1,10 +1,18 @@
 - if @programmers.empty?
-  p
-    | No programmers have matched your search.
+  .row
+    .span3
+      = render partial: 'shared/search_form'
+    .span4
+      p
+        | No programmers have matched your search.
 - else
+  - search_already_rendered = false
   - @programmers.each do |programmer|
     .row
-      .span2
+      .span3
+        - unless search_already_rendered
+          = render partial: 'shared/search_form'
+          - search_already_rendered = true
       .span4
         h4
           = link_to(programmer.user.full_name, programmer_path(programmer))
@@ -12,14 +20,14 @@
           = programmer.title
         p
           = programmer.user.location_text
-      .span2
+      .span3
         = render partial: 'shared/rate_badge', locals: {programmer: programmer}
     .row
-      .span2
+      .span3
       .span6
         p
           = programmer.description.truncate(500)
     .row
-      .span2
+      .span3
       .span6
         hr

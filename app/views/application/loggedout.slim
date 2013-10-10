@@ -19,9 +19,7 @@
         | Find freelance coders who have contributed to meaningful projects.
       p
         | See their code before hiring.
-      = form_tag(programmers_path, method: :get)
-        = collection_select(:skill, :name, Skill.all, :name, :name, {prompt: 'Select Skill:'}, {name: 'skill_name'})
-        = submit_tag 'Search'
+      = render partial: 'shared/search_form'
 
 .row
   .intro-explanation-header

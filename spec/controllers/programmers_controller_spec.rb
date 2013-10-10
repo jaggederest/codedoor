@@ -20,26 +20,54 @@ describe ProgrammersController do
   end
 
   describe 'GET index' do
+    describe 'visibility to search' do
+      before :each do
+        @public_programmer = FactoryGirl.create(:programmer, visibility: 'public', state: 'activated', qualified: true)
+        @codedoor_programmer = FactoryGirl.create(:programmer, visibility: 'codedoor', state: 'activated', qualified: true)
+        @private_programmer = FactoryGirl.create(:programmer, visibility: 'private', state: 'activated', qualified: true)
+        @unactivated_programmer = FactoryGirl.create(:programmer, visibility: 'public', state: 'incomplete', qualified: true)
+        @unqualified_programmer = FactoryGirl.create(:programmer, visibility: 'public', state: 'activated', qualified: false)
+      end
 
-    before :each do
-      @public_programmer = FactoryGirl.create(:programmer, visibility: 'public', state: 'activated', qualified: true)
-      @codedoor_programmer = FactoryGirl.create(:programmer, visibility: 'codedoor', state: 'activated', qualified: true)
-      @private_programmer = FactoryGirl.create(:programmer, visibility: 'private', state: 'activated', qualified: true)
-      @unactivated_programmer = FactoryGirl.create(:programmer, visibility: 'public', state: 'incomplete', qualified: true)
-      @unqualified_programmer = FactoryGirl.create(:programmer, visibility: 'public', state: 'activated', qualified: false)
+      it 'assigns @programmers and renders template' do
+        get :index, skill_name: ''
+        assigns(:programmers).should eq([@public_programmer, @codedoor_programmer])
+        response.should render_template('index')
+      end
+
+      it 'still renders the index template logged out, but without the programmers of "codedoor" visibility' do
+        sign_out(@user)
+        get :index, skill_name: ''
+        assigns(:programmers).should eq([@public_programmer])
+        response.should render_template('index')
+      end
     end
 
-    it 'assigns @programmers and renders template' do
-      get :index
-      assigns(:programmers).should eq([@public_programmer, @codedoor_programmer])
-      response.should render_template('index')
-    end
+    describe 'searching by skill' do
+      before :each do
+        actionscript = Skill.find_by_name('ActionScript')
+        javascript = Skill.find_by_name('JavaScript')
+        @as_programmer = FactoryGirl.create(:programmer, visibility: 'public', state: 'activated', qualified: true, skills: [actionscript])
+        @js_programmer = FactoryGirl.create(:programmer, visibility: 'public', state: 'activated', qualified: true, skills: [javascript])
+        @both_programmer = FactoryGirl.create(:programmer, visibility: 'public', state: 'activated', qualified: true, skills: [actionscript, javascript])
+        @neither_programmer = FactoryGirl.create(:programmer, visibility: 'public', state: 'activated', qualified: true)
+        @unqualified_programmer = FactoryGirl.create(:programmer, qualified: false)
+      end
 
-    it 'still renders the index template logged out, but without the programmers of "codedoor" visibility' do
-      sign_out(@user)
-      get :index
-      assigns(:programmers).should eq([@public_programmer])
-      response.should render_template('index')
+      it 'shows all the programmers if there is no skill_name' do
+        get :index, skill_name: ''
+        assigns(:programmers).should eq([@as_programmer, @js_programmer, @both_programmer, @neither_programmer])
+      end
+
+      it 'searches for just JavaScript programmers if that is the query' do
+        get :index, skill_name: 'JavaScript'
+        assigns(:programmers).should eq([@js_programmer, @both_programmer])
+      end
+
+      it 'shows all the programmers if the skill name is invalid' do
+        get :index, skill_name: 'not_a_real_skill'
+        assigns(:programmers).should eq([@as_programmer, @js_programmer, @both_programmer, @neither_programmer])
+      end
     end
   end
 

@@ -97,7 +97,7 @@ ActiveRecord::Schema.define(version: 20131009014046) do
 
   add_index "programmers", ["user_id"], name: "index_programmers_on_user_id", using: :btree
 
-  create_table "programmers_skills", force: true do |t|
+  create_table "programmers_skills", id: false, force: true do |t|
     t.integer  "programmer_id"
     t.integer  "skill_id"
     t.datetime "created_at"

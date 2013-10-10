@@ -9,7 +9,13 @@ class ProgrammersController < ApplicationController
     else
       visibility = ['public']
     end
-    @programmers = Programmer.all.where(state: 'activated', qualified: true, visibility: visibility)
+
+    skill = Skill.find_by_name(params[:skill_name]) unless params[:skill_name].blank?
+    if skill
+      @programmers = Programmer.joins(:skills).where('skills.id = ? AND state = ? AND qualified = ? and visibility IN (?)', skill.id, 'activated', true, visibility)
+    else
+      @programmers = Programmer.where('state = ? AND qualified = ? and visibility IN (?)', 'activated', true, visibility)
+    end
   end
 
   def show

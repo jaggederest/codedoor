@@ -43,7 +43,7 @@ describe ClientsController do
       post :create, user_id: @user.id, client: {company: 's'}
       response.should render_template('new')
       flash[:alert].should eq('Your client account could not be created.')
-      assigns(:client).errors[:company].should eq(['is too short (minimum is 5 characters)'])
+      assigns(:client).errors[:company].should eq(['is too short (minimum is 2 characters)'])
       assigns(:client).company.should eq('s')
     end
   end
@@ -86,7 +86,7 @@ describe ClientsController do
       post :update, user_id: @user.id, id: @client.id, client: {company: 's', description: 'New Description'}
       response.should render_template('edit')
       flash[:alert].should eq('Your client account could not be updated.')
-      assigns(:client).errors[:company].should eq(['is too short (minimum is 5 characters)'])
+      assigns(:client).errors[:company].should eq(['is too short (minimum is 2 characters)'])
       assigns(:client).company.should eq('s')
       @client.reload.company.should eq('Test Company')
     end

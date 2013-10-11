@@ -22,4 +22,4 @@
 
       .control-group
         .controls
-          = f.submit ((action == :create) ? 'Add Info' : 'Edit Info'), data: {disable_with: 'Submitting...'}
+          = f.submit ((action == :create) ? 'Add Info' : 'Edit Info'), class: 'btn', data: {disable_with: 'Submitting...'}

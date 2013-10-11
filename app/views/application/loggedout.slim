@@ -19,7 +19,10 @@
         | Find freelance coders who have contributed to meaningful projects.
       p
         | See their code before hiring.
-      = render partial: 'shared/search_form'
+      = form_tag(programmers_path, method: :get)
+        select id='skill_name' name='skill_name'
+          = options_for_select(Skill.all.map{|skill| [skill.name, skill.name]}.insert(0, 'Select Skill:'), params[:skill_name])
+        = submit_tag 'Search', class: 'btn'
 
 .row
   .intro-explanation-header

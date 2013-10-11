@@ -1,4 +1,29 @@
 = form_tag(programmers_path, method: :get)
+  small
+    | Skills
+  br
   select id='skill_name' name='skill_name'
     = options_for_select(Skill.all.map{|skill| [skill.name, skill.name]}.insert(0, 'Select Skill:'), params[:skill_name])
-  = submit_tag 'Search'
+  br
+  small
+    | Availability
+  br
+  label class='radio'
+    = radio_button_tag('availability', 'Any', true)
+    | Any
+  label class='radio'
+    = radio_button_tag('availability', 'Full-time')
+    | Full-time
+  label class='radio'
+    = radio_button_tag('availability', 'Part-time')
+    | Part-time
+  small
+    | Daily Rate
+  br
+  .rate-range
+    | $
+    = text_field_tag 'min-rate', '', class: 'rate-field'
+    | &nbsp;to&nbsp;
+    = text_field_tag 'max-rate', '', class: 'rate-field'
+    | (USD)
+  = submit_tag 'Search', class: 'btn btn-search'

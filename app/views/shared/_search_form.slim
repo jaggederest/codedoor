@@ -9,16 +9,16 @@
     | Availability
   br
   label class='radio'
-    = radio_button_tag('availability', 'Any', true)
+    = radio_button_tag('availability', '', true)
     | Any
   label class='radio'
-    = radio_button_tag('availability', 'Full-time')
+    = radio_button_tag('availability', 'full-time')
     | Full-time
   label class='radio'
-    = radio_button_tag('availability', 'Part-time')
+    = radio_button_tag('availability', 'part-time')
     | Part-time
   small
-    | Daily Rate
+    | Hourly Rate
   br
   .rate-range
     | $

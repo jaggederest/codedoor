@@ -167,26 +167,27 @@
       h2.span9
         | Portfolio
 
-      .control-group.without-margin
+      .control-group.portfolio-info
         .control-label
         .controls
           - if @programmer.qualified?
-            p
-              | You have contributed to popular open-source repositories.
+            .alert.alert-notice
+              p
+                | You have contributed to popular open-source repositories.
           - else
-            p
-              | Contractors on CodeDoor need at least one open-source contribution to a public repository with at least 25 stars.
-            p
-              | If you've contributed to a major open-source project that isn't on GitHub, please send an email to:&nbsp;
-              a href="mailto:codedoor@codedoor.com"
-                | codedoor@codedoor.com
+            .alert.alert-error
+              p
+                | Contractors on CodeDoor need at least one open-source contribution to a public repository with at least 25 stars.
+              p
+                | If you've contributed to a major open-source project that isn't on GitHub, please send an email to:&nbsp;
+                a href="mailto:codedoor@codedoor.com"
+                  | codedoor@codedoor.com
 
       h4.span9.settings-header
         | Repositories
 
       .control-group.show-row
-        .control-label
-        .controls.show-label
+        .offset1.show-label
           | Show
 
       span#github-repos

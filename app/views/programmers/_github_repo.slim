@@ -1,20 +1,17 @@
 .control-group
-  .control-label
-  .controls
-    .row
-      .span1
-        span.repo-checkbox
-          - checkbox_name = "programmer[github_repos_attributes][#{index}][shown]"
-          = hidden_field_tag(checkbox_name, '0', id: nil)
-          = check_box_tag(checkbox_name, '1', repo.shown?, id: "shown-github-#{repo.id}")
-      .span3
-        - repo_text = "#{repo.repo_owner}/#{repo.repo_name}"
-        = repo_commits_link(current_user.github_account.username, repo.repo_owner, repo.repo_name, repo_text)
-      .span2
-        = "#{pluralize(repo.stars_count, 'star')} #{repo.is_fork? ? '(fork)' : ''}"
-    .row
-      .span1
-      .span5
-        = repo.description.truncate(120)
+  .row
+    .offset2.span1
+      span.repo-checkbox
+        - checkbox_name = "programmer[github_repos_attributes][#{index}][shown]"
+        = hidden_field_tag(checkbox_name, '0', id: nil)
+        = check_box_tag(checkbox_name, '1', repo.shown?, id: "shown-github-#{repo.id}")
+    .span4
+      - repo_text = "#{repo.repo_owner}/#{repo.repo_name}"
+      = repo_commits_link(current_user.github_account.username, repo.repo_owner, repo.repo_name, repo_text)
+    .span2
+      = "#{pluralize(repo.stars_count, 'star')} #{repo.is_fork? ? '(fork)' : ''}"
+  .row
+    .offset3.span6
+      = repo.description.truncate(120)
 - if serverside
   = hidden_field_tag("programmer[github_repos_attributes][#{index}][id]", repo.id.to_s)

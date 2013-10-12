@@ -1,11 +1,10 @@
 .span3
   = render partial: 'shared/search_form'
-- if @programmers.empty?
-  .span4
+.span6
+  - if @programmers.empty?
     p
       | No programmers have matched your search.
-- else
-  .span6
+  - else
     hr
     - @programmers.each do |programmer|
       .pull-right

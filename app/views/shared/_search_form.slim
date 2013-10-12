@@ -26,4 +26,8 @@
     | &nbsp;to&nbsp;
     = text_field_tag 'max-rate', '', class: 'rate-field'
     | (USD)
+  br
+  label class='checkbox'
+    = check_box_tag 'contract-to-hire'
+    | Will consider contract to hire
   = submit_tag 'Search', class: 'btn btn-search'

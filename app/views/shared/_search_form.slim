@@ -3,31 +3,31 @@
     | Skills
   br
   select id='skill_name' name='skill_name'
-    = options_for_select(Skill.all.map{|skill| [skill.name, skill.name]}.insert(0, 'Select Skill:'), params[:skill_name])
+    = options_for_select(Skill.all.map{|skill| [skill.name, skill.name]}.insert(0, 'Select Skill:'), @programmer_search.skill_name)
   br
   small
     | Availability
   br
   label class='radio'
-    = radio_button_tag('availability', '', true)
+    = radio_button_tag('availability', '', !@programmer_search.availability_chosen?)
     | Any
   label class='radio'
-    = radio_button_tag('availability', 'full-time')
+    = radio_button_tag('availability', 'full-time', @programmer_search.availability == 'full-time')
     | Full-time
   label class='radio'
-    = radio_button_tag('availability', 'part-time')
+    = radio_button_tag('availability', 'part-time', @programmer_search.availability == 'part-time')
     | Part-time
   small
     | Hourly Rate
   br
   .rate-range
     | $
-    = text_field_tag 'min-rate', '', class: 'rate-field'
+    = text_field_tag 'min_rate', @programmer_search.min_rate, class: 'rate-field'
     | &nbsp;to&nbsp;
-    = text_field_tag 'max-rate', '', class: 'rate-field'
+    = text_field_tag 'max_rate', @programmer_search.max_rate, class: 'rate-field'
     | (USD)
   br
   label class='checkbox'
-    = check_box_tag 'contract-to-hire'
+    = check_box_tag 'contract_to_hire', true, @programmer_search.contract_to_hire
     | Will consider contract to hire
   = submit_tag 'Search', class: 'btn btn-search'

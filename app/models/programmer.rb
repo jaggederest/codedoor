@@ -110,6 +110,10 @@ class Programmer < ActiveRecord::Base
     education_items.count > 0
   end
 
+  def self.client_rate_to_programmer_rate(client_rate)
+    (client_rate * 8.0 / 9.0).round(2)
+  end
+
   private
 
   def has_skills?

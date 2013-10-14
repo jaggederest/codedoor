@@ -4,27 +4,8 @@ class ProgrammersController < ApplicationController
   before_filter :ensure_user_checked_terms, except: [:index, :show]
 
   def index
-    # skill_name, availability, min-rate, max-rate, contract-to-hire
-    skill = Skill.find_by_name(params[:skill_name]) unless params[:skill_name].blank?
-    if skill
-      @programmers = Programmer.joins(:skills).where('skills.id = ?', skill.id)
-    else
-      @programmers = Programmer
-    end
-
-    visibility = user_signed_in? ? ['codedoor', 'public'] : ['public']
-    @programmers = @programmers.where('state = ? AND qualified = ? AND visibility IN (?)', 'activated', true, visibility)
-
-    if params[:availability] == 'full-time' || params[:availability] == 'part-time'
-      @programmers = @programmers.where('availability = ?', params[:availability])
-    end
-    if params[:'min-rate'].to_i > 0
-      @programmers = @programmers.where('rate >= ?', params[:'min-rate'].to_i)
-    end
-    if params[:'max-rate'].to_i > 0
-      @programmers = @programmers.where('rate <= ?', params[:'min-rate'].to_i)
-    end
-    @programmers = @programmers.where('contract_to_hire = ?', true) unless params[:'contract-to-hire'].blank?
+    @programmer_search = ProgrammerSearch.new(params, user_signed_in?)
+    @programmers = @programmer_search.programmers
   end
 
   def show

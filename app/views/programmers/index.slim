@@ -10,7 +10,7 @@
       .pull-right
         = render partial: 'shared/rate_badge', locals: {programmer: programmer}
       h4
-        = link_to(programmer.user.full_name, programmer_path(programmer))
+        = link_to(programmer.user.full_name, programmer_path(programmer, search: true))
       p
         = programmer.title
       p

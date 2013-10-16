@@ -13,6 +13,7 @@ class ProgrammersController < ApplicationController
     if user_signed_in? && (@programmer.user_id == current_user.id) && @programmer.incomplete?
       redirect_to edit_user_programmer_path(current_user)
     end
+    @show_back_to_search = params[:search].present?
   end
 
   # There are no new or create routes.  This way, loading the controller will load repos,

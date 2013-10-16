@@ -1,5 +1,10 @@
 .row
-  .span1
+  .span2
+    - if @show_back_to_search
+      a id="back-to-search"
+        | Back to search
+      javascript:
+        $('#back-to-search').on('click', function(){ history.back(); });
   .span6
     h4
       = @programmer.user.full_name

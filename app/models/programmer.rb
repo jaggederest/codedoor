@@ -36,6 +36,8 @@ class Programmer < ActiveRecord::Base
     end
   end
 
+  self.per_page = 10
+
   def daily_rate_to_programmer
     rate.nil? ? nil : (rate * 8)
   end

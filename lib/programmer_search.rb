@@ -33,6 +33,8 @@ class ProgrammerSearch
 
     @contract_to_hire = params[:contract_to_hire].present?
     @programmers = @programmers.where('contract_to_hire = ?', true) if @contract_to_hire
+
+    @programmers = @programmers.paginate(page: params[:page])
   end
 
   def availability_chosen?

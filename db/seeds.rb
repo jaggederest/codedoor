@@ -5,6 +5,6 @@
 DbUpdate.update_skills
 
 # Insert test data here
-if Rails.env.development?
+unless Rails.env.production?
   DbUpdate.seed_data_for_development
 end

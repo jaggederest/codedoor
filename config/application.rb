@@ -21,5 +21,6 @@ module Codedoor
     # config.i18n.default_locale = :de
 
     config.autoload_paths += %W(#{config.root}/lib)
+    config.action_controller.include_all_helpers = false
   end
 end

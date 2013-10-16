@@ -95,23 +95,27 @@ class Programmer < ActiveRecord::Base
   end
 
   def show_repos?
-    github_repos.shown.count > 0
+    !github_repos.shown.empty?
   end
 
   def show_portfolio?
-    portfolio_items.count > 0
+    !portfolio_items.empty?
   end
 
   def show_resume?
-    resume_items.count > 0
+    !resume_items.empty?
   end
 
   def show_education?
-    education_items.count > 0
+    !education_items.empty?
   end
 
   def self.client_rate_to_programmer_rate(client_rate)
     (client_rate * 8.0 / 9.0).round(2)
+  end
+
+  def username
+    user.github_account.username
   end
 
   private

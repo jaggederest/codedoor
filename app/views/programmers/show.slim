@@ -36,14 +36,13 @@
       - if @programmer.show_repos?
         strong
           | GitHub&nbsp;/&nbsp;
-        - username = @programmer.user.github_account.username
-        = link_to username, "https://github.com/#{username}", target: '_blank'
+        = link_to @programmer.username, "https://github.com/#{@programmer.username}", target: '_blank'
         - @programmer.github_repos.shown.each do |repo|
           p
             .row
               .span4
                 - repo_text = "#{repo.repo_owner}/#{repo.repo_name}"
-                = repo_commits_link(@programmer.user.github_account.username, repo.repo_owner, repo.repo_name, repo_text)
+                = repo_commits_link(@programmer.username, repo.repo_owner, repo.repo_name, repo_text)
               .span2
                 = "#{pluralize(repo.stars_count, 'star')} #{repo.is_fork? ? '(fork)' : ''}"
             .row

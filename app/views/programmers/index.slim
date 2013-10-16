@@ -15,6 +15,10 @@
         = programmer.title
       p
         = programmer.user.location_text
+      - if programmer.show_repos?
+        p
+          | Contributions:&nbsp;
+          = contribution_links(programmer).join(', ').html_safe
       p
         = programmer.description.truncate(500)
       hr

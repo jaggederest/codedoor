@@ -23,6 +23,7 @@ class ProgrammerSearch
       @programmers = @programmers.where('availability = ?', @availability)
     else
       @programmers = @programmers.where('availability IN (?)', ['full-time', 'part-time'])
+      @availability = nil
     end
 
     @min_rate = string_to_rate(params[:min_rate])

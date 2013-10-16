@@ -122,6 +122,10 @@ describe Programmer do
       @programmer.hourly_fee_to_codedoor.should eq(6.38)
     end
 
+    it 'should convert a client\'s rate to the internal programmer rate' do
+      Programmer.client_rate_to_programmer_rate(113).should eq(100.44)
+    end
+
     it 'should return nil when rate is nil' do
       new_programmer = Programmer.new(rate: nil)
 

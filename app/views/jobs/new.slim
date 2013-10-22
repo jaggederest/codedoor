@@ -1,0 +1,18 @@
+= form_for [@job], url: {action: :create}, html: {class: 'form-horizontal'} do |f|
+  .span9
+    = f.hidden_field :programmer_id, value: @programmer.id
+    .control-group class="#{model_attribute_class(@job, :name)}"
+      .control-label
+        = f.label :name, 'Job Name'
+      .controls
+        = f.text_field :name, placeholder: 'Job Name'
+        = render partial: 'shared/help_inline', locals: {model: @job, attribute: :name}
+    .control-group
+      .control-label
+        | Message
+      .controls
+        = text_area_tag 'job[job_messages_attributes][][content]', @job.job_messages.first.present? ? @job.job_messages.first.content : '', class: 'span6'
+    .control-group
+      .controls
+        = f.submit 'Send Message', class: 'btn', data: {disable_with: 'Submitting...'}
+  = render partial: 'jobs/job_info'

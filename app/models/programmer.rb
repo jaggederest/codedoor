@@ -59,14 +59,11 @@ class Programmer < ActiveRecord::Base
   end
 
   def client_rate_text
-    case availability
-    when 'part-time'
-      "$#{daily_rate_to_client} / 8 hours"
-    when 'full-time'
-      "$#{daily_rate_to_client} / day"
-    else
-      'Unavailable'
-    end
+    rate_text(daily_rate_to_client)
+  end
+
+  def programmer_rate_text
+    rate_text(daily_rate_to_programmer)
   end
 
   def self.onsite_status_description(status)
@@ -121,6 +118,17 @@ class Programmer < ActiveRecord::Base
   end
 
   private
+
+  def rate_text(rate)
+    case availability
+    when 'part-time'
+      "$#{rate} / 8 hours"
+    when 'full-time'
+      "$#{rate} / day"
+    else
+      'Unavailable'
+    end
+  end
 
   def has_skills?
     errors.add(:skills, 'have not been selected') if skills.blank?

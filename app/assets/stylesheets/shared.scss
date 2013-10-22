@@ -18,10 +18,18 @@ a {
   width: 400px;
 }
 
+.flash-message {
+  margin-bottom: 10px;
+}
+
 .hidden {
   display: none;
 }
 
 .ajax-load {
   margin-left: 5px;
+}
+
+textarea.span6 {
+  height: 80px;
 }

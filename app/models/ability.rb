@@ -25,6 +25,24 @@ class Ability
           false
         end
       end
+
+      can [:create], Job do |job|
+        # TODO: Perhaps you shouldn't be allowed to hire yourself.  But why not?
+        user.client.present?
+      end
+      can [:read, :update, :destroy], Job do |job|
+        can_see = false
+        can_see = true if user.client.present? && job.client_id == user.client.id
+        can_see = true if user.programmer.present? && job.programmer_id == user.programmer.id
+        can_see
+      end
+      can :update_as_client, Job do |job|
+        user.client.present? && job.client_id == user.client.id
+      end
+      can :update_as_programmer, Job do |job|
+        user.programmer.present? && job.programmer_id == user.programmer.id
+      end
     end
+
   end
 end

@@ -6,13 +6,16 @@ div class="navbar"
     - if user_signed_in?
       a class="pull-right" href="#{destroy_user_session_path}" data-method="delete"
         | Log out
-      - if current_user.programmer.present? && !current_user.programmer.incomplete?
+      - if current_user.completed_programmer_account?
         a class="pull-left" href="#{programmer_path(current_user)}"
           | Profile
       - if current_user.client.present?
         a class="pull-left" href="#{programmers_path}"
           | Search
-      a class="pull-left" href="#{edit_user_path(current_user)}"
+      - if current_user.completed_programmer_account? || current_user.client.present?
+        a class="pull-left" href="#{jobs_path}"
+          | Jobs
+      a class="pull-right" href="#{edit_user_path(current_user)}"
         | Settings
     - else
       a class="btn-auth btn-github pull-right" href="#{user_omniauth_authorize_path(:github)}"

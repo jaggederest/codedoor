@@ -1,0 +1,8 @@
+- @jobs.each do |job|
+  p
+    strong
+      = link_to job.name, edit_job_path(job)
+      |&nbsp;-&nbsp;
+      = job.programmer.user.full_name
+      |&nbsp;-&nbsp;
+    = job.state.humanize

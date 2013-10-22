@@ -1,5 +1,5 @@
 .row
-  .span2
+  .span3
     - if @show_back_to_search
       a id="back-to-search"
         | Back to search
@@ -8,6 +8,7 @@
   .span6
     h4
       = @programmer.user.full_name
+      = render partial: 'shared/rate_badge', locals: {programmer: @programmer}
     p
       = @programmer.title
     p
@@ -15,12 +16,7 @@
     p
       | Skills:&nbsp;
       = @programmer.skills.map(&:name).join(', ')
-    p
-      = @programmer.client_rate_text
-    p
-      = @programmer.availability.humanize
-    p
-      = Programmer.onsite_status_description(@programmer.onsite_status)
+    = Programmer.onsite_status_description(@programmer.onsite_status)
     - if @programmer.contract_to_hire?
       p
         | Will consider contract-to-hire.
@@ -88,3 +84,6 @@
           = education.duration_text
           br
           = education.description
+  .row3
+    strong
+      = link_to 'Contact', new_job_path(programmer_id: @programmer.id), class: 'btn btn-lg contact-programmer'

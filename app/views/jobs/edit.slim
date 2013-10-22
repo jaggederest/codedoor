@@ -1,0 +1,20 @@
+- is_client = @job.is_client?(current_user)
+= form_for [@job], url: {action: :create_message}, html: {class: 'form-horizontal'}, method: :post do |f|
+  .span9
+    .offset2.span6
+      - @job.job_messages.each do |message|
+        - if message.valid?
+          p
+            .pull-right
+              = message.created_at_text
+            strong
+              = message.sender_name
+            br
+            = message.content
+    .control-group
+      .controls
+        = text_area_tag 'job_message[content]', @job_message.present? ? @job_message.content : '', class: 'span6'
+    .control-group
+      .controls
+        = f.submit 'Send Message', class: 'btn', data: {disable_with: 'Submitting...'}
+  = render partial: 'jobs/job_info'

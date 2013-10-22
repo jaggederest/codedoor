@@ -1,0 +1,44 @@
+class Job < ActiveRecord::Base
+  belongs_to :client
+  belongs_to :programmer
+  has_many :job_messages, dependent: :destroy
+  accepts_nested_attributes_for :job_messages
+
+  validates :client_id, presence: true
+  validates :programmer_id, presence: true
+  validates :name, presence: true
+  validates :rate, presence: true
+  validate :client_and_programmer_are_different
+  validate :rate_is_unchanged, on: :update
+
+  state_machine :state, initial: :has_not_started do
+    event :offer do
+      transition has_not_started: :offered
+    end
+
+    event :start do
+      transition offered: :running
+    end
+
+    event :finish do
+      transition [:offered, :running] => :finished
+    end
+
+    event :disable do
+      transition all => :disabled
+    end
+  end
+
+  def client_and_programmer_are_different
+    errors.add(:programmer, 'must refer to a different user') if client.user == programmer.user
+  end
+
+  def rate_is_unchanged
+    errors.add(:rate, 'must stay the same for the job') if rate_changed?
+  end
+
+  def is_client?(user)
+    client.user == user
+  end
+
+end

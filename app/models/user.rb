@@ -46,6 +46,10 @@ class User < ActiveRecord::Base
     country == 'US'
   end
 
+  def completed_programmer_account?
+    programmer.present? && !programmer.incomplete?
+  end
+
   # Since uniqueness is scoped to account_id and user, there can only be one
   def github_account
     self.github_user_accounts.first

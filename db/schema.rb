@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131009014046) do
+ActiveRecord::Schema.define(version: 20131024083542) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -59,6 +59,29 @@ ActiveRecord::Schema.define(version: 20131009014046) do
   end
 
   add_index "github_repos", ["programmer_id"], name: "index_github_repos_on_programmer_id", using: :btree
+
+  create_table "job_messages", force: true do |t|
+    t.integer  "job_id"
+    t.boolean  "sender_is_client"
+    t.text     "content"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "job_messages", ["job_id"], name: "index_job_messages_on_job_id", using: :btree
+
+  create_table "jobs", force: true do |t|
+    t.integer  "programmer_id"
+    t.integer  "client_id"
+    t.string   "state"
+    t.integer  "rate"
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "jobs", ["client_id"], name: "index_jobs_on_client_id", using: :btree
+  add_index "jobs", ["programmer_id"], name: "index_jobs_on_programmer_id", using: :btree
 
   create_table "payment_infos", force: true do |t|
     t.integer  "user_id"

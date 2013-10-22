@@ -1,0 +1,32 @@
+- is_client = @job.is_client?(current_user)
+.span3
+  p
+    strong
+      - if is_client
+        = link_to @programmer.user.full_name, programmer_path(@programmer), target: '_blank'
+      - else
+        = link_to @job.client.user.full_name, client_path(@job.client), target: '_blank'
+  p
+    = is_client ? @programmer.client_rate_text : @programmer.programmer_rate_text
+  - unless @job.new_record?
+    - if @job.has_not_started?
+      - if is_client
+        p
+          = link_to 'Offer Contract', offer_job_path(@job), class: 'btn btn-success', method: :post
+      - else
+        | Job Is Pending Offer
+    - elsif @job.offered?
+      - if !is_client
+        p
+          = link_to 'Start Job', start_job_path(@job), class: 'btn btn-success', method: :post
+      | Job Offered
+
+    - elsif @job.running?
+      p
+        = link_to 'Finish Job', finish_job_path(@job), class: 'btn btn-success', method: :post
+      | Job Running
+
+    - elsif @job.finished?
+      | Job Finished
+    - elsif @job.disabled?
+      | Job Disabled

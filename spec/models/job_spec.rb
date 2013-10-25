@@ -49,4 +49,91 @@ describe Job do
       -> { job.is_client?(job.client) }.should raise_error
     end
   end
+
+  context 'state_machine' do
+    it 'should allow offer if has_not_started' do
+      job = FactoryGirl.create(:job, state: 'has_not_started')
+      job.offer!
+      job.offered?.should be_true
+
+      job = FactoryGirl.create(:job, state: 'running')
+      -> {job.offer!}.should raise_error
+    end
+
+    it 'should allow start if offered' do
+      job = FactoryGirl.create(:job, state: 'offered')
+      job.start!
+      job.running?.should be_true
+
+      job = FactoryGirl.create(:job, state: 'running')
+      -> {job.start!}.should raise_error
+    end
+
+    it 'should allow finish if offered or running' do
+      job = FactoryGirl.create(:job, state: 'offered')
+      job.finish!
+      job.finished?.should be_true
+
+      job = FactoryGirl.create(:job, state: 'running')
+      job.finish!
+      job.finished?.should be_true
+
+      job = FactoryGirl.create(:job, state: 'has_not_started')
+      -> {job.finish!}.should raise_error
+    end
+
+    it 'should always allow disable' do
+      job = FactoryGirl.create(:job, state: 'has_not_started')
+      job.disable!
+      job.disabled?.should be_true
+
+      job = FactoryGirl.create(:job, state: 'offered')
+      job.disable!
+      job.disabled?.should be_true
+
+      job = FactoryGirl.create(:job, state: 'running')
+      job.disable!
+      job.disabled?.should be_true
+    end
+  end
+
+  context 'abilities' do
+    let(:user) { FactoryGirl.create(:user) }
+    let(:client) { FactoryGirl.create(:client, user: user) }
+    let(:programmer) { FactoryGirl.create(:programmer, user: user) }
+    let(:ability) { Ability.new(user) }
+
+    it 'should be able to create and update as client' do
+      job = FactoryGirl.create(:job, client: client)
+      ability.should be_able_to(:create, job)
+      ability.should be_able_to(:read, job)
+      ability.should be_able_to(:update, job)
+      ability.should be_able_to(:destroy, job)
+      ability.should be_able_to(:update_as_client, job)
+
+      ability.should_not be_able_to(:update_as_programmer, job)
+    end
+
+    it 'should be able to create and update as programmer' do
+      job = FactoryGirl.create(:job, programmer: programmer)
+      ability.should be_able_to(:read, job)
+      ability.should be_able_to(:update, job)
+      ability.should be_able_to(:destroy, job)
+      ability.should be_able_to(:update_as_programmer, job)
+
+      ability.should_not be_able_to(:create, job)
+      ability.should_not be_able_to(:update_as_client, job)
+    end
+
+    it 'should not be able to do anything if neither client nor programmer' do
+      job = FactoryGirl.create(:job)
+      ability.should_not be_able_to(:create, job)
+      ability.should_not be_able_to(:read, job)
+      ability.should_not be_able_to(:update, job)
+      ability.should_not be_able_to(:destroy, job)
+      ability.should_not be_able_to(:update_as_client, job)
+      ability.should_not be_able_to(:update_as_programmer, job)
+    end
+
+  end
 end

@@ -30,14 +30,19 @@ class Job < ActiveRecord::Base
   end
 
   def client_and_programmer_are_different
-    errors.add(:programmer, 'must refer to a different user') if client.user == programmer.user
+    # NOTE: This would only throw an exception if the client or programmer are missing, but that's invalid
+    begin
+      errors.add(:programmer, 'must refer to a different user') if client.user == programmer.user
+    rescue
+    end
   end
 
   def rate_is_unchanged
-    errors.add(:rate, 'must stay the same for the job') if rate_changed?
+    errors.add(:rate, 'must stay the same for the job') if rate_changed? && running?
   end
 
   def is_client?(user)
+    raise 'Called is_client? for non-user' unless user.kind_of?(User)
     client.user == user
   end
 

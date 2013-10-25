@@ -173,4 +173,19 @@ describe Programmer do
     end
   end
 
+  context 'programmer_rate_text' do
+    it 'should show rate for full-time programmers' do
+      programmer = FactoryGirl.create(:programmer, availability: 'full-time', rate: 50)
+      programmer.programmer_rate_text.should eq('$400 / day')
+    end
+    it 'should show rate for part-time programmers' do
+      programmer = FactoryGirl.create(:programmer, availability: 'part-time', rate: 50)
+      programmer.programmer_rate_text.should eq('$400 / 8 hours')
+    end
+    it 'should not show rate for unavailable programmers' do
+      programmer = FactoryGirl.create(:programmer, availability: 'unavailable', rate: 50)
+      programmer.programmer_rate_text.should eq('Unavailable')
+    end
+  end
+
 end

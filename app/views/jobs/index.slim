@@ -1,4 +1,9 @@
-- @jobs.each do |job|
+- both_categories = !@jobs_as_client.empty? && !@jobs_as_programmer.empty?
+
+- if both_categories
+  h3
+    | Jobs as Client
+- @jobs_as_client.each do |job|
   p
     strong
       = link_to job.name, edit_job_path(job)
@@ -6,3 +11,18 @@
       = job.programmer.user.full_name
       |&nbsp;-&nbsp;
     = job.state.humanize
+
+- if both_categories
+  h3
+    | Jobs as Programmer
+- @jobs_as_programmer.each do |job|
+  p
+    strong
+      = link_to job.name, edit_job_path(job)
+      |&nbsp;-&nbsp;
+      = job.client.user.full_name
+      |&nbsp;-&nbsp;
+    = job.state.humanize
+
+- if @jobs_as_client.empty? && @jobs_as_programmer.empty?
+  | You currently have no jobs set up.

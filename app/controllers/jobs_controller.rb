@@ -4,8 +4,8 @@ class JobsController < ApplicationController
   before_filter :ensure_user_checked_terms
 
   def index
-    # TODO: Add freelancer view
-    @jobs = current_user.client.present? ? Job.where(client_id: current_user.client.id) : []
+    @jobs_as_client = current_user.client.present? ? Job.where(client_id: current_user.client.id) : []
+    @jobs_as_programmer = current_user.programmer.present? ? Job.where(programmer_id: current_user.programmer.id) : []
   end
 
   def new

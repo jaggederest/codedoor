@@ -25,8 +25,8 @@ describe Job do
       job.errors[:rate].should eq(['must stay the same for the job'])
     end
 
-    it 'should allow rate to change if the job is not running' do
-      job = FactoryGirl.create(:job, rate: 55, state: 'offered')
+    it 'should allow rate to change if the job has not been offered' do
+      job = FactoryGirl.create(:job, rate: 55, state: 'has_not_started')
       job.valid?.should be_true
       job.rate = 66
       job.valid?.should be_true

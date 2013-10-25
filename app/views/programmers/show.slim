@@ -85,5 +85,6 @@
           br
           = education.description
   .row3
-    strong
-      = link_to 'Contact', new_job_path(programmer_id: @programmer.id), class: 'btn btn-lg contact-programmer'
+    - unless @programmer.user == current_user
+      strong
+        = link_to 'Contact', new_job_path(programmer_id: @programmer.id), class: 'btn btn-lg contact-programmer'

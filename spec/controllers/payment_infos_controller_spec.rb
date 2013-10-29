@@ -3,6 +3,7 @@ require 'spec_helper'
 describe PaymentInfosController do
   before :each do
     @user = FactoryGirl.create(:user, checked_terms: true, country: 'CA', city: 'Vancouver')
+    FactoryGirl.create(:client, user: @user)
     sign_in(@user)
   end
 
@@ -20,12 +21,11 @@ describe PaymentInfosController do
       assigns(:payment_info).should eq(payment_info)
     end
 
-    it 'should fail when the user has not checked terms' do
+    it 'should redirect to create user flow when the user has not checked terms' do
       @user.checked_terms = false
       @user.save(validate: false)
       get :edit, user_id: @user.id
-      response.should redirect_to(root_path)
-      flash[:alert].should eq('Information cannot be found.')
+      response.should redirect_to(edit_user_path(@user))
     end
   end
 
@@ -68,8 +68,7 @@ describe PaymentInfosController do
       @user.checked_terms = false
       @user.save(validate: false)
       post :update, user_id: @user.id
-      response.should redirect_to(root_path)
-      flash[:alert].should eq('Information cannot be found.')
+      response.should redirect_to(edit_user_path(@user))
     end
 
   end

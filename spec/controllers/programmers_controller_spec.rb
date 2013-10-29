@@ -142,38 +142,20 @@ describe ProgrammersController do
       @user.checked_terms = false
       @user.save(validate: false)
       get :edit, user_id: @user.id, id: programmer.id
-      response.should redirect_to(root_path)
-      flash[:alert].should eq('Information cannot be found.')
+      response.should redirect_to(edit_user_path(@user))
     end
 
     it 'should not be allowed when logged out' do
       sign_out(@user)
       programmer = FactoryGirl.create(:programmer)
       get :edit, user_id: @user.id, id: programmer.id
-      response.should redirect_to(root_path)
-      flash[:alert].should eq('Information cannot be found.')
-    end
-
-    it 'should not be allowed when user has no programmer' do
-      programmer = FactoryGirl.create(:programmer)
-      get :edit, user_id: @user.id, id: programmer.id
-      response.should redirect_to(root_path)
-      flash[:alert].should eq('Information cannot be found.')
+      response.should redirect_to(user_omniauth_authorize_path(:github))
     end
 
     it 'should not be allowed when the programmer id is different from that of the user' do
       programmer = FactoryGirl.create(:programmer, user: @user)
       other_programmer = FactoryGirl.create(:programmer)
       get :edit, user_id: @user.id, id: other_programmer.id
-      response.should redirect_to(root_path)
-      flash[:alert].should eq('Information cannot be found.')
-    end
-
-    it 'should fail when the user has not checked terms' do
-      programmer = FactoryGirl.create(:programmer, user: @user)
-      @user.checked_terms = false
-      @user.save(validate: false)
-      get :edit, user_id: @user.id, id: programmer.id
       response.should redirect_to(root_path)
       flash[:alert].should eq('Information cannot be found.')
     end
@@ -272,15 +254,13 @@ describe ProgrammersController do
       @user.save(validate: false)
       programmer_params = valid_programmer('user-id-ignored')
       post :update, user_id: @user.id, id: @programmer.id, programmer: programmer_params
-      response.should redirect_to(root_path)
-      flash[:alert].should eq('Information cannot be found.')
+      response.should redirect_to(edit_user_path(@user))
     end
 
     it 'should not be allowed when logged out' do
       sign_out(@user)
       post :update, user_id: @user.id, id: @programmer.id, programmer: valid_programmer(@user.id)
-      response.should redirect_to(root_path)
-      flash[:alert].should eq('Information cannot be found.')
+      response.should redirect_to(user_omniauth_authorize_path(:github))
     end
 
     it 'should not be allowed if id refers to a programmer not associated with the user' do

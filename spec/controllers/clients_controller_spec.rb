@@ -23,15 +23,14 @@ describe ClientsController do
       @user.checked_terms = false
       @user.save(validate: false)
       get :new, user_id: @user.id
-      response.should redirect_to(root_path)
-      flash[:alert].should eq('Information cannot be found.')
+      response.should redirect_to(edit_user_path(@user))
     end
   end
 
   describe 'POST create' do
     it 'should ignore the user_id parameter and create the client' do
       post :create, user_id: @user.id, client: {user_id: 'ignore', company: 'Test Company', description: 'Test Company Description'}
-      response.should render_template('edit')
+      response.should redirect_to(edit_user_client_path(@user))
       client = Client.find_by_user_id(@user.id)
       flash[:notice].should eq('Your client account has been created.')
       client.user_id.should eq(@user.id)
@@ -63,8 +62,7 @@ describe ClientsController do
       @user.checked_terms = false
       @user.save(validate: false)
       get :edit, user_id: @user.id
-      response.should redirect_to(root_path)
-      flash[:alert].should eq('Information cannot be found.')
+      response.should redirect_to(edit_user_path(@user))
     end
   end
 

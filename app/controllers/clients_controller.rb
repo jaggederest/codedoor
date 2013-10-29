@@ -1,8 +1,8 @@
 class ClientsController < ApplicationController
-  load_and_authorize_resource
-
-  before_filter :ensure_user_checked_terms, except: [:index, :show]
+  before_filter :ensure_user_checked_terms, only: [:new, :create]
+  before_filter :client_required, only: [:edit, :update]
   before_filter :ensure_no_client, only: [:new, :create]
+  load_and_authorize_resource
 
   def new
     @client = Client.new(user_id: current_user.id)
@@ -14,7 +14,7 @@ class ClientsController < ApplicationController
 
     if @client.save
       flash[:notice] = 'Your client account has been created.'
-      render :edit
+      redirect_to client_signed_up_path
     else
       flash[:alert] = 'Your client account could not be created.'
       render :new

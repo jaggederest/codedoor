@@ -1,7 +1,9 @@
 class JobsController < ApplicationController
-  load_and_authorize_resource except: [:create, :offer, :start, :finish]
+  before_filter :client_or_programmer_required, only: [:index, :edit, :create_message, :finish]
+  before_filter :client_required, only: [:new, :create, :offer]
+  before_filter :programmer_required, only: [:start]
 
-  before_filter :ensure_user_checked_terms
+  load_and_authorize_resource except: [:create, :offer, :start, :finish]
 
   def index
     @jobs_as_client = current_user.client.present? ? Job.where(client_id: current_user.client.id) : []
@@ -10,7 +12,7 @@ class JobsController < ApplicationController
 
   def new
     @programmer = Programmer.find(params[:programmer_id])
-    existing_jobs = Job.where('programmer_id = ? AND (state = ? OR state = ? OR state = ?)', @programmer.id, 'has_not_started', 'offered', 'running')
+    existing_jobs = Job.where('programmer_id = ? AND client_id = ? AND (state = ? OR state = ? OR state = ?)', @programmer.id, current_user.client.id, 'has_not_started', 'offered', 'running')
     redirect_to edit_job_path(existing_jobs.first) unless existing_jobs.empty?
 
     @job = Job.new(client_id: current_user.client.id, programmer_id: @programmer.id)

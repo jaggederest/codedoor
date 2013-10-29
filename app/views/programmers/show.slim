@@ -84,7 +84,11 @@
           = education.duration_text
           br
           = education.description
-  .row3
+  .span3
     - unless @programmer.user == current_user
       strong
         = link_to 'Contact', new_job_path(programmer_id: @programmer.id), class: 'btn btn-lg contact-programmer'
+      - unless user_signed_in?
+        br
+        br
+          | To contact this programmer, you need to sign in with your GitHub account.

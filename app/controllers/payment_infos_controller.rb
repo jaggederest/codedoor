@@ -1,7 +1,6 @@
 class PaymentInfosController < ApplicationController
+  before_filter :client_or_programmer_required
   load_and_authorize_resource
-
-  before_filter :ensure_user_checked_terms
 
   def edit
     @payment_info = PaymentInfo.find_or_create_by(user_id: current_user.id)

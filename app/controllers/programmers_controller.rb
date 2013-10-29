@@ -1,7 +1,7 @@
 class ProgrammersController < ApplicationController
+  before_filter :ensure_user_checked_terms, except: [:index, :show]
   load_and_authorize_resource except: [:verify_contribution]
 
-  before_filter :ensure_user_checked_terms, except: [:index, :show]
 
   def index
     @programmer_search = ProgrammerSearch.new(params, user_signed_in?)
@@ -39,7 +39,7 @@ class ProgrammersController < ApplicationController
       else
         flash[:notice] = 'Your programmer account has been updated.'
       end
-      redirect_to programmer_path(@programmer)
+      redirect_to programmer_signed_up_path
     else
       if incomplete
         flash[:alert] = 'Your programmer account could not be created.'

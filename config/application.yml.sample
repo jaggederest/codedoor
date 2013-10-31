@@ -9,3 +9,4 @@ TEST_OAUTH_TOKEN: PleaseInsert
 BALANCED_MARKETPLACE: PleaseInsert
 # API key secret on the settings page
 BALANCED_SECRET: PleaseInsert
+# RAILS_SECRET_KEY_BASE and OAUTH_ENCRYPTION_PASSWORD should be set for staging and production

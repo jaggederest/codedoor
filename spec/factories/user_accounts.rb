@@ -7,7 +7,9 @@ FactoryGirl.define do
       "username-#{n}"
     end
     type 'GithubUserAccount'
-    oauth_token { ENV['TEST_OAUTH_TOKEN'] }
+    before :create do |instance|
+      instance.oauth_token = ENV['TEST_OAUTH_TOKEN']
+    end
     user
   end
 end

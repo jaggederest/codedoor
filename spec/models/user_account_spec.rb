@@ -22,7 +22,9 @@ describe UserAccount do
       a2.valid?.should be_true
     end
 
-    it { should validate_presence_of(:oauth_token) }
+    it { should validate_presence_of(:encrypted_oauth_token) }
+    it { should validate_presence_of(:encrypted_oauth_token_iv) }
+    it { should validate_presence_of(:encrypted_oauth_token_salt) }
     it { should validate_presence_of(:type) }
     it { should validate_presence_of(:user) }
     it { should validate_presence_of(:username) }

@@ -56,6 +56,9 @@ gem 'state_machine', '~> 1.2.0'
 
 gem 'will_paginate', '~> 3.0'
 
+# Danpal's fork of attr_encrypted
+gem 'attr_encryptor'
+
 # Right now, only used for the edge case where there are over 100 contributors
 gem 'rest-client', '~> 1.6.7'
 

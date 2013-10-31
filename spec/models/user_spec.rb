@@ -121,6 +121,7 @@ describe User do
       user_account = GithubUserAccount.where(account_id: '1234567').first
       user_account.user.should eq(user)
       user_account.oauth_token.should eq('oauth token')
+      user_account.encrypted_oauth_token.should_not eq('oauth token')
     end
 
     it 'should still create a new user if the user does not validate (they would just have to add it upon registration)' do

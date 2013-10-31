@@ -7,6 +7,7 @@ Codedoor::Application.routes.draw do
 
   resources :jobs, only: [:index, :new, :create, :edit] do
     post :create_message, on: :member
+    post :cancel, on: :member
     post :offer, on: :member
     post :start, on: :member
     post :finish, on: :member

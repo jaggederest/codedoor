@@ -16,6 +16,10 @@ class Job < ActiveRecord::Base
       transition has_not_started: :offered
     end
 
+    event :cancel do
+      transition offered: :canceled
+    end
+
     event :start do
       transition offered: :running
     end

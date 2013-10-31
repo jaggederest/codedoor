@@ -54,7 +54,7 @@ class JobsController < ApplicationController
 
   def offer
     @job = Job.find(params[:id])
-    authorize! :update_as_programmer, @job
+    authorize! :update_as_client, @job
     if @job.has_not_started?
       # The rate gets locked at the time of offer
       @job.rate = @job.programmer.rate
@@ -63,16 +63,29 @@ class JobsController < ApplicationController
     else
       flash[:alert] = 'The job could not be offered.'
     end
+    redirect_to action: :edit
   end
 
   def start
     @job = Job.find(params[:id])
-    authorize! :update_as_client, @job
+    authorize! :update_as_programmer, @job
     if @job.offered?
       @job.start!
       flash[:notice] = 'The job has been started.'
     else
       flash[:alert] = 'The job could not be started.'
+    end
+    redirect_to action: :edit
+  end
+
+  def cancel
+    @job = Job.find(params[:id])
+    authorize! :update_as_programmer, @job
+    if @job.offered?
+      @job.cancel!
+      flash[:notice] = 'The job has been canceled.'
+    else
+      flash[:alert] = 'The job could not be canceled.'
     end
     redirect_to action: :edit
   end

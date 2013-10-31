@@ -24,6 +24,7 @@ class Programmer < ActiveRecord::Base
 
   validate :has_skills?
 
+  before_save {|programmer| programmer.description = programmer.description.to_s}
   before_update {|programmer| programmer.activate! if programmer.incomplete? && programmer.valid? }
 
   state_machine :state, initial: :incomplete do

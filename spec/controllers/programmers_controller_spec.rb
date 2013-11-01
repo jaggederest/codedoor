@@ -15,7 +15,7 @@ describe ProgrammersController do
   end
 
   before :each do
-    @user = FactoryGirl.create(:user, checked_terms: true, country: 'CA', city: 'Vancouver')
+    @user = FactoryGirl.create(:user_checked_terms)
     sign_in(@user)
   end
 

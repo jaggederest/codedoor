@@ -7,7 +7,7 @@ describe User do
 
     context 'email format' do
       before :each do
-        @user = FactoryGirl.create(:user, checked_terms: true, country: 'CA', city: 'Victoria')
+        @user = FactoryGirl.create(:user_checked_terms)
       end
 
       it 'should be valid if it has an @ followed by a .' do

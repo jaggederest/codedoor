@@ -69,6 +69,15 @@ describe Job do
       -> {job.start!}.should raise_error
     end
 
+    it 'should allow cancel if offered' do
+      job = FactoryGirl.create(:job, state: 'offered')
+      job.cancel!
+      job.canceled?.should be_true
+
+      job = FactoryGirl.create(:job, state: 'running')
+      -> {job.cancel!}.should raise_error
+    end
+
     it 'should allow finish if offered or running' do
       job = FactoryGirl.create(:job, state: 'offered')
       job.finish!

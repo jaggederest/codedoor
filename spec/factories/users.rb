@@ -11,6 +11,7 @@ FactoryGirl.define do
     factory :user_checked_terms do
       city 'Vancouver'
       country 'CA'
+      checked_terms true
     end
 
   end

@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe PaymentInfosController do
   before :each do
-    @user = FactoryGirl.create(:user, checked_terms: true, country: 'CA', city: 'Vancouver')
+    @user = FactoryGirl.create(:user_checked_terms)
     FactoryGirl.create(:client, user: @user)
     sign_in(@user)
   end

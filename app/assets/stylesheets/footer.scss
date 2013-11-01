@@ -4,7 +4,8 @@
 
 .footer-clear {
   clear: both;
-  height: 40px;
+  // The footer is 40px, but this ensures that the content won't get too close to the footer.
+  height: 60px;
 }
 
 .footer-content {

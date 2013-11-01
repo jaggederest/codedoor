@@ -12,6 +12,8 @@ class JobsController < ApplicationController
 
   def new
     @programmer = Programmer.find(params[:programmer_id])
+
+    redirect_cannot_be_found if @programmer.unavailable?
     existing_jobs = Job.where('programmer_id = ? AND client_id = ? AND (state = ? OR state = ? OR state = ?)', @programmer.id, current_user.client.id, 'has_not_started', 'offered', 'running')
     redirect_to edit_job_path(existing_jobs.first) unless existing_jobs.empty?
 

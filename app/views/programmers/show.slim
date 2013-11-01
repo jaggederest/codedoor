@@ -33,7 +33,7 @@
         strong
           | GitHub&nbsp;/&nbsp;
         = link_to @programmer.username, "https://github.com/#{@programmer.username}", target: '_blank'
-        - @programmer.github_repos.shown.each do |repo|
+        - @programmer.github_repos.shown[0..(GithubRepo::SHOWN-1)].each do |repo|
           p
             .row
               .span4
@@ -44,6 +44,25 @@
             .row
               .span6
                 = repo.description
+        - if @programmer.github_repos.size > GithubRepo::SHOWN
+          strong
+            a id="show-more-repos"
+              | Show More Repos
+          javascript:
+            $('#show-more-repos').on('click', function(){ $('#hidden-repos').show(); $('#show-more-repos').hide(); });
+
+          #hidden-repos.hidden
+            - @programmer.github_repos.shown[(GithubRepo::SHOWN)..(-1)].each do |repo|
+              p
+                .row
+                  .span4
+                    - repo_text = "#{repo.repo_owner}/#{repo.repo_name}"
+                    = repo_commits_link(@programmer.username, repo.repo_owner, repo.repo_name, repo_text)
+                  .span2
+                    = "#{pluralize(repo.stars_count, 'star')} #{repo.is_fork? ? '(fork)' : ''}"
+                .row
+                  .span6
+                    = repo.description
 
       - if @programmer.show_portfolio?
         strong

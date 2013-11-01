@@ -3,6 +3,6 @@ FactoryGirl.define do
     sequence :company do |n|
       "Test Company #{n}"
     end
-    user
+    association :user, factory: :user_checked_terms
   end
 end

@@ -7,6 +7,11 @@ FactoryGirl.define do
     visibility 'codedoor'
     # Before each spec, the skills are prepopulated
     skills {[Skill.find_by_name('Android')]}
-    user
+    association :user, factory: :user_checked_terms
+
+    trait :qualified do
+      qualified true
+      state 'activated'
+    end
   end
 end

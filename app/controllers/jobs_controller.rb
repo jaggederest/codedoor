@@ -7,7 +7,7 @@ class JobsController < ApplicationController
 
   def index
     @jobs_as_client = current_user.client.present? ? Job.where(client_id: current_user.client.id) : []
-    @jobs_as_programmer = current_user.programmer.present? ? Job.where(programmer_id: current_user.programmer.id) : []
+    @jobs_as_programmer = current_user.completed_programmer_account? ? Job.where(programmer_id: current_user.programmer.id) : []
   end
 
   def new

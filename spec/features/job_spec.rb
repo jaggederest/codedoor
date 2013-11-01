@@ -4,7 +4,7 @@ feature 'Job setup', js: true do
   scenario 'client searches for programmer and offers job' do
     client_sign_up
     user = FactoryGirl.create(:user_checked_terms, full_name: 'Test Programmer')
-    FactoryGirl.create(:programmer, state: :activated, qualified: true, visibility: 'public', user: user)
+    FactoryGirl.create(:programmer, :qualified, visibility: 'public', user: user)
     click_link 'Search'
 
     click_link 'Test Programmer'

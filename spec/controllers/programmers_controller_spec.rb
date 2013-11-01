@@ -47,10 +47,10 @@ describe ProgrammersController do
       before :each do
         actionscript = Skill.find_by_name('ActionScript')
         javascript = Skill.find_by_name('JavaScript')
-        @as_programmer = FactoryGirl.create(:programmer, visibility: 'public', state: 'activated', qualified: true, skills: [actionscript])
-        @js_programmer = FactoryGirl.create(:programmer, visibility: 'public', state: 'activated', qualified: true, skills: [javascript])
-        @both_programmer = FactoryGirl.create(:programmer, visibility: 'public', state: 'activated', qualified: true, skills: [actionscript, javascript])
-        @neither_programmer = FactoryGirl.create(:programmer, visibility: 'public', state: 'activated', qualified: true)
+        @as_programmer = FactoryGirl.create(:programmer, :qualified, visibility: 'public', skills: [actionscript])
+        @js_programmer = FactoryGirl.create(:programmer, :qualified, visibility: 'public', skills: [javascript])
+        @both_programmer = FactoryGirl.create(:programmer, :qualified, visibility: 'public', skills: [actionscript, javascript])
+        @neither_programmer = FactoryGirl.create(:programmer, :qualified, visibility: 'public')
         @unqualified_programmer = FactoryGirl.create(:programmer, qualified: false)
       end
 
@@ -73,7 +73,7 @@ describe ProgrammersController do
 
   describe 'GET show' do
     before :each do
-      @programmer = FactoryGirl.create(:programmer, visibility: 'codedoor', state: 'activated', qualified: true)
+      @programmer = FactoryGirl.create(:programmer, :qualified, visibility: 'codedoor')
     end
 
     it 'assigns @programmer and renders template' do

@@ -21,6 +21,7 @@ class JobsController < ApplicationController
   def create
     @job = Job.new(create_job_params)
     @programmer = @job.programmer
+    redirect_cannot_be_found if @programmer.unavailable?
 
     @job.client_id = current_user.client.id
     @job.rate = @programmer.rate

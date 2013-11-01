@@ -20,6 +20,6 @@
           | Contributions:&nbsp;
           = contribution_links(programmer).join(', ').html_safe
       p
-        = programmer.description.truncate(500)
+        = programmer.description.to_s.truncate(500)
       hr
     = will_paginate @posts

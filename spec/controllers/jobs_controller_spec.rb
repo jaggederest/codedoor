@@ -69,6 +69,21 @@ describe JobsController do
   end
 
   describe 'POST create' do
+    it 'should redirect upon valid create' do
+      sign_in(@client.user)
+      post :create, job: {programmer_id: @programmer.id, name: 'Test job', job_messages_attributes: [{content: 'Test message'}]}
+      response.should redirect_to(edit_job_path(Job.last.id))
+      job = Job.last
+      job.name.should eq('Test job')
+      job.job_messages.first.content.should eq('Test message')
+    end
+
+    it 'should display proper message upon fail' do
+      sign_in(@client.user)
+      post :create, job: {programmer_id: @programmer.id, name: ''}
+      response.should render_template('new')
+      flash[:alert].should eq('Your message could not be sent.')
+    end
   end
 
   describe 'GET edit' do

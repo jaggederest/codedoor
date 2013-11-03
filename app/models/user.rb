@@ -5,8 +5,6 @@ class User < ActiveRecord::Base
 
   has_many :user_accounts, dependent: :destroy
   has_many :github_user_accounts, dependent: :destroy
-  has_many :github_repos, dependent: :destroy
-  has_many :skills, dependent: :destroy
   has_one  :programmer, dependent: :destroy
   has_one  :client, dependent: :destroy
   has_one  :payment_info, dependent: :destroy

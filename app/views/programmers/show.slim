@@ -44,7 +44,7 @@
             .row
               .span6
                 = repo.description
-        - if @programmer.github_repos.size > GithubRepo::SHOWN
+        - if @programmer.github_repos.shown.size > GithubRepo::SHOWN
           strong
             a id="show-more-repos"
               | Show More Repos

@@ -4,13 +4,13 @@ module HasTimePeriod
   included do
     validates :month_started, numericality: { greater_than_or_equal_to: 1, less_than_or_equal_to: 12 }
     validates :month_finished, numericality: { greater_than_or_equal_to: 1, less_than_or_equal_to: 12, allow_nil: true }
-    validates :month_finished, presence: true, unless: Proc.new{|r| r.is_current?}
+    validates :month_finished, presence: true, unless: :is_current?
     validates :year_started, numericality: { greater_than: 1900, less_than: 2014 }
     validates :year_finished, numericality: { greater_than: 1900, less_than: 2014, allow_nil: true}
-    validates :year_finished, presence: true, unless: Proc.new{|r| r.is_current?}
+    validates :year_finished, presence: true, unless: :is_current?
     validate :started_before_finished
 
-    before_save :remove_finished_date, if: Proc.new{|r| r.is_current?}
+    before_save :remove_finished_date, if: :is_current?
   end
 
   def started_before_finished

@@ -42,6 +42,8 @@ describe JobsController do
       get :new, programmer_id: @programmer.id
       assigns(:job).programmer.should eq(@programmer)
       assigns(:job).client.should eq(@client)
+      assigns(:job).rate.should eq(@programmer.rate)
+      assigns(:job).availability.should eq(@programmer.availability)
       response.should render_template('new')
     end
 

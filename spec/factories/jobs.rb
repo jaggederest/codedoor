@@ -3,6 +3,7 @@ FactoryGirl.define do
     client
     programmer
     rate 50
+    availability 'full-time'
     sequence :name do |n|
       "Test Job #{n}"
     end

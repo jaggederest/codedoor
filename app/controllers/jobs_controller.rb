@@ -17,7 +17,7 @@ class JobsController < ApplicationController
     existing_jobs = Job.where('programmer_id = ? AND client_id = ? AND (state = ? OR state = ? OR state = ?)', @programmer.id, current_user.client.id, 'has_not_started', 'offered', 'running')
     redirect_to edit_job_path(existing_jobs.first) unless existing_jobs.empty?
 
-    @job = Job.new(client_id: current_user.client.id, programmer_id: @programmer.id)
+    @job = Job.new(client_id: current_user.client.id, programmer_id: @programmer.id, rate: @programmer.rate, availability: @programmer.availability)
   end
 
   def create
@@ -27,6 +27,7 @@ class JobsController < ApplicationController
 
     @job.client_id = current_user.client.id
     @job.rate = @programmer.rate
+    @job.availability = @programmer.availability
     authorize! :create, @job
     if @job.save
       flash[:notice] = 'Your message has been sent.'

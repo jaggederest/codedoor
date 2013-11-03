@@ -3,13 +3,13 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable, :rememberable, :trackable, :validatable
   devise :omniauthable, omniauth_providers: [:github]
 
-  has_many :user_accounts
-  has_many :github_user_accounts
-  has_many :github_repos
-  has_many :skills
-  has_one  :programmer
-  has_one  :client
-  has_one  :payment_info
+  has_many :user_accounts, dependent: :destroy
+  has_many :github_user_accounts, dependent: :destroy
+  has_many :github_repos, dependent: :destroy
+  has_many :skills, dependent: :destroy
+  has_one  :programmer, dependent: :destroy
+  has_one  :client, dependent: :destroy
+  has_one  :payment_info, dependent: :destroy
 
   validates :full_name, presence: true
   validates :country, presence: true, if: :checked_terms?

@@ -9,6 +9,7 @@ Codedoor::Application.routes.draw do
     post :create_message, on: :member
     post :cancel, on: :member
     post :offer, on: :member
+    post :decline, on: :member
     post :start, on: :member
     post :finish, on: :member
   end

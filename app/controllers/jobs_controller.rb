@@ -1,9 +1,9 @@
 class JobsController < ApplicationController
   before_filter :client_or_programmer_required, only: [:index, :edit, :create_message, :finish]
   before_filter :client_required, only: [:new, :create, :offer, :cancel]
-  before_filter :programmer_required, only: [:start]
+  before_filter :programmer_required, only: [:start, :decline]
 
-  load_and_authorize_resource except: [:create, :create_message, :offer, :start, :cancel, :finish]
+  load_and_authorize_resource except: [:create, :create_message, :offer, :start, :cancel, :decline, :finish]
 
   def index
     @jobs_as_client = current_user.client.present? ? Job.where(client_id: current_user.client.id) : []
@@ -57,56 +57,39 @@ class JobsController < ApplicationController
   end
 
   def offer
-    @job = Job.find(params[:id])
-    authorize! :update_as_client, @job
-    if @job.has_not_started?
-      # The rate gets locked at the time of offer
-      @job.rate = @job.programmer.rate
-      @job.offer!
-      flash[:notice] = 'The job has been offered.'
-    else
-      flash[:alert] = 'The job could not be offered.'
-    end
-    redirect_to action: :edit
+    # The rate gets locked at the time of offer
+    state_change(:update_as_client, ->{@job.has_not_started?}, ->{@job.rate = @job.programmer.rate; @job.offer!}, 'The job has been offered.', 'The job could not be offered.')
   end
 
   def cancel
-    @job = Job.find(params[:id])
-    authorize! :update_as_client, @job
-    if @job.offered?
-      @job.cancel!
-      flash[:notice] = 'The job has been canceled.'
-    else
-      flash[:alert] = 'The job could not be canceled.'
-    end
-    redirect_to action: :edit
+    state_change(:update_as_client, ->{@job.offered?}, ->{@job.cancel!}, 'The job has been canceled.', 'The job could not be canceled.')
   end
 
   def start
-    @job = Job.find(params[:id])
-    authorize! :update_as_programmer, @job
-    if @job.offered?
-      @job.start!
-      flash[:notice] = 'The job has been started.'
-    else
-      flash[:alert] = 'The job could not be started.'
-    end
-    redirect_to action: :edit
+    state_change(:update_as_programmer, ->{@job.offered?}, ->{@job.start!}, 'The job has been started.', 'The job could not be started.')
+  end
+
+  def decline
+    state_change(:update_as_programmer, ->{@job.offered?}, ->{@job.decline!}, 'The job has been declined.', 'The job could not be declined.')
   end
 
   def finish
-    @job = Job.find(params[:id])
-    authorize! :update, @job
-    if @job.offered? || @job.running?
-      @job.finish!
-      flash[:notice] = 'The job is now finished.'
-    else
-      flash[:alert] = 'The job could not be finished.'
-    end
-    redirect_to action: :edit
+    state_change(:update, ->{@job.offered? || @job.running?}, ->{@job.finish!}, 'The job is now finished.', 'The job could not be finished.')
   end
 
   private
+
+  def state_change(permission_required, state_required, action, success_message, failure_message)
+    @job = Job.find(params[:id])
+    authorize! permission_required, @job
+    if state_required.call
+      action.call
+      flash[:notice] = success_message
+    else
+      flash[:alert] = failure_message
+    end
+    redirect_to action: :edit
+  end
 
   def create_job_params
     params.require(:job).permit(:programmer_id, :name, job_messages_attributes: [:content])

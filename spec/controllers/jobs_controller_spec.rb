@@ -212,6 +212,32 @@ describe JobsController do
     end
   end
 
+  describe 'POST decline' do
+    it 'should allow programmer to decline' do
+      sign_in(@programmer.user)
+      job = FactoryGirl.create(:job, client: @client, programmer: @programmer, state: 'offered')
+      post :decline, id: job.id
+      response.should redirect_to(edit_job_path(job))
+      flash[:notice].should eq('The job has been declined.')
+      job.reload.declined?.should be_true
+    end
+
+    it 'should not allow client to decline' do
+      sign_in(@client.user)
+      job = FactoryGirl.create(:job, client: @client, programmer: @programmer, state: 'offered')
+      post :decline, id: job.id
+      response.should redirect_to(edit_user_programmer_path(@client.user))
+    end
+
+    it 'should not allow programmer to decline job that is running' do
+      sign_in(@programmer.user)
+      job = FactoryGirl.create(:job, client: @client, programmer: @programmer, state: 'running')
+      post :decline, id: job.id
+      response.should redirect_to(edit_job_path(job))
+      flash[:alert].should eq('The job could not be declined.')
+    end
+  end
+
   describe 'POST finish' do
     it 'should allow programmer to finish' do
       sign_in(@programmer.user)

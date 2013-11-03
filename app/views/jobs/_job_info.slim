@@ -18,10 +18,12 @@
     - elsif @job.offered?
       - if is_client
         p
-          = link_to 'Cancel Contract', cancel_job_path(@job), class: 'btn btn-success', method: :post
+          = link_to 'Cancel Contract', cancel_job_path(@job), class: 'btn btn-danger', method: :post
       - else
         p
           = link_to 'Start Job', start_job_path(@job), class: 'btn btn-success', method: :post
+        p
+          = link_to 'Decline Job', decline_job_path(@job), class: 'btn btn-danger', method: :post
       | Job Offered
 
     - elsif @job.running?

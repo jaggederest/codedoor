@@ -20,6 +20,10 @@ class Job < ActiveRecord::Base
       transition offered: :canceled
     end
 
+    event :decline do
+      transition offered: :declined
+    end
+
     event :start do
       transition offered: :running
     end

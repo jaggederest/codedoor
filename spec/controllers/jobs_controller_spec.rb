@@ -135,15 +135,109 @@ describe JobsController do
   end
 
   describe 'POST offer' do
-  end
+    it 'should allow client to offer' do
+      sign_in(@client.user)
+      job = FactoryGirl.create(:job, client: @client, programmer: @programmer, state: 'has_not_started')
+      post :offer, id: job.id
+      response.should redirect_to(edit_job_path(job))
+      flash[:notice].should eq('The job has been offered.')
+      job.reload.offered?.should be_true
+    end
 
-  describe 'POST start' do
+    it 'should not allow programmer to offer' do
+      sign_in(@programmer.user)
+      job = FactoryGirl.create(:job, client: @client, programmer: @programmer, state: 'has_not_started')
+      post :offer, id: job.id
+      response.should redirect_to(new_user_client_path(@programmer.user))
+    end
+
+    it 'should not allow client to offer job that is already offered' do
+      sign_in(@client.user)
+      job = FactoryGirl.create(:job, client: @client, programmer: @programmer, state: 'offered')
+      post :offer, id: job.id
+      response.should redirect_to(edit_job_path(job))
+      flash[:alert].should eq('The job could not be offered.')
+    end
   end
 
   describe 'POST cancel' do
+    it 'should allow client to cancel' do
+      sign_in(@client.user)
+      job = FactoryGirl.create(:job, client: @client, programmer: @programmer, state: 'offered')
+      post :cancel, id: job.id
+      response.should redirect_to(edit_job_path(job))
+      flash[:notice].should eq('The job has been canceled.')
+      job.reload.canceled?.should be_true
+    end
+
+    it 'should not allow programmer to cancel' do
+      sign_in(@programmer.user)
+      job = FactoryGirl.create(:job, client: @client, programmer: @programmer, state: 'offered')
+      post :cancel, id: job.id
+      response.should redirect_to(new_user_client_path(@programmer.user))
+    end
+
+    it 'should not allow client to cancel job that is not offered' do
+      sign_in(@client.user)
+      job = FactoryGirl.create(:job, client: @client, programmer: @programmer, state: 'running')
+      post :cancel, id: job.id
+      response.should redirect_to(edit_job_path(job))
+      flash[:alert].should eq('The job could not be canceled.')
+    end
+  end
+
+  describe 'POST start' do
+    it 'should allow programmer to start' do
+      sign_in(@programmer.user)
+      job = FactoryGirl.create(:job, client: @client, programmer: @programmer, state: 'offered')
+      post :start, id: job.id
+      response.should redirect_to(edit_job_path(job))
+      flash[:notice].should eq('The job has been started.')
+      job.reload.running?.should be_true
+    end
+
+    it 'should not allow client to start' do
+      sign_in(@client.user)
+      job = FactoryGirl.create(:job, client: @client, programmer: @programmer, state: 'offered')
+      post :start, id: job.id
+      response.should redirect_to(edit_user_programmer_path(@client.user))
+    end
+
+    it 'should not allow programmer to start job that is started' do
+      sign_in(@programmer.user)
+      job = FactoryGirl.create(:job, client: @client, programmer: @programmer, state: 'running')
+      post :start, id: job.id
+      response.should redirect_to(edit_job_path(job))
+      flash[:alert].should eq('The job could not be started.')
+    end
   end
 
   describe 'POST finish' do
+    it 'should allow programmer to finish' do
+      sign_in(@programmer.user)
+      job = FactoryGirl.create(:job, client: @client, programmer: @programmer, state: 'running')
+      post :finish, id: job.id
+      response.should redirect_to(edit_job_path(job))
+      flash[:notice].should eq('The job is now finished.')
+      job.reload.finished?.should be_true
+    end
+
+    it 'should allow client to finish' do
+      sign_in(@client.user)
+      job = FactoryGirl.create(:job, client: @client, programmer: @programmer, state: 'running')
+      post :finish, id: job.id
+      response.should redirect_to(edit_job_path(job))
+      flash[:notice].should eq('The job is now finished.')
+      job.reload.finished?.should be_true
+    end
+
+    it 'should not allow programmer to finish job that is finished' do
+      sign_in(@programmer.user)
+      job = FactoryGirl.create(:job, client: @client, programmer: @programmer, state: 'finished')
+      post :finish, id: job.id
+      response.should redirect_to(edit_job_path(job))
+      flash[:alert].should eq('The job could not be finished.')
+    end
   end
 
 end

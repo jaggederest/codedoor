@@ -42,7 +42,7 @@ class Job < ActiveRecord::Base
   end
 
   def rate_is_unchanged
-    errors.add(:rate, 'must stay the same for the job') if rate_changed? && !has_not_started?
+    errors.add(:rate, 'must stay the same for the job') if rate_changed? && (state_was != 'has_not_started')
   end
 
   def is_client?(user)

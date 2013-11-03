@@ -1,6 +1,6 @@
 class JobsController < ApplicationController
   before_filter :client_or_programmer_required, only: [:index, :edit, :create_message, :finish]
-  before_filter :client_required, only: [:new, :create, :offer]
+  before_filter :client_required, only: [:new, :create, :offer, :cancel]
   before_filter :programmer_required, only: [:start]
 
   load_and_authorize_resource except: [:create, :create_message, :offer, :start, :cancel, :finish]
@@ -70,6 +70,18 @@ class JobsController < ApplicationController
     redirect_to action: :edit
   end
 
+  def cancel
+    @job = Job.find(params[:id])
+    authorize! :update_as_client, @job
+    if @job.offered?
+      @job.cancel!
+      flash[:notice] = 'The job has been canceled.'
+    else
+      flash[:alert] = 'The job could not be canceled.'
+    end
+    redirect_to action: :edit
+  end
+
   def start
     @job = Job.find(params[:id])
     authorize! :update_as_programmer, @job
@@ -78,18 +90,6 @@ class JobsController < ApplicationController
       flash[:notice] = 'The job has been started.'
     else
       flash[:alert] = 'The job could not be started.'
-    end
-    redirect_to action: :edit
-  end
-
-  def cancel
-    @job = Job.find(params[:id])
-    authorize! :update_as_programmer, @job
-    if @job.offered?
-      @job.cancel!
-      flash[:notice] = 'The job has been canceled.'
-    else
-      flash[:alert] = 'The job could not be canceled.'
     end
     redirect_to action: :edit
   end

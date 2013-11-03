@@ -87,11 +87,54 @@ describe JobsController do
   end
 
   describe 'GET edit' do
+    it 'should assign @job and @programmer' do
+      sign_in(@client.user)
+      job = FactoryGirl.create(:job, client: @client, programmer: @programmer)
+      get :edit, id: job.id
+      response.should render_template('edit')
+      assigns(:job).should eq(job)
+      assigns(:programmer).should eq(@programmer)
+    end
+
     it 'should have an error if the job is not associated with the client or programmer' do
+      sign_in(@client.user)
+      other_job = FactoryGirl.create(:job, client: FactoryGirl.create(:client), programmer: @programmer)
+      get :edit, id: other_job.id
+      response.should redirect_to(root_path)
+      flash[:alert].should eq('Information cannot be found.')
     end
   end
 
   describe 'POST create_message' do
+    it 'should allow the client to add a message' do
+      sign_in(@client.user)
+      job = FactoryGirl.create(:job, client: @client, programmer: @programmer)
+      post :create_message, id: job.id, job_message: {content: 'Test Message'}
+      response.should redirect_to(edit_job_path(job))
+      flash[:notice].should eq('Your message has been sent.')
+      job.reload.job_messages.first.content.should eq('Test Message')
+    end
+
+    it 'should allow the programmer to add a message' do
+      sign_in(@programmer.user)
+      job = FactoryGirl.create(:job, client: @client, programmer: @programmer)
+      post :create_message, id: job.id, job_message: {content: 'Test Message'}
+      response.should redirect_to(edit_job_path(job))
+      flash[:notice].should eq('Your message has been sent.')
+      job.reload.job_messages.first.content.should eq('Test Message')
+    end
+
+    it 'should not allow anyone to add a blank message' do
+      sign_in(@client.user)
+      job = FactoryGirl.create(:job, client: @client, programmer: @programmer)
+      post :create_message, id: job.id, job_message: {content: ''}
+      response.should redirect_to(edit_job_path(job))
+      flash[:alert].should eq('Your message could not be sent.')
+      job.reload.job_messages.should eq([])
+    end
+  end
+
+  describe 'POST offer' do
   end
 
   describe 'POST start' do

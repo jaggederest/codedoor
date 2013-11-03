@@ -3,7 +3,7 @@ class JobsController < ApplicationController
   before_filter :client_required, only: [:new, :create, :offer]
   before_filter :programmer_required, only: [:start]
 
-  load_and_authorize_resource except: [:create, :offer, :start, :finish]
+  load_and_authorize_resource except: [:create, :create_message, :offer, :start, :cancel, :finish]
 
   def index
     @jobs_as_client = current_user.client.present? ? Job.where(client_id: current_user.client.id) : []
@@ -42,6 +42,7 @@ class JobsController < ApplicationController
   end
 
   def create_message
+    @job = Job.find(params[:id])
     authorize! :update, @job
     @programmer = @job.programmer
     @job_message = JobMessage.new(create_message_params)
@@ -52,7 +53,7 @@ class JobsController < ApplicationController
     else
       flash[:alert] = 'Your message could not be sent.'
     end
-    render :edit
+    redirect_to action: :edit
   end
 
   def offer
@@ -98,7 +99,7 @@ class JobsController < ApplicationController
     authorize! :update, @job
     if @job.offered? || @job.running?
       @job.finish!
-      flash[:notice] = 'The job is finished.'
+      flash[:notice] = 'The job is now finished.'
     else
       flash[:alert] = 'The job could not be finished.'
     end

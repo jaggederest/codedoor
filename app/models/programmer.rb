@@ -12,20 +12,21 @@ class Programmer < ActiveRecord::Base
   accepts_nested_attributes_for :resume_items, allow_destroy: true
   accepts_nested_attributes_for :education_items, allow_destroy: true
 
-  has_and_belongs_to_many :skills
+  has_many :jobs
 
-  scope :not_private, -> { where(:visibility != 'private') }
+  has_and_belongs_to_many :skills
 
   validates :user_id, presence: true, uniqueness: true
   validates :title, length: { minimum: 5, maximum: 80 }
   validates :rate, numericality: { greater_than_or_equal_to: 20, less_than_or_equal_to: 1000, only_integer: true }
   validates :availability, inclusion: { in: ['part-time', 'full-time', 'unavailable'], message: 'must be selected' }
+  validates :calculated_availability, inclusion: { in: ['part-time', 'full-time', 'unavailable'], message: 'must be selected' }
   validates :onsite_status, inclusion: { in: ['offsite', 'visits_allowed', 'occasional', 'onsite'], message: 'must be selected' }
   validates :visibility, inclusion: { in: ['public', 'codedoor', 'private'], message: 'must be selected' }
 
   validate :has_skills?
 
-  before_save {|programmer| programmer.description = programmer.description.to_s}
+  before_validation :calculate_calculated_availability
   before_update {|programmer| programmer.activate! if programmer.incomplete? && programmer.valid? }
 
   state_machine :state, initial: :incomplete do
@@ -89,6 +90,14 @@ class Programmer < ActiveRecord::Base
 
   def username
     user.github_account.username
+  end
+
+  def calculate_calculated_availability
+    if jobs.where(state: 'running').count > 0
+      self.calculated_availability = 'unavailable'
+    else
+      self.calculated_availability = availability
+    end
   end
 
   private

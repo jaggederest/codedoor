@@ -150,7 +150,7 @@ class Countries
       :'Reunion' => :RE,
       :'Romania' => :RO,
       :'Republic Of Serbia' => :RS,
-      :'Russian Federation' => :RU,
+      :'Russia' => :RU,
       :'Rwanda' => :RW,
       :'Saint Helena ' => :SH,
       :'Saint Kitts And Nevis' => :KN,

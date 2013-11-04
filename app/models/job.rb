@@ -16,6 +16,8 @@ class Job < ActiveRecord::Base
   validate :rate_is_unchanged, unless: :has_not_or_has_just_started?
   validate :availability_is_unchanged, unless: :has_not_or_has_just_started?
 
+  after_save :calculate_programmer_availability
+
   state_machine :state, initial: :has_not_started do
     event :offer do
       transition has_not_started: :offered
@@ -48,6 +50,13 @@ class Job < ActiveRecord::Base
   end
 
   private
+
+  def calculate_programmer_availability
+    if finished? || disabled? || running?
+      self.programmer.calculate_calculated_availability
+      self.programmer.save!
+    end
+  end
 
   def client_and_programmer_are_different
     # NOTE: This would only throw an exception if the client or programmer are missing, but that's invalid

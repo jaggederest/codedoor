@@ -20,9 +20,9 @@ class ProgrammerSearch
 
     @availability = params[:availability]
     if availability_chosen?
-      @programmers = @programmers.where('availability = ?', @availability)
+      @programmers = @programmers.where('calculated_availability = ?', @availability)
     else
-      @programmers = @programmers.where('availability IN (?)', ['full-time', 'part-time'])
+      @programmers = @programmers.where('calculated_availability IN (?)', ['full-time', 'part-time'])
       @availability = nil
     end
 

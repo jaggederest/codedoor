@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131103184303) do
+ActiveRecord::Schema.define(version: 20131104051900) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -117,6 +117,7 @@ ActiveRecord::Schema.define(version: 20131103184303) do
     t.string   "visibility"
     t.string   "state"
     t.boolean  "qualified"
+    t.string   "calculated_availability"
   end
 
   add_index "programmers", ["user_id"], name: "index_programmers_on_user_id", using: :btree

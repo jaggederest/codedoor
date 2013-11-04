@@ -9,4 +9,9 @@ TEST_OAUTH_TOKEN: PleaseInsert
 BALANCED_MARKETPLACE: PleaseInsert
 # API key secret on the settings page
 BALANCED_SECRET: PleaseInsert
+# Mandrill User name
+MANDRILL_USERNAME: PleaseInsert
+# Mandrill API Key
+MANDRILL_API_KEY: PleaseInsert
+
 # RAILS_SECRET_KEY_BASE and OAUTH_ENCRYPTION_PASSWORD should be set for staging and production

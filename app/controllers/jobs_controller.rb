@@ -50,6 +50,7 @@ class JobsController < ApplicationController
     @job_message.job = @job
     @job_message.sender_is_client = @job.is_client?(current_user)
     if @job_message.save
+      UserMailer.message_sent(@job.other_user(current_user), @job, @job_message, current_user).deliver
       flash[:notice] = 'Your message has been sent.'
     else
       flash[:alert] = 'Your message could not be sent.'
@@ -59,32 +60,33 @@ class JobsController < ApplicationController
 
   def offer
     # The rate and availability gets locked at the time of offer
-    state_change(:update_as_client, ->{@job.has_not_started?}, ->{@job.availability = @job.programmer.availability; @job.rate = @job.programmer.rate; @job.offer!}, 'The job has been offered.', 'The job could not be offered.')
+    state_change(:update_as_client, ->{@job.has_not_started?}, ->{@job.availability = @job.programmer.availability; @job.rate = @job.programmer.rate; @job.offer!}, :offered, 'The job has been offered.', 'The job could not be offered.')
   end
 
   def cancel
-    state_change(:update_as_client, ->{@job.offered?}, ->{@job.cancel!}, 'The job has been canceled.', 'The job could not be canceled.')
+    state_change(:update_as_client, ->{@job.offered?}, ->{@job.cancel!}, :canceled, 'The job has been canceled.', 'The job could not be canceled.')
   end
 
   def start
-    state_change(:update_as_programmer, ->{@job.offered?}, ->{@job.start!}, 'The job has been started.', 'The job could not be started.')
+    state_change(:update_as_programmer, ->{@job.offered?}, ->{@job.start!}, :started, 'The job has been started.', 'The job could not be started.')
   end
 
   def decline
-    state_change(:update_as_programmer, ->{@job.offered?}, ->{@job.decline!}, 'The job has been declined.', 'The job could not be declined.')
+    state_change(:update_as_programmer, ->{@job.offered?}, ->{@job.decline!}, :declined, 'The job has been declined.', 'The job could not be declined.')
   end
 
   def finish
-    state_change(:update, ->{@job.offered? || @job.running?}, ->{@job.finish!}, 'The job is now finished.', 'The job could not be finished.')
+    state_change(:update, ->{@job.offered? || @job.running?}, ->{@job.finish!}, :finished, 'The job is now finished.', 'The job could not be finished.')
   end
 
   private
 
-  def state_change(permission_required, state_required, action, success_message, failure_message)
+  def state_change(permission_required, state_required, action, action_name, success_message, failure_message)
     @job = Job.find(params[:id])
     authorize! permission_required, @job
     if state_required.call
       action.call
+      UserMailer.state_occurred_to_job(@job.other_user(current_user), @job, current_user, action_name).deliver
       flash[:notice] = success_message
     else
       flash[:alert] = failure_message

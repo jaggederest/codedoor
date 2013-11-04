@@ -8,8 +8,10 @@ class UsersController < ApplicationController
     if current_user.update(user_params)
       flash[:notice] = 'Your information has been updated.'
       if params[:create_programmer].present?
+        UserMailer.welcome_email(current_user).deliver
         redirect_to edit_user_programmer_path(@user)
       elsif params[:create_client].present?
+        UserMailer.welcome_email(current_user).deliver
         redirect_to new_user_client_path(@user)
       else
         render :edit

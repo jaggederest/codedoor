@@ -49,6 +49,11 @@ class Job < ActiveRecord::Base
     client.user == user
   end
 
+  def other_user(user)
+    raise 'Called other_user for non-user' unless user.kind_of?(User)
+    (client.user == user) ? programmer.user : client.user
+  end
+
   private
 
   def calculate_programmer_availability

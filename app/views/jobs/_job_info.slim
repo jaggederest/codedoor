@@ -7,7 +7,10 @@
       - else
         = link_to @job.client.user.full_name, client_path(@job.client), target: '_blank'
   p
-    = is_client ? @job.client_rate_text : @job.programmer_rate_text
+    - if @job.has_not_started?
+      = is_client ? @programmer.client_rate_text : @programmer.programmer_rate_text
+    - else
+      = is_client ? @job.client_rate_text : @job.programmer_rate_text
   - unless @job.new_record?
     - if @job.has_not_started?
       - if is_client

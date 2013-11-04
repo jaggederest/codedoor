@@ -58,8 +58,8 @@ class JobsController < ApplicationController
   end
 
   def offer
-    # The rate gets locked at the time of offer
-    state_change(:update_as_client, ->{@job.has_not_started?}, ->{@job.rate = @job.programmer.rate; @job.offer!}, 'The job has been offered.', 'The job could not be offered.')
+    # The rate and availability gets locked at the time of offer
+    state_change(:update_as_client, ->{@job.has_not_started?}, ->{@job.availability = @job.programmer.availability; @job.rate = @job.programmer.rate; @job.offer!}, 'The job has been offered.', 'The job could not be offered.')
   end
 
   def cancel

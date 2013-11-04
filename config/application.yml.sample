@@ -14,4 +14,7 @@ MANDRILL_USERNAME: PleaseInsert
 # Mandrill API Key
 MANDRILL_API_KEY: PleaseInsert
 
+INTERCOM_APP_ID: PleaseInsert
+INTERCOM_API_SECRET: PleaseInsert
+
 # RAILS_SECRET_KEY_BASE and OAUTH_ENCRYPTION_PASSWORD should be set for staging and production

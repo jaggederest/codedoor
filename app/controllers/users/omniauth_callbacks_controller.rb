@@ -8,8 +8,8 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     end
   end
 
-  # TODO: add a message about the login failure
   def failure
+    flash[:alert] = 'Unfortunately, there has been a problem with GitHub login.'
     redirect_to root_path
   end
 end

@@ -14,7 +14,7 @@ class User < ActiveRecord::Base
   validates :city, presence: true, if: :checked_terms?
   validates :state, presence: { if: Proc.new{|user| user.checked_terms? && user.american?} }
   validates :email, uniqueness: true, format: { with: /\A.*@.*\..*\z/ }
-  validates :checked_terms, inclusion: { in: [true], on: :update, message: '^The Terms of Use must be accepted.' }
+  validates :checked_terms, inclusion: { in: [true], on: :update, message: '- The Terms of Use must be accepted.' }
 
   def self.find_for_github_oauth(auth, signed_in_resource=nil)
     user_account = GithubUserAccount.where(account_id: auth.uid).first

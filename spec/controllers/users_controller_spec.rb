@@ -58,7 +58,7 @@ describe UsersController do
       post :update, id: @user.id, user: {full_name: 'New Name', email: 'newemail@example.com', country: 'US'}
       response.should render_template('edit')
       flash[:alert].should eq('Your information could not be updated.')
-      assigns(:current_user).errors[:checked_terms].should eq(['^The Terms of Use must be accepted.'])
+      assigns(:current_user).errors[:checked_terms].should eq(['- The Terms of Use must be accepted.'])
     end
 
     it 'should fail if the parameters passed in are invalid' do

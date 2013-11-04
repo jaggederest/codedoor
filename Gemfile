@@ -8,6 +8,8 @@ gem 'rails', '4.0.0'
 # Moving over to postgresql as that is what we will be using in production
 gem 'pg', '~> 0.17.0'
 
+gem 'puma', '~> 2.6.0'
+
 # Use CanCan for authorization
 gem 'cancan', '~> 1.6.10'
 

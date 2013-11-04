@@ -68,6 +68,8 @@ gem 'intercom-rails', '~> 0.2.22'
 
 gem 'google-analytics-rails', '~> 0.0.4'
 
+gem 'newrelic_rpm'
+
 group :development, :test do
   gem 'pry'
   gem 'pry-debugger'

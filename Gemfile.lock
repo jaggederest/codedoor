@@ -131,6 +131,7 @@ GEM
     multi_json (1.8.0)
     multipart-post (1.2.0)
     nested_form (0.3.2)
+    newrelic_rpm (3.6.8.168)
     nokogiri (1.6.0)
       mini_portile (~> 0.5.0)
     oauth2 (0.8.1)
@@ -281,6 +282,7 @@ DEPENDENCIES
   jquery-rails (~> 3.0.4)
   launchy
   nested_form (~> 0.3.2)
+  newrelic_rpm
   omniauth-github (~> 1.1.1)
   pg (~> 0.17.0)
   poltergeist

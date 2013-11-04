@@ -103,6 +103,7 @@ GEM
       multi_json (~> 1.4)
       nokogiri (~> 1.6.0)
       oauth2
+    google-analytics-rails (0.0.4)
     hashie (2.0.5)
     hike (1.2.3)
     httpauth (0.2.0)
@@ -274,6 +275,7 @@ DEPENDENCIES
   factory_girl_rails
   figaro (~> 0.7.0)
   github_api (~> 0.10.1)
+  google-analytics-rails (~> 0.0.4)
   intercom-rails (~> 0.2.22)
   jbuilder (~> 1.5.1)
   jquery-rails (~> 3.0.4)

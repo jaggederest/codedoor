@@ -66,6 +66,8 @@ gem 'rest-client', '~> 1.6.7'
 
 gem 'intercom-rails', '~> 0.2.22'
 
+gem 'google-analytics-rails', '~> 0.0.4'
+
 group :development, :test do
   gem 'pry'
   gem 'pry-debugger'

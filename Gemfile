@@ -62,6 +62,8 @@ gem 'attr_encryptor'
 # Right now, only used for the edge case where there are over 100 contributors
 gem 'rest-client', '~> 1.6.7'
 
+gem 'intercom-rails', '~> 0.2.22'
+
 group :development, :test do
   gem 'pry'
   gem 'pry-debugger'

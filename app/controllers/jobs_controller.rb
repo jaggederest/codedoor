@@ -30,6 +30,7 @@ class JobsController < ApplicationController
     @job.availability = @programmer.availability
     authorize! :create, @job
     if @job.save
+      UserMailer.message_sent(@job.other_user(current_user), @job, @job.job_messages.first, current_user).deliver
       flash[:notice] = 'Your message has been sent.'
       redirect_to edit_job_path(@job)
     else

@@ -7,4 +7,7 @@ Codedoor::Application.configure do
 
   GA.tracker = ENV['GOOGLE_ANALYTICS_TRACKER']
 
+  # Do not raise errors for failed emails
+  config.action_mailer.raise_delivery_errors = false
+
 end

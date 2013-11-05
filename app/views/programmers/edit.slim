@@ -177,7 +177,7 @@
           - else
             .alert.alert-error
               p
-                | Contractors on CodeDoor need at least one open-source contribution to a public repository with at least 25 stars.
+                | Contractors on CodeDoor need at least one open-source contribution to a public repository with at least 25 stars.  Add your contributions to repositories below.
               p
                 | If you've contributed to a major open-source project that isn't on GitHub, please send an email to:&nbsp;
                 a href="mailto:rcheng@codedoor.com"
@@ -201,8 +201,12 @@
 
       .control-group
         .control-label
-          | Add Contributions
         .controls
+          .row
+            .span1
+            p
+              strong
+                | Add Contributions To Other People's Repositories
           .row
             .span1
             = text_field_tag :repo_owner, nil, placeholder: 'User', class: 'repo-owner-field', id: 'repo-owner'

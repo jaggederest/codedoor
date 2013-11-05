@@ -19,7 +19,7 @@ feature 'Programmer settings', js: true do
     choose('Part-time')
 
     fill_in 'hourly_rate_to_programmer', with: 50
-    click_button 'Edit Info'
+    click_button 'Save'
     page.should have_content 'Your programmer account has been updated.'
     page.should have_content '$450 / 8 hours'
   end
@@ -67,7 +67,7 @@ feature 'Programmer settings', js: true do
     find('select[id^="programmer_education_items_attributes_"][id$="_month_finished"]').find(:option, 'May').select_option
     find('input[id^="programmer_education_items_attributes_"][id$="_year_finished"]').set('2007')
 
-    click_button 'Edit Info'
+    click_button 'Save'
 
     go_to_programmer_settings
 
@@ -113,7 +113,7 @@ feature 'Programmer settings', js: true do
     find('#shown-github-1').checked?.should be_true
     find('#shown-github-1').set(false)
 
-    click_button 'Edit Info'
+    click_button 'Save'
 
     go_to_programmer_settings
 

@@ -54,7 +54,7 @@ feature 'Job setup', js: true do
 
     fill_in 'Company', with: 'Test Company'
     fill_in 'Description', with: 'Test Description'
-    click_button 'Add Info'
+    click_button 'Save'
 
     # After creating a client, you should be redirect back to the new job flow
     page.should have_content 'Job Name'

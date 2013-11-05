@@ -301,5 +301,5 @@
 
       .control-group
         .controls
-          = f.submit (@programmer.incomplete? ? 'Add Info' : 'Edit Info'), class: 'btn', data: {disable_with: 'Submitting...'}
+          = f.submit 'Save', class: 'btn', data: {disable_with: 'Submitting...'}
   = javascript_include_tag 'settings/rates'

@@ -7,7 +7,7 @@ feature 'Client settings', js: true do
     find('#client_description').value.should eq('Test Description')
 
     fill_in 'Description', with: 'New Description'
-    click_button 'Edit Info'
+    click_button 'Save'
 
     find('#client_description').value.should eq('New Description')
   end

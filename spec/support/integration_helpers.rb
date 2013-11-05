@@ -23,7 +23,7 @@ module FeatureTestHelper
 
       fill_in 'Company', with: 'Test Company'
       fill_in 'Description', with: 'Test Description'
-      click_button 'Add Info'
+      click_button 'Save'
     end
 
     def programmer_sign_up
@@ -37,7 +37,7 @@ module FeatureTestHelper
 
       choose('Full-time')
       choose('programmer_onsite_status_onsite')
-      click_button 'Add Info'
+      click_button 'Save'
     end
 
     def go_to_client_settings

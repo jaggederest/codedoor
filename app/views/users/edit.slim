@@ -51,9 +51,9 @@
         .row
           .span1
           .span3
-            = f.submit 'Create Programmer Account', data: {disable_with: 'Submitting...'}, name: :create_programmer
+            = f.submit 'Create Programmer Account', class: 'btn', data: {disable_with: 'Submitting...'}, name: :create_programmer
           .span3
-            = f.submit 'Create Client Account', data: {disable_with: 'Submitting...'}, name: :create_client
+            = f.submit 'Create Client Account', class: 'btn', data: {disable_with: 'Submitting...'}, name: :create_client
       - else
         .control-group
           .controls

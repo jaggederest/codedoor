@@ -33,7 +33,7 @@ class Ability
 
   def can_see_for_jobs(user)
     can [:create], Job do |job|
-      # TODO: Perhaps you shouldn't be allowed to hire yourself.  But why not?
+      # Right now, you can hire yourself, although it is not exposed in the UI.  Why not?
       user.client.present?
     end
     can [:read, :update, :destroy], Job do |job|

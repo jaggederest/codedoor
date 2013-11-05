@@ -73,8 +73,7 @@
               .span6
                 = link_to project.title, project.url, target: '_blank'
                 - unless project.description.blank?
-                  p
-                    = simple_format(project.description)
+                  = simple_format(project.description)
 
     - if @programmer.show_resume?
       h4

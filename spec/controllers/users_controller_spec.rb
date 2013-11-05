@@ -38,11 +38,17 @@ describe UsersController do
     end
 
     it 'should redirect to edit programmer path if button is clicked' do
+      mailer = double
+      UserMailer.should_receive(:welcome_email).and_return(mailer)
+      mailer.should_receive(:deliver)
       post :update, id: @user.id, user: {full_name: 'New Name', email: 'newemail@example.com', checked_terms: '1', country: 'US', state: 'CA', city: 'Burlingame'}, create_programmer: 'Create Programmer Account'
       response.should redirect_to(edit_user_programmer_path(@user))
     end
 
     it 'should redirect to new client path if button is clicked' do
+      mailer = double
+      UserMailer.should_receive(:welcome_email).and_return(mailer)
+      mailer.should_receive(:deliver)
       post :update, id: @user.id, user: {full_name: 'New Name', email: 'newemail@example.com', checked_terms: '1', country: 'US', state: 'CA', city: 'Burlingame'}, create_client: 'Create Client Account'
       response.should redirect_to(new_user_client_path(@user))
     end

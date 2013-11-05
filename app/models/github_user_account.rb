@@ -9,9 +9,9 @@ class GithubUserAccount < UserAccount
       repo = GithubRepo.new(programmer_id: self.user.programmer.id, shown: true)
       repo.contributions = contributions[:count]
       return create_repo(repo, repo_owner, repo_name)
+    else
+      raise GithubApiError.new('You have not contributed any code to this repository.')
     end
-
-    raise GithubApiError.new('You have not contributed any code to this repository.')
   end
 
   # This gets the public repos that are *owned* by the programmer
@@ -65,7 +65,7 @@ class GithubUserAccount < UserAccount
   def get_contributors(repo_owner, repo_name)
     begin
       github_client.repos.contributors(repo_owner, repo_name)
-    rescue Exception => e
+    rescue Github::Error::NotFound => e
       raise GithubApiError.new('The repository does not exist.')
     end
   end

@@ -20,9 +20,6 @@ describe GithubUserAccount do
     before :each do
       @user_account = FactoryGirl.create(:github_user_account)
       @programmer = FactoryGirl.create(:programmer, user: @user_account.user)
-      # TODO: This is done to make sure user_account is a GithubUserAccount.
-      # There should be a cleaner way.
-      @user_account = @user_account.user.user_accounts.first
     end
 
     it 'should create repos when called, but not create duplicates' do

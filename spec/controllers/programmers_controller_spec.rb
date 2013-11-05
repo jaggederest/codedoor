@@ -307,6 +307,11 @@ describe ProgrammersController do
     it 'should create a github_repo if the user has made a contribution' do
       @user_account.username = 'dhh'
       @user_account.save!
+      
+      FakeWebHelpers.mock_api_large_repo(@user_account.oauth_token)
+      FakeWebHelpers.mock_scrape_rails_contributor('dhh')
+      FakeWebHelpers.mock_rails_repo_request
+      
       post :verify_contribution, user_id: @user.id, id: @programmer.id, repo_owner: 'rails', repo_name: 'rails', format: :json
       response.response_code.should eq(200)
       JSON.parse(response.body)['success'].should eq('Your contributions to rails/rails have been added.')
@@ -320,12 +325,15 @@ describe ProgrammersController do
     end
 
     it 'should return error if the user has not made a contribution' do
+      FakeWebHelpers.mock_scrape_rails_noncontributor(@user_account.username)
+      FakeWebHelpers.mock_api_large_repo(@user_account.oauth_token)
       post :verify_contribution, user_id: @user.id, id: @programmer.id, repo_owner: 'rails', repo_name: 'rails', format: :json
       response.response_code.should eq(400)
       JSON.parse(response.body)['error'].should eq('You have not contributed any code to this repository.')
     end
 
     it 'should return error if repo does not exist' do
+      FakeWebHelpers.mock_missing_repo(@user_account.oauth_token)
       post :verify_contribution, user_id: @user.id, id: @programmer.id, repo_owner: 'rhc2104', repo_name: 'repo-that-does-not-exist', format: :json
       response.response_code.should eq(400)
       JSON.parse(response.body)['error'].should eq('The repository does not exist.')

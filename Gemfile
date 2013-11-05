@@ -86,6 +86,7 @@ group :test do
   gem 'launchy'
   gem 'simplecov', require: false
   gem 'coveralls', require: false
+  gem 'fakeweb'
 end
 
 group :doc do

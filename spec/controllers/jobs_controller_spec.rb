@@ -73,6 +73,9 @@ describe JobsController do
   describe 'POST create' do
     it 'should redirect upon valid create' do
       sign_in(@client.user)
+      mailer = double
+      UserMailer.should_receive(:message_sent).and_return(mailer)
+      mailer.should_receive(:deliver)
       post :create, job: {programmer_id: @programmer.id, name: 'Test job', job_messages_attributes: [{content: 'Test message'}]}
       response.should redirect_to(edit_job_path(Job.last.id))
       job = Job.last
@@ -110,6 +113,9 @@ describe JobsController do
   describe 'POST create_message' do
     it 'should allow the client to add a message' do
       sign_in(@client.user)
+      mailer = double
+      UserMailer.should_receive(:message_sent).and_return(mailer)
+      mailer.should_receive(:deliver)
       job = FactoryGirl.create(:job, client: @client, programmer: @programmer)
       post :create_message, id: job.id, job_message: {content: 'Test Message'}
       response.should redirect_to(edit_job_path(job))
@@ -139,6 +145,9 @@ describe JobsController do
   describe 'POST offer' do
     it 'should allow client to offer' do
       sign_in(@client.user)
+      mailer = double
+      UserMailer.should_receive(:state_occurred_to_job).and_return(mailer)
+      mailer.should_receive(:deliver)
       job = FactoryGirl.create(:job, client: @client, programmer: @programmer, state: 'has_not_started')
       post :offer, id: job.id
       response.should redirect_to(edit_job_path(job))
@@ -165,6 +174,9 @@ describe JobsController do
   describe 'POST cancel' do
     it 'should allow client to cancel' do
       sign_in(@client.user)
+      mailer = double
+      UserMailer.should_receive(:state_occurred_to_job).and_return(mailer)
+      mailer.should_receive(:deliver)
       job = FactoryGirl.create(:job, client: @client, programmer: @programmer, state: 'offered')
       post :cancel, id: job.id
       response.should redirect_to(edit_job_path(job))
@@ -191,6 +203,9 @@ describe JobsController do
   describe 'POST start' do
     it 'should allow programmer to start' do
       sign_in(@programmer.user)
+      mailer = double
+      UserMailer.should_receive(:state_occurred_to_job).and_return(mailer)
+      mailer.should_receive(:deliver)
       job = FactoryGirl.create(:job, client: @client, programmer: @programmer, state: 'offered')
       post :start, id: job.id
       response.should redirect_to(edit_job_path(job))
@@ -217,6 +232,9 @@ describe JobsController do
   describe 'POST decline' do
     it 'should allow programmer to decline' do
       sign_in(@programmer.user)
+      mailer = double
+      UserMailer.should_receive(:state_occurred_to_job).and_return(mailer)
+      mailer.should_receive(:deliver)
       job = FactoryGirl.create(:job, client: @client, programmer: @programmer, state: 'offered')
       post :decline, id: job.id
       response.should redirect_to(edit_job_path(job))
@@ -243,6 +261,9 @@ describe JobsController do
   describe 'POST finish' do
     it 'should allow programmer to finish' do
       sign_in(@programmer.user)
+      mailer = double
+      UserMailer.should_receive(:state_occurred_to_job).and_return(mailer)
+      mailer.should_receive(:deliver)
       job = FactoryGirl.create(:job, client: @client, programmer: @programmer, state: 'running')
       post :finish, id: job.id
       response.should redirect_to(edit_job_path(job))

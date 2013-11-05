@@ -24,7 +24,7 @@
       h4
         | Description
       p
-        = @programmer.description
+        = simple_format(@programmer.description)
 
     - if @programmer.show_repos? || @programmer.show_portfolio?
       h4

@@ -74,7 +74,7 @@
                 = link_to project.title, project.url, target: '_blank'
                 - unless project.description.blank?
                   p
-                    = project.description
+                    = simple_format(project.description)
 
     - if @programmer.show_resume?
       h4
@@ -88,7 +88,7 @@
           br
           = resume.duration_text
           br
-          = resume.description
+          = simple_format(resume.description)
 
     - if @programmer.show_education?
       h4
@@ -102,7 +102,7 @@
           br
           = education.duration_text
           br
-          = education.description
+          = simple_format(education.description)
   .span3
     - unless @programmer.user == current_user
       strong

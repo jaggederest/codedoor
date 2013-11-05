@@ -310,7 +310,7 @@ describe ProgrammersController do
       
       FakeWebHelpers.mock_api_large_repo(@user_account.oauth_token)
       FakeWebHelpers.mock_scrape_rails_contributor('dhh')
-      FakeWebHelpers.mock_rails_repo_request
+      FakeWebHelpers.mock_rails_repo_request(@user_account.oauth_token)
       
       post :verify_contribution, user_id: @user.id, id: @programmer.id, repo_owner: 'rails', repo_name: 'rails', format: :json
       response.response_code.should eq(200)

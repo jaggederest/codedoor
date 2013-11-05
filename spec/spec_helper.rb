@@ -87,8 +87,8 @@ OmniAuth.config.test_mode = true
 OmniAuth.config.mock_auth[:github] = MockGitHubAuth.test_user
 
 class FakeWebHelpers
-  def self.mock_rails_repo_request
-    FakeWeb.register_uri(:get, 'https://api.github.com/repos/rails/rails?access_token=hats', :body => '{
+  def self.mock_rails_repo_request(token)
+    FakeWeb.register_uri(:get, 'https://api.github.com/repos/rails/rails?access_token=' + token, body: '{
     "default_branch": "",
     "forks_count": "0",
     "watchers_count": "50",
@@ -103,19 +103,19 @@ class FakeWebHelpers
   end
 
   def self.mock_scrape_rails_contributor(username)
-    FakeWeb.register_uri(:get, 'https://github.com/rails/rails/commits?author=' + username, :body => 'Browse code')
+    FakeWeb.register_uri(:get, 'https://github.com/rails/rails/commits?author=' + username, body: 'Browse code')
   end
   def self.mock_scrape_rails_noncontributor(username)
-    FakeWeb.register_uri(:get, 'https://github.com/rails/rails/commits?author=' + username, :body => 'Browse code No commits found')
+    FakeWeb.register_uri(:get, 'https://github.com/rails/rails/commits?author=' + username, body: 'Browse code No commits found')
   end
 
   def self.mock_api_large_repo(token)
     # this just needs to be a json response with 100 objects in it to
     # trigger the 'repo too large, drop back to html scrape' logic
-    FakeWeb.register_uri(:get, 'https://api.github.com/repos/rails/rails/contributors?access_token='+token, :body => "[#{(['{}']*100).join(',')}]")
+    FakeWeb.register_uri(:get, 'https://api.github.com/repos/rails/rails/contributors?access_token='+token, body: "[#{(['{}']*100).join(',')}]")
   end
 
   def self.mock_missing_repo(token)
-    FakeWeb.register_uri(:get, 'https://api.github.com/repos/rhc2104/repo-that-does-not-exist/contributors?access_token='+token, :status => ['404', 'Not Found'])
+    FakeWeb.register_uri(:get, 'https://api.github.com/repos/rhc2104/repo-that-does-not-exist/contributors?access_token='+token, status: ['404', 'Not Found'])
   end
 end
